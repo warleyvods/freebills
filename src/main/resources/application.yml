@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: fbills
+
+  jackson:
+    date-format: "yyyy-MM-dd HH:mm:ss"
+    default-property-inclusion: non_null
+    deserialization:
+      fail-on-null-for-primitives: true
+
+  profiles:
+    active: ${SCOPE:stage}
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB

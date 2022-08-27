@@ -1,0 +1,29 @@
+server:
+  port: 9000
+  error:
+    whitelabel:
+      enabled: false
+
+spring:
+  datasource:
+    url: ${DATABASE_CONNECTION_URL:jdbc:postgresql://localhost:5432/rhweb}
+    username: postgres
+    password: ${PASSWORD:99433900}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQL94Dialect
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: false
+    show-sql: false
+
+  h2:
+    console:
+      enabled: false
+
+springdoc:
+  api-docs:
+    enabled: true
