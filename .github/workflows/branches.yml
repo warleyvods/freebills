@@ -1,4 +1,4 @@
-name: Job Secovicred RH-Web PR
+name: Free Bills Pull Request Pipeline
 on:
   pull_request:
     branches: [ master ]
