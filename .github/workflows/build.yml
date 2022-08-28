@@ -20,7 +20,7 @@ jobs:
 
   Sonar:
     needs: Build
-    name: SonarQube
+    name: Testes and SonarQube
     runs-on: ubuntu-latest
     steps:
 
@@ -55,7 +55,7 @@ jobs:
 
   Tests:
     needs: Sonar
-    name: Tests and Docker
+    name: Docker and Notification
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -88,6 +88,6 @@ jobs:
         if: always()
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
-          title: "Backend RH Web"
+          title: "Backend Free Bills"
           description: "Build and Deploy to Server"
           username: GitHub Actions
