@@ -82,6 +82,21 @@ jobs:
       - name: Docker Push
         run: docker push warleyvods/freebills-api
 
+  SSH:
+    needs: Tests
+    name: Deploy and Notification
+    runs-on: ubuntu-latest
+    steps:
+      - name: executing remote ssh commands using ssh key
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY_ED25519 }}
+          port: ${{ secrets.PORT }}
+          script: |
+            cd rh-web/
+            sh script_fb.sh
 
       - name: Discord Notification
         uses: sarisia/actions-status-discord@v1.9.0
