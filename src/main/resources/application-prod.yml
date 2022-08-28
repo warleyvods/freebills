@@ -6,13 +6,12 @@ server:
 
 spring:
   datasource:
-    url: ${DATABASE_CONNECTION_URL:jdbc:postgresql://localhost:5432/rhweb}
-    username: postgres
-    password: ${PASSWORD:99433900}
+    url: ${DATABASE_CONNECTION_URL}
+    username: ${USER}
+    password: ${PASSWORD}
     driver-class-name: org.postgresql.Driver
 
   jpa:
-    database-platform: org.hibernate.dialect.PostgreSQL94Dialect
     hibernate:
       ddl-auto: update
     properties:

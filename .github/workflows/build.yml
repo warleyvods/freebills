@@ -77,10 +77,10 @@ jobs:
           docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
 
       - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag warleyvods/freebils-api
+        run: docker build . --file Dockerfile --tag warleyvods/freebills-api
 
       - name: Docker Push
-        run: docker push warleyvods/freebils-api
+        run: docker push warleyvods/freebills-api
 
 
       - name: Discord Notification
