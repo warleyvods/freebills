@@ -20,7 +20,7 @@ jobs:
 
   Sonar:
     needs: Build
-    name: Tests and Docker
+    name: SonarQube
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
