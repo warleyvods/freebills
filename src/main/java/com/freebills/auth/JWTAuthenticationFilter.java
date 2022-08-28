@@ -79,7 +79,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         cookie.setSecure(true);
         cookie.setMaxAge(EXPIRATION_TIME.intValue());
         cookie.setPath("/");
-//        cookie.setDomain(".wavods.com");
+        cookie.setDomain(".wavods.com");
 
         response.addHeader("Access-Control-Expose-Headers", "Authorization");
         response.addHeader("Access-Control-Allow-Headers", "Authorization, X-PINGOTHER, Origin, X-Requested-With, Content-Type, Accept, X-Custom-header");

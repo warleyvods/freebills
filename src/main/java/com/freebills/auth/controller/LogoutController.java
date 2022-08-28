@@ -26,7 +26,7 @@ public class LogoutController {
         cookie.setSecure(true);
         cookie.setMaxAge(0);
         cookie.setPath("/");
-//        cookie.setDomain(".wavods.com");
+        cookie.setDomain(".wavods.com");
 
         response.addCookie(cookie);
     }
