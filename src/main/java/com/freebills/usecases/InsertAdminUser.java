@@ -2,14 +2,12 @@ package com.freebills.usecases;
 
 import com.freebills.domains.User;
 import com.freebills.repositories.UserRepository;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-@AllArgsConstructor
 public record InsertAdminUser(UserRepository userRepository) {
 
     private static final String ADMIN = "admin";

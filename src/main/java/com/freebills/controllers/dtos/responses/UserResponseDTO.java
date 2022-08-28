@@ -9,7 +9,6 @@ public record UserResponseDTO(
         String email,
         boolean admin,
         boolean active,
-        UserImageResponseDTO image,
         LocalDate createdAt
 ) {
 

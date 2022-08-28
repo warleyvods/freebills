@@ -1,5 +1,7 @@
 package com.freebills.exceptions.handler;
 
+import com.freebills.exceptions.PermissionDeniedException;
+import com.freebills.exceptions.UserNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
@@ -26,6 +28,18 @@ import static org.springframework.http.HttpStatus.*;
 
 @RestControllerAdvice
 public class RestExceptionHandler {
+
+    @ResponseStatus(NOT_FOUND)
+    @ExceptionHandler(UserNotFoundException.class)
+    public ExceptionFilters handleUserNotFound(final UserNotFoundException ex) {
+        return ExceptionFilters.builder()
+                .timestamp(LocalDateTime.now())
+                .details(ex.getMessage())
+                .devMsg(ex.getClass().getName())
+                .status(NOT_FOUND.value())
+                .title("User not found!")
+                .build();
+    }
 
     @ResponseStatus(NOT_FOUND)
     @ExceptionHandler(DateTimeParseException.class)
@@ -124,6 +138,18 @@ public class RestExceptionHandler {
                 .devMsg(ex.getClass().getName())
                 .status(BAD_REQUEST.value())
                 .title("NoPermissionException")
+                .build();
+    }
+
+    @ResponseStatus(UNAUTHORIZED)
+    @ExceptionHandler(PermissionDeniedException.class)
+    public ExceptionFilters permissionDenied(final PermissionDeniedException ex) {
+        return ExceptionFilters.builder()
+                .timestamp(LocalDateTime.now())
+                .details(ex.getMessage())
+                .devMsg(ex.getClass().getName())
+                .status(UNAUTHORIZED.value())
+                .title("Permission Denied!")
                 .build();
     }
 
