@@ -3,7 +3,7 @@ FROM openjdk:17-alpine
 EXPOSE 9000
 WORKDIR /app
 
-ENV DATABASE_CONNECTION_URL="jdbc:postgresql://db:5432/fbills"
+ENV DATABASE_CONNECTION_URL=""
 ENV SCOPE="prod"
 ENV PASSWORD=""
 ENV USER=""
