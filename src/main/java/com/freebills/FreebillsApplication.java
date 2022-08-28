@@ -1,6 +1,5 @@
 package com.freebills;
 
-import com.freebills.gateways.UserGateway;
 import com.freebills.usecases.InsertAdminUser;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.http.LegacyCookieProcessor;
@@ -21,7 +20,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @RequiredArgsConstructor
 public class FreebillsApplication {
 
-    private final InsertAdminUser userGateway;
+    private final InsertAdminUser insert;
 
     public static void main(String[] args) {
         SpringApplication.run(FreebillsApplication.class, args);
@@ -29,7 +28,7 @@ public class FreebillsApplication {
 
     @Bean
     InitializingBean sendDataBase() {
-        return userGateway::insertAdminUser;
+        return insert::insertAdminUser;
     }
 
     /* volta para o legacy tomcat (libera o ponto antes do domain em setCookie) ex: ".domain.com"*/
