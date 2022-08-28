@@ -44,7 +44,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_KEY }}
 
   Tests:
-    needs: Build
+    needs: Sonar
     name: Tests and Docker
     runs-on: ubuntu-latest
     steps:
