@@ -1,0 +1,16 @@
+
+${Ansi.GREEN}                        ${Ansi.YELLOW}  ,==.
+${Ansi.GREEN}                        ${Ansi.YELLOW}  \ o ',
+${Ansi.GREEN}                        ${Ansi.YELLOW}   \    \
+${Ansi.GREEN}(_)  (_)  (_)  (_)  (_) ${Ansi.YELLOW}   /    ;
+${Ansi.GREEN}                        ${Ansi.YELLOW}  /   .'
+${Ansi.GREEN}                        ${Ansi.YELLOW}  "=="
+
+    ______               ____  _ ____
+   / ____/_______  ___  / __ )(_) / /____
+  / /_  / ___/ _ \/ _ \/ __  / / / / ___/
+ / __/ / /  /  __/  __/ /_/ / / / (__  )
+/_/   /_/   \___/\___/_____/_/_/_/____/
+
+
+${Ansi.RED} :: Spring Boot${spring-boot.formatted-version} :: ${Ansi.DEFAULT}

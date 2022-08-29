@@ -16,6 +16,7 @@ public record DeleteUser(UserGateway userService, FindUser findUser) {
     public void byId(final Long id) {
         deleteValidation(id);
         userService.deleteById(id);
+        log.info("[deleteUser][userId deleted: {}]", id);
     }
 
     private void deleteValidation(Long id) {

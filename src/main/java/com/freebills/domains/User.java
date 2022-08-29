@@ -8,12 +8,12 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
-import java.util.Objects;
+import java.util.List;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "`users`")
+@Table(name = "`user`")
 @EntityListeners(AuditingEntityListener.class)
 public class User extends AbstractEntity {
 
@@ -36,5 +36,8 @@ public class User extends AbstractEntity {
 
     @CreatedDate
     private LocalDate createdAt;
+
+    @OneToMany(mappedBy = "user")
+    private List<Account> accounts;
 
 }

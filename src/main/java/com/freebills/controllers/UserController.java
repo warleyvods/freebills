@@ -4,7 +4,6 @@ import com.freebills.controllers.dtos.requests.UserPostRequestDTO;
 import com.freebills.controllers.dtos.requests.UserPutRequestDTO;
 import com.freebills.controllers.dtos.responses.UserResponseDTO;
 import com.freebills.controllers.mappers.UserMapper;
-import com.freebills.domains.User;
 import com.freebills.usecases.CreateUser;
 import com.freebills.usecases.DeleteUser;
 import com.freebills.usecases.FindUser;
