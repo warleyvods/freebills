@@ -1,4 +1,4 @@
-package com.freebills.controllers;
+package controllers;
 
 import com.freebills.auth.dtos.LoginRequestDTO;
 import com.freebills.controllers.dtos.responses.UserResponseDTO;
