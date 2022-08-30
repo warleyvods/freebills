@@ -5,7 +5,6 @@ import com.freebills.controllers.dtos.requests.AccountPostRequestDTO;
 import com.freebills.controllers.dtos.requests.AccountPutRequestDTO;
 import com.freebills.controllers.dtos.responses.AccountResponseDTO;
 import com.freebills.controllers.mappers.AccountMapper;
-import com.freebills.gateways.AccountGateway;
 import com.freebills.usecases.CreateAccount;
 import com.freebills.usecases.DeleteAccount;
 import com.freebills.usecases.FindAccount;
