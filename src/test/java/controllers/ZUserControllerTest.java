@@ -1,5 +1,6 @@
 package controllers;
 
+import com.freebills.FreebillsApplication;
 import com.freebills.auth.dtos.LoginRequestDTO;
 import com.freebills.controllers.dtos.responses.UserResponseDTO;
 import com.freebills.domains.User;
@@ -21,7 +22,7 @@ import java.util.Objects;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = FreebillsApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class ZUserControllerTest {
 
     @Autowired

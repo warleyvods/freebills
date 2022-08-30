@@ -38,8 +38,8 @@ public class AccountController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public List<AccountResponseDTO> findAll() {
-        return mapper.fromDomainList(findAccount.all());
+    public List<AccountResponseDTO> findAll(@RequestParam final Long userId) {
+        return mapper.fromDomainList(findAccount.findByUserId(userId));
     }
 
     @ResponseStatus(HttpStatus.OK)

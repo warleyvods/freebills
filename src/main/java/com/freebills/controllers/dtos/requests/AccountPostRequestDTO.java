@@ -6,6 +6,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import javax.validation.constraints.NotBlank;
 
 public record AccountPostRequestDTO(
+
+        Long userId,
+
         @Schema(description = "Amount ")
         Double amount,
 
@@ -22,10 +25,7 @@ public record AccountPostRequestDTO(
 
         @Schema(description = "Type of the bank")
         @NotBlank
-        String bankType,
-
-        @Schema(description = "Id of the user logged")
-        Long userId
+        String bankType
 ) {
 
 }
