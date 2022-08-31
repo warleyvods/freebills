@@ -1,18 +1,20 @@
 package controllers;
 
 import com.freebills.FreebillsApplication;
-import com.freebills.domains.Account;
-import com.freebills.domains.enums.AccountType;
-import com.freebills.domains.enums.BankType;
-import com.freebills.gateways.AccountGateway;
+import com.freebills.auth.dtos.LoginRequestDTO;
+import com.freebills.controllers.dtos.requests.AccountPostRequestDTO;
+import com.freebills.controllers.dtos.responses.AccountResponseDTO;
 import com.freebills.repositories.AccountsRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 
-import java.math.BigDecimal;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -23,29 +25,28 @@ class AccountControllerTest {
     private AccountsRepository accountsRepository;
 
     @Autowired
-    private AccountGateway accountGateway;
-
-    @Autowired
     private TestRestTemplate testRestTemplate;
 
+    private static String token;
+
     @BeforeEach
-    void setup(){
+    void setup() {
         accountsRepository.deleteAll();
+        final var request = new HttpEntity<>(new LoginRequestDTO("admin", "baguvix"));
+        ResponseEntity<Object> objectResponseEntity = testRestTemplate.postForEntity("/login", request, Object.class);
+        token = Objects.requireNonNull(objectResponseEntity.getHeaders().get("Set-Cookie")).get(0);
     }
 
     @Test
     void shouldSaveAccount() {
-        var account = new Account();
-        account.setId(1L);
-        account.setAmount(BigDecimal.valueOf(500));
-        account.setDescription("Conta Nubank");
-        account.setAccountType(AccountType.valueOf("MONEY"));
-        account.setBankType(BankType.valueOf("NUBANK"));
-        account.setDashboard(true);
-        Account accountSaved = accountsRepository.save(account);
+        final var account = new AccountPostRequestDTO(1L, 500D, "Conta Inter", "MONEY", true, "INTER");
+        final var headers = new HttpHeaders();
+        headers.set("Cookie", token);
+        final var newRequest = new HttpEntity<>(account, headers);
 
-        assertEquals(account.getId(),accountSaved.getId());
-        assertEquals(account.getAccountType(),accountSaved.getAccountType());
+        final ResponseEntity<AccountResponseDTO> exchange = testRestTemplate.postForEntity("/v1/accounts", newRequest, AccountResponseDTO.class);
+
+        assertEquals(201, exchange.getStatusCodeValue());
     }
 
     @Test
