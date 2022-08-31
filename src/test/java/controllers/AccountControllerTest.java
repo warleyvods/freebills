@@ -21,6 +21,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -95,29 +97,29 @@ class AccountControllerTest {
         account1.setUser(userSaved);
 
         accountsRepository.saveAll(List.of(account, account1));
+
         final var headers = new HttpHeaders();
         headers.set("Cookie", token);
-        final var newRequest = new HttpEntity<>(null, headers);
+        var newReq = new HttpEntity<>(null, headers);
 
-        final ResponseEntity<String> response = testRestTemplate.exchange("/v1/accounts/" + userSaved.getId(), HttpMethod.GET, newRequest, String.class);
+        final var response = testRestTemplate.exchange("/v1/accounts?userId="+ userSaved.getId() , HttpMethod.GET, newReq, String.class);
 
-        assertEquals(200,response.getStatusCodeValue());
-
+        assertEquals(200, response.getStatusCodeValue());
     }
 
     @Test
     void shouldUpdateAccount() {
         final var user = new User();
         user.setName("Teste");
-        user.setLogin("Teste");
-        user.setEmail("teste@teste.com");
+        user.setLogin("Teste2");
+        user.setEmail("teste2@teste.com");
         user.setPassword(new BCryptPasswordEncoder().encode("123"));
         user.setAdmin(true);
         user.setActive(true);
 
         final User userSaved = userRepository.save(user);
 
-        final var request = new HttpEntity<>(new LoginRequestDTO("Teste", "123"));
+        final var request = new HttpEntity<>(new LoginRequestDTO("Teste2", "123"));
         ResponseEntity<Object> objectResponseEntity = testRestTemplate.postForEntity("/login", request, Object.class);
         String token = Objects.requireNonNull(objectResponseEntity.getHeaders().get("Set-Cookie")).get(0);
 
@@ -130,13 +132,12 @@ class AccountControllerTest {
         account.setUser(userSaved);
         final Account accountSaved = accountsRepository.save(account);
 
-        final var update = new AccountPutRequestDTO(accountSaved.getId(),300D,"Conta Nubank","MONEY",true,"NUBANK", userSaved.getId());
+        final var update = new AccountPutRequestDTO(accountSaved.getId(), 300D, "Conta Nubank", "MONEY", true, "NUBANK", userSaved.getId());
         final var headers = new HttpHeaders();
         headers.set("Cookie", token);
         final var newRequest = new HttpEntity<>(update, headers);
         final var response = testRestTemplate.exchange("/v1/accounts", HttpMethod.PUT, newRequest, AccountResponseDTO.class);
 
         assertEquals("Conta Nubank", Objects.requireNonNull(response.getBody()).description());
-
     }
 }
