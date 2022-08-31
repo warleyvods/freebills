@@ -29,7 +29,7 @@ import java.util.Objects;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(classes = FreebillsApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class AccountControllerTest {
+class BAccountControllerTest {
 
     @Autowired
     private AccountsRepository accountsRepository;
