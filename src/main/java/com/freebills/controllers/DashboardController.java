@@ -1,23 +1,22 @@
 package com.freebills.controllers;
 
 
-import io.swagger.v3.oas.annotations.tags.Tag;
+import com.freebills.controllers.dtos.responses.DashboardResponseDTO;
+import com.freebills.usecases.Dashboard;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
-
-@Tag(name = "Dashboard Controller")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/v1/dashboard")
 public class DashboardController {
 
+    private final Dashboard dashboard;
+
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public void getDashboard(){
-        return;
+    public DashboardResponseDTO getAll(@RequestParam final Long userId) {
+        return dashboard.totalBalanceById(userId);
     }
-
-
 }
