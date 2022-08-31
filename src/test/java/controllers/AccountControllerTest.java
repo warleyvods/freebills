@@ -65,16 +65,16 @@ class AccountControllerTest {
     @Test
     void shouldFindAll() {
         final var user = new User();
-        user.setName("Teste");
-        user.setLogin("Teste");
-        user.setEmail("teste@teste.com");
+        user.setName("abcd");
+        user.setLogin("abcd");
+        user.setEmail("abcd@teste.com");
         user.setPassword(new BCryptPasswordEncoder().encode("123"));
         user.setAdmin(true);
         user.setActive(true);
 
         final User userSaved = userRepository.save(user);
 
-        final var request = new HttpEntity<>(new LoginRequestDTO("Teste", "123"));
+        final var request = new HttpEntity<>(new LoginRequestDTO("abcd", "123"));
         ResponseEntity<Object> objectResponseEntity = testRestTemplate.postForEntity("/login", request, Object.class);
         String token = Objects.requireNonNull(objectResponseEntity.getHeaders().get("Set-Cookie")).get(0);
 
@@ -108,16 +108,16 @@ class AccountControllerTest {
     @Test
     void shouldUpdateAccount() {
         final var user = new User();
-        user.setName("Teste");
-        user.setLogin("Teste2");
-        user.setEmail("teste2@teste.com");
+        user.setName("abcde");
+        user.setLogin("abcde");
+        user.setEmail("abcde@teste.com");
         user.setPassword(new BCryptPasswordEncoder().encode("123"));
         user.setAdmin(true);
         user.setActive(true);
 
         final User userSaved = userRepository.save(user);
 
-        final var request = new HttpEntity<>(new LoginRequestDTO("Teste2", "123"));
+        final var request = new HttpEntity<>(new LoginRequestDTO("abcde", "123"));
         ResponseEntity<Object> objectResponseEntity = testRestTemplate.postForEntity("/login", request, Object.class);
         String token = Objects.requireNonNull(objectResponseEntity.getHeaders().get("Set-Cookie")).get(0);
 
