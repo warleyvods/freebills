@@ -10,9 +10,6 @@ public record TransactionPutRequesDTO(
         Long id,
 
         @NotNull
-        Long accountId,
-
-        @NotNull
         Double amount,
 
         boolean paid,
