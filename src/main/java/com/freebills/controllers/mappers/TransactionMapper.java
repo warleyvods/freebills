@@ -1,7 +1,7 @@
 package com.freebills.controllers.mappers;
 
 
-import com.freebills.controllers.dtos.requests.TransactionPostRequestDto;
+import com.freebills.controllers.dtos.requests.TransactionPostRequestDTO;
 import com.freebills.controllers.dtos.requests.TransactionPutRequesDTO;
 import com.freebills.controllers.dtos.responses.TransactionResponseDTO;
 import com.freebills.domains.Transaction;
@@ -14,7 +14,7 @@ import java.util.List;
 public interface TransactionMapper {
 
     @Mapping(source = "accountId", target = "account")
-    Transaction toDomain(TransactionPostRequestDto transactionPostRequestDto);
+    Transaction toDomain(TransactionPostRequestDTO transactionPostRequestDto);
 
     TransactionResponseDTO fromDomain(Transaction transaction);
 

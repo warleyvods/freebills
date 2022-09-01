@@ -14,5 +14,4 @@ public record CreateTransaction(TransactionGateway transactionGateway) {
     public Transaction create(@Valid final Transaction transaction) {
         return transactionGateway.save(transaction);
     }
-
 }

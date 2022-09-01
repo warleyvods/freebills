@@ -22,8 +22,8 @@ public class Transaction {
     private BigDecimal amount;
     private boolean paid;
 
-    @CreatedDate
     private LocalDate date;
+
     private String description;
 
     @Enumerated(value = EnumType.STRING)

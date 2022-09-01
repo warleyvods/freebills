@@ -1,6 +1,7 @@
 package com.freebills.gateways;
 
 import com.freebills.domains.Transaction;
+import com.freebills.domains.User;
 import com.freebills.repositories.TransactionRepository;
 import org.springframework.stereotype.Service;
 
@@ -13,8 +14,8 @@ public record TransactionGateway(TransactionRepository transactionRepository) {
         return transactionRepository.save(transaction);
     }
 
-    public List<Transaction> findByAccount_Id(Long id) {
-        return transactionRepository.findByAccount_Id(id);
+    public List<Transaction> findByUser(User user) {
+        return transactionRepository.findByAccount_User(user);
     }
 
     public Transaction findById(Long id){
