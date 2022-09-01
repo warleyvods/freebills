@@ -13,8 +13,8 @@ public record TransactionGateway(TransactionRepository transactionRepository) {
         return transactionRepository.save(transaction);
     }
 
-    public List<Transaction> findAll() {
-        return transactionRepository.findAll();
+    public List<Transaction> findByAccount_Id(Long id) {
+        return transactionRepository.findByAccount_Id(id);
     }
 
     public Transaction findById(Long id){

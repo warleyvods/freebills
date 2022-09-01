@@ -36,14 +36,14 @@ public class TransactionController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public List<TransactionResponseDTO> findAll() {
-        return mapper.fromDomainList(findTransaction.findAll());
+    public List<TransactionResponseDTO> findByAccount_Id(@RequestParam final Long accountId) {
+        return mapper.fromDomainList(findTransaction.findAllById(accountId));
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping
     public TransactionResponseDTO update(@RequestBody @Valid final TransactionPutRequesDTO transactionPutRequesDTO) {
-        final Transaction transactionFinded = findTransaction.byId(transactionPutRequesDTO.id());
+        final Transaction transactionFinded = findTransaction.findById(transactionPutRequesDTO.id());
         final Transaction update = updateTransaction.update(mapper.updateTransactionFromDto(transactionPutRequesDTO, transactionFinded));
         return mapper.fromDomain(update);
     }

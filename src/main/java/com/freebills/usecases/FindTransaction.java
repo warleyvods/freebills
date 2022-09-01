@@ -9,11 +9,11 @@ import java.util.List;
 @Component
 public record FindTransaction(TransactionGateway transactionGateway) {
 
-    public Transaction byId(final Long id) {
+    public Transaction findById(final Long id) {
         return transactionGateway.findById(id);
     }
 
-    public List<Transaction> findAll() {
-        return transactionGateway.findAll();
+    public List<Transaction> findAllById(final Long id) {
+        return transactionGateway.findByAccount_Id(id);
     }
 }
