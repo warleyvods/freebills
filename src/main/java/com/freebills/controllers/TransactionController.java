@@ -5,7 +5,6 @@ import com.freebills.controllers.dtos.requests.TransactionPostRequestDTO;
 import com.freebills.controllers.dtos.requests.TransactionPutRequesDTO;
 import com.freebills.controllers.dtos.responses.TransactionResponseDTO;
 import com.freebills.controllers.mappers.TransactionMapper;
-import com.freebills.domains.Transaction;
 import com.freebills.usecases.CreateTransaction;
 import com.freebills.usecases.FindTransaction;
 import com.freebills.usecases.UpdateTransaction;
@@ -15,7 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,7 +26,6 @@ public class TransactionController {
     private final CreateTransaction createTransaction;
     private final UpdateTransaction updateTransaction;
     private final FindTransaction findTransaction;
-
 
     @ResponseStatus(CREATED)
     @PostMapping
@@ -44,8 +43,8 @@ public class TransactionController {
     @ResponseStatus(OK)
     @PutMapping
     public TransactionResponseDTO update(@RequestBody @Valid final TransactionPutRequesDTO transactionPutRequesDTO) {
-        final Transaction transactionFinded = findTransaction.findById(transactionPutRequesDTO.id());
-        final Transaction update = updateTransaction.update(mapper.updateTransactionFromDto(transactionPutRequesDTO, transactionFinded));
+        final var transactionFinded = findTransaction.findById(transactionPutRequesDTO.id());
+        final var update = updateTransaction.update(mapper.updateTransactionFromDto(transactionPutRequesDTO, transactionFinded));
         return mapper.fromDomain(update);
     }
 }
