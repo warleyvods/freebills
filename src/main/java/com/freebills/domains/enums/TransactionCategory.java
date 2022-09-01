@@ -1,6 +1,6 @@
 package com.freebills.domains.enums;
 
-public enum TransactionLabel {
+public enum TransactionCategory {
 
     HOUSE
 
