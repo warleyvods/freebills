@@ -9,10 +9,11 @@ import com.freebills.usecases.CreateTransaction;
 import com.freebills.usecases.FindTransaction;
 import com.freebills.usecases.UpdateTransaction;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
@@ -36,8 +37,14 @@ public class TransactionController {
 
     @ResponseStatus(OK)
     @GetMapping
-    public List<TransactionResponseDTO> byUser(@RequestParam final Long userId) {
-        return mapper.fromDomainList(findTransaction.findAllByUser(userId));
+    public Page<TransactionResponseDTO> byUser(@RequestParam final Long userId, final Pageable pageable) {
+        return findTransaction.findAllByUser(userId, pageable).map(mapper::fromDomain);
+    }
+
+    @ResponseStatus(OK)
+    @GetMapping("/filter")
+    public Page<TransactionResponseDTO> byUserDateFilter(@RequestParam final Long userId, final Pageable pageable, @RequestParam Integer mounth, @RequestParam Integer year) {
+        return findTransaction.findAllByUserDateFilter(userId, mounth, year, pageable).map(mapper::fromDomain);
     }
 
     @ResponseStatus(OK)
@@ -50,13 +57,13 @@ public class TransactionController {
 
     @ResponseStatus(OK)
     @GetMapping("/revenue")
-    public List<TransactionResponseDTO> allRevenueByUser(@RequestParam final Long userId) {
-        return mapper.fromDomainList(findTransaction.findAllRevenueByUser(userId));
+    public Page<TransactionResponseDTO> allRevenueByUser(final Pageable pageable, @RequestParam final Long userId) {
+        return findTransaction.findAllRevenueByUser(userId, pageable).map(mapper::fromDomain);
     }
 
     @ResponseStatus(OK)
     @GetMapping("/expense")
-    public List<TransactionResponseDTO> allExpenseByUser(@RequestParam final Long userId) {
-        return mapper.fromDomainList(findTransaction.findAllExpenseByUser(userId));
+    public Page<TransactionResponseDTO> allExpenseByUser(@RequestParam final Long userId, final Pageable pageable) {
+        return findTransaction.findAllExpenseByUser(userId, pageable).map(mapper::fromDomain);
     }
 }

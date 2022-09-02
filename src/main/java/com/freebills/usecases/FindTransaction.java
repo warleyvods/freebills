@@ -5,9 +5,10 @@ import com.freebills.domains.User;
 import com.freebills.domains.enums.TransactionType;
 import com.freebills.gateways.TransactionGateway;
 import com.freebills.gateways.UserGateway;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 public record FindTransaction(TransactionGateway transactionGateway, UserGateway userGateway) {
@@ -16,24 +17,33 @@ public record FindTransaction(TransactionGateway transactionGateway, UserGateway
         return transactionGateway.findById(id);
     }
 
-    public List<Transaction> findAllByUser(final Long userId) {
+    public Page<Transaction> findAllByUser(final Long userId, final Pageable pageable) {
         final User user = userGateway.findById(userId);
-        return transactionGateway.findByUser(user);
+        return transactionGateway.findByUser(user, pageable);
     }
 
-    public List<Transaction> findAllRevenueByUser(final Long userId) {
+    public Page<Transaction> findAllByUserDateFilter(Long userId, Integer month, Integer year, final Pageable pageable) {
+        final Long userIdFinded = userGateway.findById(userId).getId();
+        return transactionGateway.findByUserDateFilter(userIdFinded, month, year, pageable);
+    }
+
+    public Page<Transaction> findAllRevenueByUser(final Long userId, final Pageable pageable) {
         final User user = userGateway.findById(userId);
-        return transactionGateway.findByUser(user)
+        final var transactions = transactionGateway.findByUser(user, pageable)
                 .stream()
                 .filter(ac -> ac.getTransactionType().equals(TransactionType.REVENUE))
                 .toList();
+
+        return new PageImpl<>(transactions);
     }
 
-    public List<Transaction> findAllExpenseByUser(final Long userId) {
+    public Page<Transaction> findAllExpenseByUser(final Long userId, final Pageable pageable) {
         final User user = userGateway.findById(userId);
-        return transactionGateway.findByUser(user)
+        final var transactions = transactionGateway.findByUser(user, pageable)
                 .stream()
                 .filter(ac -> ac.getTransactionType().equals(TransactionType.EXPENSE))
                 .toList();
+
+        return new PageImpl<>(transactions);
     }
 }

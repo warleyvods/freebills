@@ -3,9 +3,9 @@ package com.freebills.gateways;
 import com.freebills.domains.Transaction;
 import com.freebills.domains.User;
 import com.freebills.repositories.TransactionRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public record TransactionGateway(TransactionRepository transactionRepository) {
@@ -14,8 +14,12 @@ public record TransactionGateway(TransactionRepository transactionRepository) {
         return transactionRepository.save(transaction);
     }
 
-    public List<Transaction> findByUser(User user) {
-        return transactionRepository.findByAccount_User(user);
+    public Page<Transaction> findByUser(User user, final Pageable pageable) {
+        return transactionRepository.findByAccount_User(user, pageable);
+    }
+
+    public Page<Transaction> findByUserDateFilter(Long userId, Integer month, Integer year, final Pageable pageable) {
+        return transactionRepository.findByTransactionFilterByDate(userId, month, year, pageable);
     }
 
     public Transaction findById(Long id){
