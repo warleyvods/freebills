@@ -10,13 +10,13 @@ import org.springframework.stereotype.Component;
 public record TransactionValidation(AccountGateway accountGateway) {
 
     public void transactionValidation(Transaction transaction) {
-        if (transaction.isPaid() && transaction.getTransactionType() == TransactionType.DESPESA) {
+        if (transaction.isPaid() && transaction.getTransactionType() == TransactionType.EXPENSE) {
             final Account account = accountGateway.findById(transaction.getAccount().getId());
             account.setAmount(account.getAmount().subtract(transaction.getAmount()));
             accountGateway.save(account);
         }
 
-        if (transaction.isPaid() && transaction.getTransactionType() == TransactionType.RECEITA) {
+        if (transaction.isPaid() && transaction.getTransactionType() == TransactionType.REVENUE) {
             final Account account = accountGateway.findById(transaction.getAccount().getId());
             account.setAmount(account.getAmount().add(transaction.getAmount()));
             accountGateway.save(account);
