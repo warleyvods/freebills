@@ -47,4 +47,16 @@ public class TransactionController {
         final var update = updateTransaction.update(mapper.updateTransactionFromDto(transactionPutRequesDTO, transactionFinded));
         return mapper.fromDomain(update);
     }
+
+    @ResponseStatus(OK)
+    @GetMapping("/revenue")
+    public List<TransactionResponseDTO> allRevenueByUser(@RequestParam final Long userId) {
+        return mapper.fromDomainList(findTransaction.findAllRevenueByUser(userId));
+    }
+
+    @ResponseStatus(OK)
+    @GetMapping("/expense")
+    public List<TransactionResponseDTO> allExpenseByUser(@RequestParam final Long userId) {
+        return mapper.fromDomainList(findTransaction.findAllExpenseByUser(userId));
+    }
 }
