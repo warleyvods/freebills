@@ -50,13 +50,13 @@ public class TransactionController {
 
     @ResponseStatus(OK)
     @GetMapping("/revenue")
-    public List<TransactionResponseDTO> AllRevenueByUser(@RequestParam final Long userId) {
+    public List<TransactionResponseDTO> allRevenueByUser(@RequestParam final Long userId) {
         return mapper.fromDomainList(findTransaction.findAllRevenueByUser(userId));
     }
 
     @ResponseStatus(OK)
     @GetMapping("/expense")
-    public List<TransactionResponseDTO> AllExpenseByUser(@RequestParam final Long userId) {
+    public List<TransactionResponseDTO> allExpenseByUser(@RequestParam final Long userId) {
         return mapper.fromDomainList(findTransaction.findAllExpenseByUser(userId));
     }
 }
