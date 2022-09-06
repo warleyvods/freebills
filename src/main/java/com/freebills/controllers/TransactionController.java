@@ -6,6 +6,7 @@ import com.freebills.controllers.dtos.requests.TransactionPutRequesDTO;
 import com.freebills.controllers.dtos.responses.TransactionResponseDTO;
 import com.freebills.controllers.mappers.TransactionMapper;
 import com.freebills.usecases.CreateTransaction;
+import com.freebills.usecases.DeleteTransaction;
 import com.freebills.usecases.FindTransaction;
 import com.freebills.usecases.UpdateTransaction;
 import lombok.RequiredArgsConstructor;
@@ -15,8 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,6 +27,7 @@ public class TransactionController {
     private final CreateTransaction createTransaction;
     private final UpdateTransaction updateTransaction;
     private final FindTransaction findTransaction;
+    private final DeleteTransaction deleteTransaction;
 
     @ResponseStatus(CREATED)
     @PostMapping
@@ -43,8 +44,12 @@ public class TransactionController {
 
     @ResponseStatus(OK)
     @GetMapping("/filter")
-    public Page<TransactionResponseDTO> byUserDateFilter(@RequestParam final Long userId, final Pageable pageable, @RequestParam Integer mounth, @RequestParam Integer year) {
-        return findTransaction.findAllByUserDateFilter(userId, mounth, year, pageable).map(mapper::fromDomain);
+    public Page<TransactionResponseDTO> byUserDateFilter(@RequestParam final Long userId,
+                                                         @RequestParam(required = false) final Integer mounth,
+                                                         @RequestParam(required = false) final Integer year,
+                                                         @RequestParam(required = false) final String keyword,
+                                                         final Pageable pageable) {
+        return findTransaction.findAllByUserDateFilter(userId, mounth, year, pageable, keyword).map(mapper::fromDomain);
     }
 
     @ResponseStatus(OK)
@@ -65,5 +70,11 @@ public class TransactionController {
     @GetMapping("/expense")
     public Page<TransactionResponseDTO> allExpenseByUser(@RequestParam final Long userId, final Pageable pageable) {
         return findTransaction.findAllExpenseByUser(userId, pageable).map(mapper::fromDomain);
+    }
+
+    @ResponseStatus(NO_CONTENT)
+    @DeleteMapping("{id}")
+    public void deleteById(@PathVariable final Long id) {
+        deleteTransaction.delete(id);
     }
 }

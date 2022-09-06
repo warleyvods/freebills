@@ -5,7 +5,6 @@ import com.freebills.domains.enums.TransactionCategory;
 import com.freebills.domains.enums.TransactionType;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -19,8 +18,8 @@ public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private BigDecimal amount;
-    private boolean paid;
 
     private LocalDate date;
 
@@ -32,6 +31,9 @@ public class Transaction {
     @Enumerated(value = EnumType.STRING)
     private TransactionCategory transactionCategory;
 
+    private boolean paid;
+
     @ManyToOne
     private Account account;
+
 }

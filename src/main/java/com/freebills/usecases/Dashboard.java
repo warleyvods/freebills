@@ -17,6 +17,7 @@ public record Dashboard(AccountGateway accountGateway) {
                 .map(Account::getAmount)
                 .reduce(BigDecimal::add)
                 .orElse(new BigDecimal(0));
-        return new DashboardResponseDTO("BALANCE", totalValue);
+
+        return new DashboardResponseDTO(totalValue, new BigDecimal(0), new BigDecimal(0),  new BigDecimal(0));
     }
 }
