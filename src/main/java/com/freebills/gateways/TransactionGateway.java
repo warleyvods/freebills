@@ -7,8 +7,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-
 @Service
 public record TransactionGateway(TransactionRepository transactionRepository) {
 
@@ -21,8 +19,6 @@ public record TransactionGateway(TransactionRepository transactionRepository) {
     }
 
     public Page<Transaction> findByUserDateFilter(final Long userId, final Integer month, final Integer year, final Pageable pageable, final String keyword) {
-        LocalDate.now().getMonth().getValue();
-
         return transactionRepository.findByTransactionFilterByDate(userId, month, year, keyword, pageable);
     }
 
