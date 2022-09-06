@@ -45,11 +45,11 @@ public class TransactionController {
     @ResponseStatus(OK)
     @GetMapping("/filter")
     public Page<TransactionResponseDTO> byUserDateFilter(@RequestParam final Long userId,
-                                                         @RequestParam(required = false) final Integer mounth,
+                                                         @RequestParam(required = false) final Integer month,
                                                          @RequestParam(required = false) final Integer year,
                                                          @RequestParam(required = false) final String keyword,
                                                          final Pageable pageable) {
-        return findTransaction.findAllByUserDateFilter(userId, mounth, year, pageable, keyword).map(mapper::fromDomain);
+        return findTransaction.findAllByUserDateFilter(userId, month, year, pageable, keyword).map(mapper::fromDomain);
     }
 
     @ResponseStatus(OK)
