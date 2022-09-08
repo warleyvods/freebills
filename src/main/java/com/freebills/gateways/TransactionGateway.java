@@ -22,6 +22,10 @@ public record TransactionGateway(TransactionRepository transactionRepository) {
         return transactionRepository.findByTransactionFilterByDate(userId, month, year, keyword, pageable);
     }
 
+    public Page<Transaction> findByUserDateFilter00(final String login, final Integer month, final Integer year, final Pageable pageable, final String keyword) {
+        return transactionRepository.findByTransactionFilterByDate00(login, month, year, keyword, pageable);
+    }
+
     public Transaction findById(Long id) {
         return transactionRepository.findById(id).orElseThrow(() -> new RuntimeException("Not Found!"));
     }

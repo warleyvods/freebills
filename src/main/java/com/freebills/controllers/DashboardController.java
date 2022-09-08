@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/v1/dashboard")
@@ -16,7 +18,10 @@ public class DashboardController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public DashboardResponseDTO getAll(@RequestParam final Long userId) {
-        return dashboard.totalBalanceById(userId);
+    public DashboardResponseDTO getAll(@RequestParam final Long userId,
+                                       @RequestParam(required = false) final Integer month,
+                                       @RequestParam(required = false) final Integer year,
+                                       Principal principal) {
+        return dashboard.totalBalanceById(userId, month, year);
     }
 }
