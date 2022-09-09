@@ -14,7 +14,7 @@ public record FindAccount(AccountGateway accountGateway) {
         return accountGateway.findById(id);
     }
 
-    public List<Account> findByUserId(final Long id){
-        return accountGateway.findByUserId(id);
+    public List<Account> findByUserId(final String login){
+        return accountGateway.findByUserLogin(login);
     }
 }

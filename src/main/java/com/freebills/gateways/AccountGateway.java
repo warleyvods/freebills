@@ -13,8 +13,8 @@ public record AccountGateway(AccountsRepository accountsRepository) {
         return accountsRepository.save(account);
     }
 
-    public List<Account> findByUserId(Long id) {
-        return accountsRepository.findByUser_Id(id);
+    public List<Account> findByUserLogin(final String login) {
+        return accountsRepository.findByUser_Login(login);
     }
 
     public Account findById(final Long id) {

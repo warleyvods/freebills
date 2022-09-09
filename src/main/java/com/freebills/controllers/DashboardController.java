@@ -18,10 +18,10 @@ public class DashboardController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public DashboardResponseDTO getAll(@RequestParam final Long userId,
+    public DashboardResponseDTO getAll(final Principal pricipal,
                                        @RequestParam(required = false) final Integer month,
                                        @RequestParam(required = false) final Integer year,
                                        Principal principal) {
-        return dashboard.totalBalanceById(userId, month, year);
+        return dashboard.totalBalanceById(principal.getName(), month, year);
     }
 }

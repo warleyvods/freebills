@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 
 @Tag(name = "Account Controller")
@@ -36,8 +37,8 @@ public class AccountController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public List<AccountResponseDTO> findAll(@RequestParam final Long userId) {
-        return mapper.fromDomainList(findAccount.findByUserId(userId));
+    public List<AccountResponseDTO> findAll(Principal principal) {
+        return mapper.fromDomainList(findAccount.findByUserId(principal.getName()));
     }
 
     @ResponseStatus(HttpStatus.OK)

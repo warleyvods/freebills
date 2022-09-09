@@ -13,22 +13,23 @@ import java.math.BigDecimal;
 @Component
 public record Dashboard(AccountGateway accountGateway, TransactionGateway transactionGateway) {
 
-    public DashboardResponseDTO totalBalanceById(final Long userId, final Integer month, final Integer year) {
-        final var totalValue = accountGateway.findByUserId(userId)
+    public DashboardResponseDTO totalBalanceById(final String login, final Integer month, final Integer year) {
+
+        final var totalValue = accountGateway.findByUserLogin(login)
                 .stream()
                 .filter(Account::isDashboard)
                 .map(Account::getAmount)
                 .reduce(BigDecimal::add)
                 .orElse(new BigDecimal(0));
 
-        final var totalRevenueMonth = transactionGateway.findByUserDateFilter(userId, month, year, null, null)
+        final var totalRevenueMonth = transactionGateway.findByUserDateFilter(login, month, year, null, null)
                 .stream()
                 .filter(transaction -> transaction.getTransactionType() == TransactionType.REVENUE)
                 .map(Transaction::getAmount)
                 .reduce(BigDecimal::add)
                 .orElse(new BigDecimal(0));
 
-        final var totalExpenseMonth = transactionGateway.findByUserDateFilter(userId, month, year, null, null)
+        final var totalExpenseMonth = transactionGateway.findByUserDateFilter(login, month, year, null, null)
                 .stream()
                 .filter(transaction -> transaction.getTransactionType() == TransactionType.EXPENSE)
                 .map(Transaction::getAmount)

@@ -22,13 +22,8 @@ public record FindTransaction(TransactionGateway transactionGateway, UserGateway
         return transactionGateway.findByUser(user, pageable);
     }
 
-    public Page<Transaction> findAllByUserDateFilter(Long userId, Integer month, Integer year, final Pageable pageable, String keyword) {
-        final Long userIdFinded = userGateway.findById(userId).getId();
-        return transactionGateway.findByUserDateFilter(userIdFinded, month, year, pageable, keyword);
-    }
-
-    public Page<Transaction> findAllByUserDateFilter00(String login, Integer month, Integer year, final Pageable pageable, String keyword) {
-        return transactionGateway.findByUserDateFilter00(login, month, year, pageable, keyword);
+    public Page<Transaction> findAllByUserDateFilter(String login, Integer month, Integer year, final Pageable pageable, String keyword) {
+        return transactionGateway.findByUserDateFilter(login, month, year, pageable, keyword);
     }
 
     public Page<Transaction> findAllRevenueByUser(final Long userId, final Pageable pageable) {

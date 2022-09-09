@@ -51,7 +51,7 @@ public class TransactionController {
                                                          @RequestParam(required = false) final Integer year,
                                                          @RequestParam(required = false) final String keyword,
                                                          final Pageable pageable) {
-        return findTransaction.findAllByUserDateFilter00(principal.getName(), month, year, pageable, keyword).map(mapper::fromDomain);
+        return findTransaction.findAllByUserDateFilter(principal.getName(), month, year, pageable, keyword).map(mapper::fromDomain);
     }
 
     @ResponseStatus(OK)

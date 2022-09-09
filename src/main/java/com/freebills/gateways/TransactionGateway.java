@@ -18,12 +18,8 @@ public record TransactionGateway(TransactionRepository transactionRepository) {
         return transactionRepository.findByAccount_User(user, pageable);
     }
 
-    public Page<Transaction> findByUserDateFilter(final Long userId, final Integer month, final Integer year, final Pageable pageable, final String keyword) {
-        return transactionRepository.findByTransactionFilterByDate(userId, month, year, keyword, pageable);
-    }
-
-    public Page<Transaction> findByUserDateFilter00(final String login, final Integer month, final Integer year, final Pageable pageable, final String keyword) {
-        return transactionRepository.findByTransactionFilterByDate00(login, month, year, keyword, pageable);
+    public Page<Transaction> findByUserDateFilter(final String login, final Integer month, final Integer year, final Pageable pageable, final String keyword) {
+        return transactionRepository.findByTransactionFilterByDate(login, month, year, keyword, pageable);
     }
 
     public Transaction findById(Long id) {

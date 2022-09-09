@@ -9,6 +9,6 @@ import java.util.List;
 @Repository
 public interface AccountsRepository extends JpaRepository<Account, Long> {
 
-    List<Account> findByUser_Id(final Long id);
+    List<Account> findByUser_Login(final String login);
 
 }
