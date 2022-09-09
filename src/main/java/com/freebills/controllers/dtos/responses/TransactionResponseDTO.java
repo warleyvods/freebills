@@ -9,6 +9,7 @@ public record TransactionResponseDTO(
         LocalDate date,
         String description,
         String transactionType,
-        String transactionCategory
+        String transactionCategory,
+        String barCode
 ) {
 }

@@ -17,18 +17,12 @@ public record FindTransaction(TransactionGateway transactionGateway, UserGateway
         return transactionGateway.findById(id);
     }
 
-    public Page<Transaction> findAllByUser(final Long userId, final Pageable pageable) {
-        final User user = userGateway.findById(userId);
-        return transactionGateway.findByUser(user, pageable);
-    }
-
-    public Page<Transaction> findAllByUserDateFilter(String login, Integer month, Integer year, final Pageable pageable, String keyword) {
+    public Page<Transaction> findAllByUserDateFilter(final String login, final Integer month, final Integer year, final Pageable pageable, final String keyword) {
         return transactionGateway.findByUserDateFilter(login, month, year, pageable, keyword);
     }
 
-    public Page<Transaction> findAllRevenueByUser(final Long userId, final Pageable pageable) {
-        final User user = userGateway.findById(userId);
-        final var transactions = transactionGateway.findByUser(user, pageable)
+    public Page<Transaction> findAllRevenueByUser(final String login, final Integer month, final Integer year, final Pageable pageable, final String keyword) {
+        final var transactions = transactionGateway.findByUserDateFilter(login, month, year, pageable, keyword)
                 .stream()
                 .filter(ac -> ac.getTransactionType().equals(TransactionType.REVENUE))
                 .toList();
@@ -36,9 +30,8 @@ public record FindTransaction(TransactionGateway transactionGateway, UserGateway
         return new PageImpl<>(transactions);
     }
 
-    public Page<Transaction> findAllExpenseByUser(final Long userId, final Pageable pageable) {
-        final User user = userGateway.findById(userId);
-        final var transactions = transactionGateway.findByUser(user, pageable)
+    public Page<Transaction> findAllExpenseByUser(final String login, final Integer month, final Integer year, final Pageable pageable, final String keyword) {
+        final var transactions = transactionGateway.findByUserDateFilter(login, month, year, pageable, keyword)
                 .stream()
                 .filter(ac -> ac.getTransactionType().equals(TransactionType.EXPENSE))
                 .toList();

@@ -5,6 +5,7 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 public record TransactionPostRequestDTO(
+
         @NotNull
         Long accountId,
 
@@ -23,6 +24,8 @@ public record TransactionPostRequestDTO(
         String transactionType,
 
         @NotBlank
-        String transactionCategory
+        String transactionCategory,
+
+        String barCode
 ) {
 }

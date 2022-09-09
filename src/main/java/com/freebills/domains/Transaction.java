@@ -20,10 +20,9 @@ public class Transaction {
     private Long id;
 
     private BigDecimal amount;
-
     private LocalDate date;
-
     private String description;
+    private String barcode;
 
     @Enumerated(value = EnumType.STRING)
     private TransactionType transactionType;

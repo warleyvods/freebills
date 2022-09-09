@@ -39,12 +39,6 @@ public class TransactionController {
     }
 
     @ResponseStatus(OK)
-    @GetMapping
-    public Page<TransactionResponseDTO> byUser(@RequestParam final Long userId, final Pageable pageable) {
-        return findTransaction.findAllByUser(userId, pageable).map(mapper::fromDomain);
-    }
-
-    @ResponseStatus(OK)
     @GetMapping("/filter")
     public Page<TransactionResponseDTO> byUserDateFilter(final Principal principal,
                                                          @RequestParam(required = false) final Integer month,
@@ -64,14 +58,22 @@ public class TransactionController {
 
     @ResponseStatus(OK)
     @GetMapping("/revenue")
-    public Page<TransactionResponseDTO> allRevenueByUser(final Pageable pageable, @RequestParam final Long userId) {
-        return findTransaction.findAllRevenueByUser(userId, pageable).map(mapper::fromDomain);
+    public Page<TransactionResponseDTO> allRevenueByUser(final Principal principal,
+                                                         @RequestParam(required = false) final Integer month,
+                                                         @RequestParam(required = false) final Integer year,
+                                                         @RequestParam(required = false) final String keyword,
+                                                         final Pageable pageable) {
+        return findTransaction.findAllRevenueByUser(principal.getName(), month, year, pageable, keyword).map(mapper::fromDomain);
     }
 
     @ResponseStatus(OK)
     @GetMapping("/expense")
-    public Page<TransactionResponseDTO> allExpenseByUser(@RequestParam final Long userId, final Pageable pageable) {
-        return findTransaction.findAllExpenseByUser(userId, pageable).map(mapper::fromDomain);
+    public Page<TransactionResponseDTO> allExpenseByUser(final Principal principal,
+                                                         @RequestParam(required = false) final Integer month,
+                                                         @RequestParam(required = false) final Integer year,
+                                                         @RequestParam(required = false) final String keyword,
+                                                         final Pageable pageable) {
+        return findTransaction.findAllExpenseByUser(principal.getName(), month, year, pageable, keyword).map(mapper::fromDomain);
     }
 
     @ResponseStatus(NO_CONTENT)

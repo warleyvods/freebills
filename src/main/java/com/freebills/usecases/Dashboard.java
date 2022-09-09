@@ -6,6 +6,7 @@ import com.freebills.domains.Transaction;
 import com.freebills.domains.enums.TransactionType;
 import com.freebills.gateways.AccountGateway;
 import com.freebills.gateways.TransactionGateway;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -22,20 +23,24 @@ public record Dashboard(AccountGateway accountGateway, TransactionGateway transa
                 .reduce(BigDecimal::add)
                 .orElse(new BigDecimal(0));
 
-        final var totalRevenueMonth = transactionGateway.findByUserDateFilter(login, month, year, null, null)
-                .stream()
+        final var byUserDateFilter = getByUserDateFilter(login, month, year).getContent();
+
+        final var totalRevenueMonth = byUserDateFilter.stream()
                 .filter(transaction -> transaction.getTransactionType() == TransactionType.REVENUE)
                 .map(Transaction::getAmount)
                 .reduce(BigDecimal::add)
                 .orElse(new BigDecimal(0));
 
-        final var totalExpenseMonth = transactionGateway.findByUserDateFilter(login, month, year, null, null)
-                .stream()
+        final var totalExpenseMonth = byUserDateFilter.stream()
                 .filter(transaction -> transaction.getTransactionType() == TransactionType.EXPENSE)
                 .map(Transaction::getAmount)
                 .reduce(BigDecimal::add)
                 .orElse(new BigDecimal(0));
 
         return new DashboardResponseDTO(totalValue, totalRevenueMonth, totalExpenseMonth,  new BigDecimal(0));
+    }
+
+    private Page<Transaction> getByUserDateFilter(String login, Integer month, Integer year) {
+        return transactionGateway.findByUserDateFilter(login, month, year, null, null);
     }
 }
