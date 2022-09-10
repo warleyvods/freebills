@@ -49,14 +49,6 @@ public class TransactionController {
     }
 
     @ResponseStatus(OK)
-    @PutMapping
-    public TransactionResponseDTO update(@RequestBody @Valid final TransactionPutRequesDTO transactionPutRequesDTO) {
-        final var transactionFinded = findTransaction.findById(transactionPutRequesDTO.id());
-        final var update = updateTransaction.update(mapper.updateTransactionFromDto(transactionPutRequesDTO, transactionFinded));
-        return mapper.fromDomain(update);
-    }
-
-    @ResponseStatus(OK)
     @GetMapping("/revenue")
     public Page<TransactionResponseDTO> allRevenueByUser(final Principal principal,
                                                          @RequestParam(required = false) final Integer month,
@@ -74,6 +66,14 @@ public class TransactionController {
                                                          @RequestParam(required = false) final String keyword,
                                                          final Pageable pageable) {
         return findTransaction.findAllExpenseByUser(principal.getName(), month, year, pageable, keyword).map(mapper::fromDomain);
+    }
+
+    @ResponseStatus(OK)
+    @PutMapping
+    public TransactionResponseDTO update(@RequestBody @Valid final TransactionPutRequesDTO transactionPutRequesDTO) {
+        final var transactionFinded = findTransaction.findById(transactionPutRequesDTO.id());
+        final var update = updateTransaction.update(mapper.updateTransactionFromDto(transactionPutRequesDTO, transactionFinded));
+        return mapper.fromDomain(update);
     }
 
     @ResponseStatus(NO_CONTENT)
