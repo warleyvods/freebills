@@ -4,12 +4,12 @@ import com.freebills.controllers.dtos.requests.CreditCardPostRequestDTO;
 import com.freebills.controllers.dtos.requests.CreditCardPutRequestDTO;
 import com.freebills.controllers.dtos.responses.CreditCardResponseDTO;
 import com.freebills.domains.CreditCard;
-import com.freebills.gateways.CreditCardGateway;
+import com.freebills.gateways.AccountGateway;
 import org.mapstruct.*;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {CreditCardGateway.class}, unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = "spring", uses = {AccountGateway.class}, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface CreditCardMapper {
 
     @Mapping(source = "accountId", target = "account")
