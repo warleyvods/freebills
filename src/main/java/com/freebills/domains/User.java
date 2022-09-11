@@ -7,13 +7,20 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "`user`")
+@Table(name = "`user`",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = "login"),
+                @UniqueConstraint(columnNames = "email")
+        })
 @EntityListeners(AuditingEntityListener.class)
 public class User extends AbstractEntity {
 
@@ -21,14 +28,17 @@ public class User extends AbstractEntity {
     @Column(nullable = false)
     private String name;
 
+    @Size(max = 20)
     @Basic(optional = false)
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String login;
 
+    @Size(max = 50)
     @NotBlank
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String email;
 
+    @Size(max = 100)
     @NotBlank
     @Column(nullable = false)
     private String password;

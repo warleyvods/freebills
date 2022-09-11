@@ -25,7 +25,7 @@ public record UserGateway(UserRepository userRepository) {
     }
 
     public User findByLogin(final String login) {
-        return userRepository.findByLogin(login);
+        return userRepository.findByLogin(login).get();
     }
 
     public User update(final User user) {

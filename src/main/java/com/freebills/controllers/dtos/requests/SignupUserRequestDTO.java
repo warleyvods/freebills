@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.validation.constraints.NotBlank;
 
-public record UserPublicPostRequestDTO(
+public record SignupUserRequestDTO(
 
         @Schema(description = "User name application", example = "Pudge Silva", required = true)
         @NotBlank

@@ -1,4 +1,7 @@
-package com.freebills.auth.dtos;
+package com.freebills.controllers.dtos.requests;
+
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 

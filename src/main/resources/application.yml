@@ -15,3 +15,14 @@ spring:
     multipart:
       max-file-size: 10MB
       max-request-size: 10MB
+
+
+  h2:
+    console:
+      path: /h2-ui
+
+bezkoder:
+  app:
+    jwtCookieName: token
+    jwtSecret: bezKoderSecretKey
+    jwtExpirationMs: 86400000

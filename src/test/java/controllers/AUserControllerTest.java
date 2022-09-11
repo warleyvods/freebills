@@ -1,7 +1,7 @@
 package controllers;
 
 import com.freebills.FreebillsApplication;
-import com.freebills.auth.dtos.LoginRequestDTO;
+import com.freebills.controllers.dtos.requests.LoginRequestDTO;
 import com.freebills.controllers.dtos.responses.UserResponseDTO;
 import com.freebills.domains.User;
 import com.freebills.exceptions.handler.ExceptionFilters;

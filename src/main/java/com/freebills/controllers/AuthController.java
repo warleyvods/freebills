@@ -1,33 +1,64 @@
 package com.freebills.controllers;
 
-import com.freebills.controllers.dtos.responses.UserResponseDTO;
+
+import com.freebills.controllers.dtos.requests.LoginRequestDTO;
+import com.freebills.controllers.dtos.requests.SignupUserRequestDTO;
+import com.freebills.controllers.dtos.responses.MessageResponse;
 import com.freebills.controllers.mappers.UserMapper;
-import com.freebills.gateways.UserGateway;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import com.freebills.domains.User;
+import com.freebills.repositories.UserRepository;
+import com.freebills.security.jwt.JWTUtils;
+import com.freebills.security.services.UserDetailsImpl;
+import com.freebills.usecases.CreateUser;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
+import javax.validation.Valid;
 
-import static org.springframework.http.HttpStatus.OK;
-
-@Tag(name = "Auth Controller")
-@SecurityRequirement(name = "bearerAuth")
-@RequiredArgsConstructor
-@RequestMapping("v1/me")
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
+@RequestMapping("/v1/auth")
+@RequiredArgsConstructor
 public class AuthController {
 
-    private final UserGateway userGateway;
+    private final AuthenticationManager authenticationManager;
+    private final UserRepository userRepository;
+    private final JWTUtils jwtUtils;
     private final UserMapper userMapper;
+    private final CreateUser createUser;
 
-    @ResponseStatus(OK)
-    @GetMapping
-    public UserResponseDTO findById(Principal principal) {
-        return userMapper.fromDomain(userGateway.findByLogin(principal.getName()));
+    @PostMapping("/login")
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequestDTO loginRequestDTO) {
+        var authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequestDTO.login(), loginRequestDTO.password()));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        var userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        var jwtCookie = jwtUtils.generateJwtCookie(userDetails);
+        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString()).body(null);
+    }
+
+    @PostMapping("/signup")
+    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupUserRequestDTO signUpRequestDTO) {
+        if (Boolean.TRUE.equals(userRepository.existsByLogin(signUpRequestDTO.login()))) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already taken!"));
+        }
+
+        if (Boolean.TRUE.equals(userRepository.existsByEmail(signUpRequestDTO.email()))) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Email is already in use!"));
+        }
+
+        final User user = userMapper.toDomainUser(signUpRequestDTO);
+        return ResponseEntity.ok(createUser.create(user));
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logoutUser() {
+        ResponseCookie cookie = jwtUtils.getCleanJwtCookie();
+        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body(new MessageResponse("You've been signed out!"));
     }
 }

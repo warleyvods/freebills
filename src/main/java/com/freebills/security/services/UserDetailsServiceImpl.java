@@ -1,30 +1,30 @@
-package com.freebills.auth.service;
+package com.freebills.security.services;
 
+
+import com.freebills.domains.User;
 import com.freebills.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
-@Component
+@Service
 @RequiredArgsConstructor
-public class CustomUserDetailService implements UserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(final String login) {
-        final var user = Optional.ofNullable(userRepository.findByLogin(login))
-                .orElseThrow(() -> new UsernameNotFoundException("User not found!"));
+    @Transactional
+    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
+        User user = userRepository.findByLogin(login).orElseThrow(() -> new UsernameNotFoundException("User Not Found with login: " + login));
 
         final var authorityListAdmin = AuthorityUtils.createAuthorityList("ROLE_USER", "ROLE_ADMIN");
         final var authorityListUser = AuthorityUtils.createAuthorityList("ROLE_USER");
 
-        return new User(user.getLogin(), user.getPassword(), user.isAdmin() ? authorityListAdmin : authorityListUser);
+        return UserDetailsImpl.build(user, user.isAdmin() ? authorityListAdmin : authorityListUser);
     }
 }

@@ -3,7 +3,7 @@ package com.freebills.controllers.mappers;
 
 import com.freebills.annotations.EncodedMapping;
 import com.freebills.controllers.dtos.requests.UserPostRequestDTO;
-import com.freebills.controllers.dtos.requests.UserPublicPostRequestDTO;
+import com.freebills.controllers.dtos.requests.SignupUserRequestDTO;
 import com.freebills.controllers.dtos.requests.UserPutPasswordRequestDTO;
 import com.freebills.controllers.dtos.requests.UserPutRequestDTO;
 import com.freebills.controllers.dtos.responses.UserResponseDTO;
@@ -17,7 +17,7 @@ public interface UserMapper {
     User toDomain(UserPostRequestDTO userPostRequestDTO);
 
     @Mapping(source = "password", target = "password", qualifiedBy = EncodedMapping.class)
-    User toDomainUser(UserPublicPostRequestDTO userPublicPostRequestDTO);
+    User toDomainUser(SignupUserRequestDTO signupUserRequestDTO);
 
     UserResponseDTO fromDomain(User user);
 
