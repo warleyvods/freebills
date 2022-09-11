@@ -18,20 +18,25 @@ import java.util.List;
 public class User extends AbstractEntity {
 
     @NotBlank
+    @Column(nullable = false)
     private String name;
 
     @Basic(optional = false)
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String login;
 
     @NotBlank
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String email;
 
     @NotBlank
+    @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
     private boolean admin = false;
+
+    @Column(nullable = false)
     private boolean active = true;
 
     @CreatedDate

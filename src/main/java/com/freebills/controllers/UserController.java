@@ -1,6 +1,7 @@
 package com.freebills.controllers;
 
 import com.freebills.controllers.dtos.requests.UserPostRequestDTO;
+import com.freebills.controllers.dtos.requests.UserPublicPostRequestDTO;
 import com.freebills.controllers.dtos.requests.UserPutPasswordRequestDTO;
 import com.freebills.controllers.dtos.requests.UserPutRequestDTO;
 import com.freebills.controllers.dtos.responses.UserResponseDTO;
@@ -37,6 +38,13 @@ public class UserController {
     @PostMapping
     public UserResponseDTO save(@RequestBody @Valid final UserPostRequestDTO userPostRequestDTO) {
         final var user = createUser.create(mapper.toDomain(userPostRequestDTO));
+        return mapper.fromDomain(user);
+    }
+
+    @ResponseStatus(CREATED)
+    @PostMapping("/public/save")
+    public UserResponseDTO savePublicUser(@RequestBody @Valid final UserPublicPostRequestDTO userPublicPostRequestDTO) {
+        final var user = createUser.create(mapper.toDomainUser(userPublicPostRequestDTO));
         return mapper.fromDomain(user);
     }
 
@@ -80,6 +88,4 @@ public class UserController {
     public Page<UserResponseDTO> findAll(Pageable pageable) {
         return findUser.all(pageable).map(mapper::fromDomain);
     }
-
-
 }
