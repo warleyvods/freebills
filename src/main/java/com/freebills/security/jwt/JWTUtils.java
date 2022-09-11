@@ -49,19 +49,13 @@ public class JWTUtils {
         if (findedUser.isPresent()) {
             String jwt = generateTokenFromUsername(findedUser.get());
 
-            return ResponseCookie.from(jwtCookie, jwt)
-                    .path("/")
-                    .maxAge(3600000L)
-                    .secure(true)
-                    .httpOnly(true)
-                    .domain(".wavods.com")
-                    .build();
+            return ResponseCookie.from(jwtCookie, jwt).path("/").maxAge(3600000L).secure(true).httpOnly(true).domain(".wavods.com").build();
         }
         return null;
     }
 
     public ResponseCookie getCleanJwtCookie() {
-        return ResponseCookie.from(jwtCookie, null).path("/").build();
+        return ResponseCookie.from(jwtCookie, "").path("/").maxAge(0).secure(true).httpOnly(true).domain(".wavods.com").build();
     }
 
     public String getUserNameFromJwtToken(String token) {
@@ -88,14 +82,6 @@ public class JWTUtils {
     }
 
     public String generateTokenFromUsername(User user) {
-        return Jwts.builder()
-                .claim("id", user.getId())
-                .setSubject(user.getLogin())
-                .claim("name", user.getName())
-                .claim("email", user.getEmail())
-                .setIssuedAt(new Date())
-                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
-                .signWith(SignatureAlgorithm.HS512, jwtSecret)
-                .compact();
+        return Jwts.builder().claim("id", user.getId()).setSubject(user.getLogin()).claim("name", user.getName()).claim("email", user.getEmail()).setIssuedAt(new Date()).setExpiration(new Date((new Date()).getTime() + jwtExpirationMs)).signWith(SignatureAlgorithm.HS512, jwtSecret).compact();
     }
 }
