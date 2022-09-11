@@ -1,11 +1,11 @@
 package com.freebills.controllers.mappers;
 
 
+import com.freebills.controllers.dtos.requests.AccountPatchArchivedRequestDTO;
 import com.freebills.controllers.dtos.requests.AccountPostRequestDTO;
 import com.freebills.controllers.dtos.requests.AccountPutRequestDTO;
 import com.freebills.controllers.dtos.responses.AccountResponseDTO;
 import com.freebills.domains.Account;
-import com.freebills.gateways.AccountGateway;
 import com.freebills.gateways.UserGateway;
 import org.mapstruct.*;
 
@@ -22,6 +22,9 @@ public interface AccountMapper {
     List<AccountResponseDTO> fromDomainList(List<Account> accounts);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    Account updateAccountFromDto(AccountPutRequestDTO accountPutRequestDTO, @MappingTarget Account account);
+    Account updateAccountFromDTO(AccountPutRequestDTO accountPutRequestDTO, @MappingTarget Account account);
+
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    Account updateArchiveAccountFromDTO(AccountPatchArchivedRequestDTO accDTO, @MappingTarget Account account);
 
 }

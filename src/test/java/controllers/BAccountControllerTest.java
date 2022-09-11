@@ -106,38 +106,4 @@ class BAccountControllerTest {
 
         assertEquals(200, response.getStatusCodeValue());
     }
-
-    @Test
-    void shouldUpdateAccount() {
-        final var user = new User();
-        user.setName("abcde");
-        user.setLogin("abcde");
-        user.setEmail("abcde@teste.com");
-        user.setPassword(new BCryptPasswordEncoder().encode("123"));
-        user.setAdmin(true);
-        user.setActive(true);
-
-        final User userSaved = userRepository.save(user);
-
-        final var request = new HttpEntity<>(new LoginRequestDTO("abcde", "123"));
-        ResponseEntity<Object> objectResponseEntity = testRestTemplate.postForEntity("/login", request, Object.class);
-        String token = Objects.requireNonNull(objectResponseEntity.getHeaders().get("Set-Cookie")).get(0);
-
-        final var account = new Account();
-        account.setAmount(BigDecimal.valueOf(500));
-        account.setDescription("Conta Inter");
-        account.setAccountType(AccountType.MONEY);
-        account.setDashboard(true);
-        account.setBankType(BankType.INTER);
-        account.setUser(userSaved);
-        final Account accountSaved = accountsRepository.save(account);
-
-        final var update = new AccountPutRequestDTO(accountSaved.getId(), 300D, "Conta Nubank", "MONEY", true, "NUBANK", userSaved.getId());
-        final var headers = new HttpHeaders();
-        headers.set("Cookie", token);
-        final var newRequest = new HttpEntity<>(update, headers);
-        final var response = testRestTemplate.exchange("/v1/accounts", HttpMethod.PUT, newRequest, AccountResponseDTO.class);
-
-        assertEquals("Conta Nubank", Objects.requireNonNull(response.getBody()).description());
-    }
 }

@@ -25,8 +25,6 @@ public class Account {
     @Enumerated(EnumType.STRING)
     private AccountType accountType;
 
-    private boolean dashboard;
-
     @Enumerated(EnumType.STRING)
     private BankType bankType;
 
@@ -38,5 +36,8 @@ public class Account {
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<CreditCard> cards = new ArrayList<>();
+
+    private boolean archived;
+    private boolean dashboard;
 
 }

@@ -7,6 +7,7 @@ public record AccountResponseDTO(
         String description,
         String accountType,
         boolean dashboard,
+        boolean archived,
         String bankType
 ) {
 }

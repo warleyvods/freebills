@@ -14,7 +14,11 @@ public record FindAccount(AccountGateway accountGateway) {
         return accountGateway.findById(id);
     }
 
-    public List<Account> findByUserId(final String login){
-        return accountGateway.findByUserLogin(login);
+    public List<Account> findByAccountsNonArchived(final String login){
+        return accountGateway.findByUserLogin(login).stream().filter(acc -> !acc.isArchived()).toList();
+    }
+
+    public List<Account> findByAccountsArchived(final String login){
+        return accountGateway.findByUserLogin(login).stream().filter(Account::isArchived).toList();
     }
 }

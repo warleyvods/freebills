@@ -3,19 +3,13 @@ package com.freebills.controllers.dtos.requests;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 public record AccountPutRequestDTO(
 
-
         @NotNull
-        Long id,
-
-        @Schema(description = "Amount ")
-        @NotNull
-        Double amount,
+        Long accountId,
 
         @Schema(description = "Description of the account")
         @NotBlank
@@ -30,11 +24,8 @@ public record AccountPutRequestDTO(
 
         @Schema(description = "Type of the bank")
         @NotBlank
-        String bankType,
+        String bankType
 
-        @Schema(description = "Id of the user logged")
-        @NotNull
-        Long userId
 ) {
 
 }

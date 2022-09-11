@@ -1,6 +1,7 @@
 package com.freebills.controllers;
 
 import com.freebills.controllers.dtos.requests.UserPostRequestDTO;
+import com.freebills.controllers.dtos.requests.UserPutPasswordRequestDTO;
 import com.freebills.controllers.dtos.requests.UserPutRequestDTO;
 import com.freebills.controllers.dtos.responses.UserResponseDTO;
 import com.freebills.controllers.mappers.UserMapper;
@@ -48,6 +49,13 @@ public class UserController {
     }
 
     @ResponseStatus(OK)
+    @PatchMapping
+    public void updatePassword(@RequestBody @Valid final UserPutPasswordRequestDTO userPassword) {
+        final var userFinded = findUser.byId(userPassword.id());
+        updateUser.update(mapper.updatePasswordFromDTO(userPassword, userFinded));
+    }
+
+    @ResponseStatus(OK)
     @GetMapping("{id}")
     public UserResponseDTO findById(@PathVariable final Long id) {
         final var user = findUser.byId(id);
@@ -72,4 +80,6 @@ public class UserController {
     public Page<UserResponseDTO> findAll(Pageable pageable) {
         return findUser.all(pageable).map(mapper::fromDomain);
     }
+
+
 }

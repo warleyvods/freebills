@@ -3,6 +3,7 @@ package com.freebills.controllers.mappers;
 
 import com.freebills.annotations.EncodedMapping;
 import com.freebills.controllers.dtos.requests.UserPostRequestDTO;
+import com.freebills.controllers.dtos.requests.UserPutPasswordRequestDTO;
 import com.freebills.controllers.dtos.requests.UserPutRequestDTO;
 import com.freebills.controllers.dtos.responses.UserResponseDTO;
 import com.freebills.domains.User;
@@ -18,5 +19,8 @@ public interface UserMapper {
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     User updateUserFromDTO(UserPutRequestDTO userPutRequestDTO, @MappingTarget User user);
+
+    @Mapping(source = "password", target = "password", qualifiedBy = EncodedMapping.class)
+    User updatePasswordFromDTO(UserPutPasswordRequestDTO userPutPasswordRequestDTO, @MappingTarget User user);
 
 }
