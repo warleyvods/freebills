@@ -16,4 +16,11 @@ public record UpdateUser(UserGateway userGateway) {
         }
         return userGateway.update(user);
     }
+
+    public void updatePassword(final User user) {
+        if (user.getLogin().equalsIgnoreCase(ADMIN)) {
+            throw new PermissionDeniedException("You cannot change a developer password");
+        }
+        update(user);
+    }
 }

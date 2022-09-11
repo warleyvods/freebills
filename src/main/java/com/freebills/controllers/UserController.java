@@ -52,6 +52,7 @@ public class UserController {
 
     @ResponseStatus(OK)
     @PutMapping
+    @PreAuthorize("hasRole('USER')")
     public UserResponseDTO update(@RequestBody @Valid final UserPutRequestDTO userPutRequestDTO) {
         final var userFinded = findUser.byId(userPutRequestDTO.id());
         final var toJson = updateUser.update(mapper.updateUserFromDTO(userPutRequestDTO, userFinded));
@@ -60,13 +61,15 @@ public class UserController {
 
     @ResponseStatus(OK)
     @PatchMapping
+    @PreAuthorize("hasRole('USER')")
     public void updatePassword(@RequestBody @Valid final UserPutPasswordRequestDTO userPassword) {
         final var userFinded = findUser.byId(userPassword.id());
-        updateUser.update(mapper.updatePasswordFromDTO(userPassword, userFinded));
+        updateUser.updatePassword(mapper.updatePasswordFromDTO(userPassword, userFinded));
     }
 
     @ResponseStatus(OK)
     @GetMapping("{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public UserResponseDTO findById(@PathVariable final Long id) {
         final var user = findUser.byId(id);
         return mapper.fromDomain(user);
@@ -74,19 +77,23 @@ public class UserController {
 
     @ResponseStatus(OK)
     @GetMapping("login/{login}")
+    @PreAuthorize("hasRole('ADMIN')")
     public UserResponseDTO findByLogin(@PathVariable final String login) {
         final var user = findUser.byLogin(login);
         return mapper.fromDomain(user);
     }
 
+
     @ResponseStatus(NO_CONTENT)
     @DeleteMapping("{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteById(@PathVariable final Long id) {
         deleteUser.byId(id);
     }
 
     @ResponseStatus(OK)
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public Page<UserResponseDTO> findAll(Pageable pageable) {
         return findUser.all(pageable).map(mapper::fromDomain);
     }

@@ -39,8 +39,10 @@ dependencies {
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
     implementation 'org.mapstruct:mapstruct:1.5.2.Final'
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
-    implementation 'org.springdoc:springdoc-openapi-ui:1.6.10'
-    implementation 'org.springdoc:springdoc-openapi-security:1.6.10'
+    implementation 'org.springdoc:springdoc-openapi-ui:1.6.11'
+    implementation 'org.springdoc:springdoc-openapi-security:1.6.11'
+    implementation 'org.apache.httpcomponents:httpclient:4.5.13'
+    implementation 'com.mailjet:mailjet-client:4.2.0'
 
     compileOnly 'org.projectlombok:lombok'
 

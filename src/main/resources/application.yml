@@ -16,6 +16,10 @@ spring:
       max-file-size: 10MB
       max-request-size: 10MB
 
+mail:
+  apiKey: ${EMAIL_APIKEY:mock}
+  apiSecret: ${EMAIL_APISECRET:mock}
+
 api:
   app:
     jwtCookieName: token

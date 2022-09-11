@@ -29,9 +29,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @RequiredArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Value("${spring.h2.console.path}")
-    private String h2ConsolePath;
-
     private final UserDetailsServiceImpl userDetailsService;
     private final AuthEntryPointJWT unauthorizedHandler;
 
@@ -63,6 +60,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
 
+                .antMatchers("/v1/user/public/save/**").permitAll()
                 .antMatchers("/v1/auth/**").permitAll()
                 .antMatchers("/*/forget/**").permitAll()
 

@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Slf4j
 @Service
 public record UserGateway(UserRepository userRepository) {
@@ -25,7 +27,11 @@ public record UserGateway(UserRepository userRepository) {
     }
 
     public User findByLogin(final String login) {
-        return userRepository.findByLogin(login).get();
+        return userRepository.findByLogin(login).orElseThrow(() -> new UserNotFoundException("User not found!"));
+    }
+
+    public Optional<User> findByEmail(final String email) {
+        return userRepository.findByEmail(email);
     }
 
     public User update(final User user) {
