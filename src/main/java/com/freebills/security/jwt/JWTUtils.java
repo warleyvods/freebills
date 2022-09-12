@@ -25,13 +25,13 @@ public class JWTUtils {
 
     private final UserRepository userRepository;
 
-    @Value("${bezkoder.app.jwtSecret}")
+    @Value("${api.app.jwtSecret}")
     private String jwtSecret;
 
-    @Value("${bezkoder.app.jwtExpirationMs}")
+    @Value("${api.app.jwtExpirationMs}")
     private int jwtExpirationMs;
 
-    @Value("${bezkoder.app.jwtCookieName}")
+    @Value("${api.app.jwtCookieName}")
     private String jwtCookie;
 
     public String getJwtFromCookies(HttpServletRequest request) {
@@ -49,13 +49,24 @@ public class JWTUtils {
         if (findedUser.isPresent()) {
             String jwt = generateTokenFromUsername(findedUser.get());
 
-            return ResponseCookie.from(jwtCookie, jwt).path("/").maxAge(3600000L).secure(true).httpOnly(true).domain(".wavods.com").build();
+            return ResponseCookie.from(jwtCookie, jwt)
+                    .path("/").maxAge(3600000L)
+                    .secure(true)
+                    .httpOnly(true)
+                    .domain(".wavods.com")
+                    .build();
         }
         return null;
     }
 
     public ResponseCookie getCleanJwtCookie() {
-        return ResponseCookie.from(jwtCookie, "").path("/").maxAge(0).secure(true).httpOnly(true).domain(".wavods.com").build();
+        return ResponseCookie.from(jwtCookie, "")
+                .path("/")
+                .maxAge(0)
+                .secure(true)
+                .httpOnly(true)
+                .domain(".wavods.com")
+                .build();
     }
 
     public String getUserNameFromJwtToken(String token) {
