@@ -12,7 +12,7 @@ import javax.validation.Valid;
 public record CreateAccount(AccountGateway accountGateway) {
 
     public Account create(@Valid final Account account){
-        log.info("[CreateAccount:{}] Creating new account", account.getUser());
+        log.info("[CreateAccount:{}] Creating new account", account.getUser().getEmail());
         return accountGateway.save(account);
     }
 }

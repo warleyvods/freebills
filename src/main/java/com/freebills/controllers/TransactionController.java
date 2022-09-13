@@ -15,7 +15,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-
 import java.security.Principal;
 
 import static org.springframework.http.HttpStatus.*;
@@ -40,8 +39,7 @@ public class TransactionController {
 
     @ResponseStatus(OK)
     @GetMapping("/filter")
-    public Page<TransactionResponseDTO> byUserDateFilter(final Principal principal,
-                                                         @RequestParam(required = false) final Integer month,
+    public Page<TransactionResponseDTO> byUserDateFilter(final Principal principal, @RequestParam(required = false) final Integer month,
                                                          @RequestParam(required = false) final Integer year,
                                                          @RequestParam(required = false) final String keyword,
                                                          final Pageable pageable) {
@@ -66,6 +64,12 @@ public class TransactionController {
                                                          @RequestParam(required = false) final String keyword,
                                                          final Pageable pageable) {
         return findTransaction.findAllExpenseByUser(principal.getName(), month, year, pageable, keyword).map(mapper::fromDomain);
+    }
+
+    @ResponseStatus(OK)
+    @GetMapping("{id}")
+    public TransactionResponseDTO findTransactionById(@PathVariable final Long id) {
+        return mapper.fromDomain(findTransaction.findById(id));
     }
 
     @ResponseStatus(OK)
