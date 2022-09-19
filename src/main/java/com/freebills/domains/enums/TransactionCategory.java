@@ -17,6 +17,8 @@ public enum TransactionCategory {
     OTHERS,
     AWARD,
     GIFT,
-    SALARY
+    SALARY,
+
+    REAJUST
 
 }

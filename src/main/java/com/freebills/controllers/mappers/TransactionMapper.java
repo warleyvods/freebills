@@ -18,8 +18,6 @@ public interface TransactionMapper {
 
     TransactionResponseDTO fromDomain(Transaction transaction);
 
-    List<TransactionResponseDTO> fromDomainList(List<Transaction> transactions);
-
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     Transaction updateTransactionFromDto(TransactionPutRequesDTO transactionPutRequesDTO, @MappingTarget Transaction transaction);
 

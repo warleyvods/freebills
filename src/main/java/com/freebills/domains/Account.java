@@ -19,7 +19,7 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private BigDecimal amount;
+    private BigDecimal amount = new BigDecimal(0);
     private String description;
 
     @Enumerated(EnumType.STRING)

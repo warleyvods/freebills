@@ -20,25 +20,28 @@ public class DashboardController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/total")
-    public DashboardResponseDTO getTotalDashboard(@RequestParam(required = false) final Integer month,
-                                                  @RequestParam(required = false) final Integer year,
-                                                  final Principal principal) {
+    public DashboardResponseDTO getTotalDashboard(
+            @RequestParam(required = false) final Integer month,
+            @RequestParam(required = false) final Integer year,
+            final Principal principal) {
         return dashboard.getTotalDashboard(principal.getName(), month, year);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/revenue")
-    public DashboardRevenueResponseDTO getTotalRevenueDashboard(@RequestParam(required = false) final Integer month,
-                                                                @RequestParam(required = false) final Integer year,
-                                                                final Principal principal) {
+    public DashboardRevenueResponseDTO getTotalRevenueDashboard(
+            @RequestParam(required = false) final Integer month,
+            @RequestParam(required = false) final Integer year,
+            final Principal principal) {
         return dashboard.getDashboardRevenue(principal.getName(), month, year);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/expense")
-    public DashboardExpenseResponseDTO getTotalExpenseDashboard(@RequestParam(required = false) final Integer month,
-                                                                @RequestParam(required = false) final Integer year,
-                                                                final Principal principal) {
+    public DashboardExpenseResponseDTO getTotalExpenseDashboard(
+            @RequestParam(required = false) final Integer month,
+            @RequestParam(required = false) final Integer year,
+            final Principal principal) {
         return dashboard.getDashboardExpense(principal.getName(), month, year);
     }
 }

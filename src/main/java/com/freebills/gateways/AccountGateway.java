@@ -1,6 +1,7 @@
 package com.freebills.gateways;
 
 import com.freebills.domains.Account;
+import com.freebills.exceptions.AccountNotFoundException;
 import com.freebills.repositories.AccountsRepository;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +19,7 @@ public record AccountGateway(AccountsRepository accountsRepository) {
     }
 
     public Account findById(final Long id) {
-        return accountsRepository.findById(id).orElseThrow(() -> new NullPointerException("Account not found!"));
+        return accountsRepository.findById(id).orElseThrow(() -> new AccountNotFoundException("Account not found!"));
     }
 
     public Account update(final Account account) {

@@ -15,6 +15,4 @@ public record CreateCreditCart(CreditCardGateway creditCardGateway) {
         log.info("[SaveCreditCard:{}] Saving new Credit Card", creditCard.getDescription());
         return creditCardGateway.save(creditCard);
     }
-
-
 }
