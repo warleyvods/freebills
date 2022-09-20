@@ -9,7 +9,7 @@ public record UpdateTransaction(TransactionGateway transactionGateway, Transacti
 
     public Transaction update(final Transaction transaction) {
         final Transaction transactionSaved = transactionGateway.update(transaction);
-        transactionValidation.transactionValidation(transactionSaved);
+        transactionValidation.transactionUpdateValidation(transactionSaved);
         return transactionSaved;
     }
 }

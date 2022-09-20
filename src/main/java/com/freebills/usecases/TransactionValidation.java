@@ -10,7 +10,24 @@ import org.springframework.stereotype.Component;
 @Component
 public record TransactionValidation(AccountGateway accountGateway) {
 
-    public void transactionValidation(Transaction transaction) {
+    public void transactionCreationValidation(Transaction transaction) {
+        if (transaction.getTransactionCategory() != TransactionCategory.REAJUST) {
+
+            if (transaction.isPaid() && transaction.getTransactionType() == TransactionType.EXPENSE) {
+                final Account account = accountGateway.findById(transaction.getAccount().getId());
+                account.setAmount(account.getAmount().subtract(transaction.getAmount()));
+                accountGateway.save(account);
+            }
+
+            if (transaction.isPaid() && transaction.getTransactionType() == TransactionType.REVENUE) {
+                final Account account = accountGateway.findById(transaction.getAccount().getId());
+                account.setAmount(account.getAmount().add(transaction.getAmount()));
+                accountGateway.save(account);
+            }
+        }
+    }
+
+    public void transactionUpdateValidation(Transaction transaction) {
         if (transaction.getTransactionCategory() != TransactionCategory.REAJUST) {
 
             if (transaction.isPaid() && transaction.getTransactionType() == TransactionType.EXPENSE) {

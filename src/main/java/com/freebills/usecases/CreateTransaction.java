@@ -13,7 +13,7 @@ public record CreateTransaction(TransactionGateway transactionGateway, Transacti
     public Transaction create(final Transaction transaction) {
         final Transaction transactionSaved = transactionGateway.save(transaction);
         log.info("[createTransaction:{}] Creating new transaction", transactionSaved.getId());
-        transactionValidation.transactionValidation(transactionSaved);
+        transactionValidation.transactionCreationValidation(transactionSaved);
         return transactionSaved;
     }
 }
