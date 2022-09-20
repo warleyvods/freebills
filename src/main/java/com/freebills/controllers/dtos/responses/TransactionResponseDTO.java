@@ -14,6 +14,7 @@ public record TransactionResponseDTO(
         String description,
         String transactionType,
         String transactionCategory,
-        String barCode
+        String barCode,
+        boolean bankSlip
 ) {
 }

@@ -28,6 +28,10 @@ public record TransactionPutRequesDTO(
         String transactionType,
 
         @NotBlank
-        String transactionCategory
+        String transactionCategory,
+
+        boolean bankSlip,
+
+        String barCode
 ) {
 }

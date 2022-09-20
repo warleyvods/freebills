@@ -24,7 +24,8 @@ public class Transaction {
     private BigDecimal amount;
     private LocalDate date;
     private String description;
-    private String barcode;
+    private String barCode;
+    private Boolean bankSlip;
 
     @Enumerated(value = EnumType.STRING)
     private TransactionType transactionType;

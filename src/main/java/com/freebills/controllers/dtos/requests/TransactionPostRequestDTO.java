@@ -29,6 +29,8 @@ public record TransactionPostRequestDTO(
         @NotBlank
         String transactionCategory,
 
-        String barCode
+        String barCode,
+
+        boolean bankSlip
 ) {
 }
