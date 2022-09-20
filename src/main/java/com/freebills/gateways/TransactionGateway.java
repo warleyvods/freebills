@@ -1,6 +1,7 @@
 package com.freebills.gateways;
 
 import com.freebills.domains.Transaction;
+import com.freebills.exceptions.TransactionNotFoundException;
 import com.freebills.repositories.TransactionRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,7 +27,7 @@ public record TransactionGateway(TransactionRepository transactionRepository) {
     }
 
     public Transaction findById(Long id) {
-        return transactionRepository.findById(id).orElseThrow(() -> new RuntimeException("Not Found!"));
+        return transactionRepository.findById(id).orElseThrow(() -> new TransactionNotFoundException("Not Found!"));
     }
 
     public Transaction update(final Transaction transaction) {

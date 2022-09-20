@@ -1,6 +1,7 @@
 package com.freebills.exceptions.handler;
 
 import com.freebills.exceptions.PermissionDeniedException;
+import com.freebills.exceptions.TransactionNotFoundException;
 import com.freebills.exceptions.UserNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -28,6 +29,18 @@ import static org.springframework.http.HttpStatus.*;
 
 @RestControllerAdvice
 public class RestExceptionHandler {
+
+    @ResponseStatus(NOT_FOUND)
+    @ExceptionHandler(TransactionNotFoundException.class)
+    public ExceptionFilters transactionNotFoundException(final TransactionNotFoundException ex) {
+        return ExceptionFilters.builder()
+                .timestamp(LocalDateTime.now())
+                .details(ex.getMessage())
+                .devMsg(ex.getClass().getName())
+                .status(NOT_FOUND.value())
+                .title("Transaction not found!")
+                .build();
+    }
 
     @ResponseStatus(NOT_FOUND)
     @ExceptionHandler(UserNotFoundException.class)
