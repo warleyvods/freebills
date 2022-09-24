@@ -5,6 +5,10 @@ public enum BankType {
     INTER,
     NUBANK,
     CAIXA,
-    SANTANDER
+    SANTANDER,
+    BRADESCO,
+    BB,
+    ITAU,
+    OTHERS
 
 }
