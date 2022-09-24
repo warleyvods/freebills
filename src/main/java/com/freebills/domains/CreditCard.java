@@ -18,7 +18,6 @@ public class CreditCard {
     private Long id;
 
     private BigDecimal cardLimit;
-
     private String description;
 
     @Enumerated(EnumType.STRING)
@@ -26,8 +25,8 @@ public class CreditCard {
 
     @ManyToOne
     private Account account;
-
     private Integer expirationDay;
-
     private Integer closingDay;
+    private Boolean archived;
+
 }

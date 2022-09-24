@@ -11,7 +11,7 @@ import javax.validation.Valid;
 @Component
 public record CreateCreditCart(CreditCardGateway creditCardGateway) {
 
-    public CreditCard save(@Valid final CreditCard creditCard) {
+    public CreditCard execute(@Valid final CreditCard creditCard) {
         log.info("[SaveCreditCard:{}] Saving new Credit Card", creditCard.getDescription());
         return creditCardGateway.save(creditCard);
     }

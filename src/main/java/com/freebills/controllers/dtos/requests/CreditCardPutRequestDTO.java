@@ -22,6 +22,9 @@ public record CreditCardPutRequestDTO(
         Integer expirationDay,
 
         @NotNull
-        Integer closingDay
+        Integer closingDay,
+
+        @NotNull
+        Boolean archived
 ) {
 }

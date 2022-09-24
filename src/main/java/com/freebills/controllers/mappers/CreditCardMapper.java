@@ -20,6 +20,6 @@ public interface CreditCardMapper {
     List<CreditCardResponseDTO> fromDomainList(List<CreditCard> creditCards);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    CreditCard updateCreditCardFromDto(CreditCardPutRequestDTO creditCardPutRequestDTO, @MappingTarget CreditCard creditCard);
+    CreditCard toDomain(CreditCardPutRequestDTO creditCardPutRequestDTO, @MappingTarget CreditCard creditCard);
 
 }

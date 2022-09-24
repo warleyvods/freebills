@@ -9,7 +9,7 @@ import java.util.List;
 @Component
 public record FindCreditCard(CreditCardGateway creditCardGateway) {
 
-    public List<CreditCard> findByLogin(final String login) {
+    public List<CreditCard> execute(final String login) {
         return creditCardGateway.findByUserLogin(login);
     }
 

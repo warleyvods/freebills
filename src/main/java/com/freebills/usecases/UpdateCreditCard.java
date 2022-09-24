@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public record UpdateCreditCard(CreditCardGateway creditCardGateway) {
 
-    public CreditCard update(final CreditCard creditCard) {
+    public CreditCard execute(final CreditCard creditCard) {
         return creditCardGateway.update(creditCard);
     }
 }

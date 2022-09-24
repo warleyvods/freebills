@@ -1,6 +1,7 @@
 package com.freebills.gateways;
 
 import com.freebills.domains.CreditCard;
+import com.freebills.exceptions.CreditCardNotFoundException;
 import com.freebills.repositories.CreditCardRepository;
 import org.springframework.stereotype.Service;
 
@@ -18,10 +19,14 @@ public record CreditCardGateway(CreditCardRepository creditCardRepository) {
     }
 
     public CreditCard findById(final Long id){
-        return creditCardRepository.findById(id).orElseThrow(()-> new NullPointerException("Credit card not found!"));
+        return creditCardRepository.findById(id).orElseThrow(()-> new CreditCardNotFoundException("Credit card not found!"));
     }
 
     public CreditCard update(final CreditCard creditCard) {
         return creditCardRepository.save(creditCard);
+    }
+
+    public void delete(final Long id) {
+        creditCardRepository.deleteById(id);
     }
 }

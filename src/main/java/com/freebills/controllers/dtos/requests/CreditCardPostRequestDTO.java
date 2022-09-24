@@ -9,6 +9,7 @@ public record CreditCardPostRequestDTO(
         @NotNull
         Long accountId,
 
+        @NotNull
         BigDecimal cardLimit,
 
         @NotBlank
@@ -22,5 +23,6 @@ public record CreditCardPostRequestDTO(
 
         @NotNull
         Integer closingDay
+
 ) {
 }
