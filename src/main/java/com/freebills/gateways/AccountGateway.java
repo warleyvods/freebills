@@ -14,6 +14,7 @@ public record AccountGateway(AccountsRepository accountsRepository) {
         return accountsRepository.save(account);
     }
 
+
     public List<Account> findByUserLogin(final String login) {
         return accountsRepository.findByUser_Login(login);
     }
