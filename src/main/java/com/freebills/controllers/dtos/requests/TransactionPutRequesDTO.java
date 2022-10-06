@@ -9,6 +9,9 @@ import java.time.LocalDate;
 public record TransactionPutRequesDTO(
 
         @NotNull
+        Long accountId,
+
+        @NotNull
         Long id,
 
         @JsonFormat(pattern = "")

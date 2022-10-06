@@ -18,6 +18,7 @@ public interface TransactionMapper {
 
     TransactionResponseDTO fromDomain(Transaction transaction);
 
+    @Mapping(source = "accountId", target = "account")
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     Transaction updateTransactionFromDto(TransactionPutRequesDTO transactionPutRequesDTO, @MappingTarget Transaction transaction);
 

@@ -11,7 +11,7 @@ import org.mapstruct.*;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring",uses = {UserGateway.class},unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = "spring",uses = {UserGateway.class}, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface AccountMapper {
 
     @Mapping(source = "userId",target = "user")
