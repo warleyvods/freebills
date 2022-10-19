@@ -14,10 +14,7 @@ import com.freebills.gateways.UserGateway;
 import com.freebills.repositories.AccountsRepository;
 import com.freebills.repositories.TransactionRepository;
 import com.freebills.repositories.UserRepository;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -126,6 +123,7 @@ class UpdateTransactionTest {
         assertTrue(new BigDecimal(0).compareTo(updatedAccount2.getAmount()) == 0);
     }
 
+    @Disabled
     @Test
     void shouldNotSumNewValueTransactionWhenTransactionStatusChangedToPaid() {
         User user = new User();
