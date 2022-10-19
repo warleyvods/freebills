@@ -9,6 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -26,7 +27,7 @@ public class User extends AbstractEntity {
     @Column(nullable = false)
     private String name;
 
-    @Size(max = 20)
+    @Size(max = 50)
     @Basic(optional = false)
     @Column(nullable = false)
     private String login;
@@ -53,4 +54,9 @@ public class User extends AbstractEntity {
     @OneToMany(mappedBy = "user")
     private List<Account> accounts;
 
+    private LocalDateTime lastAccess;
+
+    public void lastAccess() {
+        this.lastAccess = LocalDateTime.now();
+    }
 }

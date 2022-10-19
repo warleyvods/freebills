@@ -16,10 +16,12 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -39,7 +41,16 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         var userDetails = (UserDetailsImpl) authentication.getPrincipal();
         var jwtCookie = jwtUtils.generateJwtCookie(userDetails);
+        lastAccess(authentication);
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString()).body(null);
+    }
+
+    private void lastAccess(Authentication authentication) {
+        final Optional<User> user = userRepository.findByLogin(((UserDetailsImpl) authentication.getPrincipal()).username());
+        if (user.isPresent()) {
+            user.get().lastAccess();
+            userRepository.save(user.get());
+        }
     }
 
     @PostMapping("/signup")
