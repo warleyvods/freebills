@@ -44,7 +44,7 @@ public class JWTUtils {
     }
 
     public ResponseCookie generateJwtCookie(UserDetailsImpl userPrincipal) {
-        final Optional<User> findedUser = userRepository.findByLogin(userPrincipal.getUsername());
+        final Optional<User> findedUser = userRepository.findByLoginIgnoreCase(userPrincipal.getUsername());
 
         if (findedUser.isPresent()) {
             String jwt = generateTokenFromUsername(findedUser.get());

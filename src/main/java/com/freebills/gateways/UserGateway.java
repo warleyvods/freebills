@@ -18,7 +18,7 @@ public record UserGateway(UserRepository userRepository) {
         return userRepository.save(user);
     }
 
-    public Page<User> getAll(Pageable pageable) {
+    public Page<User> getAll(final Pageable pageable) {
         return userRepository.findAll(pageable);
     }
 
@@ -27,7 +27,7 @@ public record UserGateway(UserRepository userRepository) {
     }
 
     public User findByLogin(final String login) {
-        return userRepository.findByLogin(login).orElseThrow(() -> new UserNotFoundException("User not found!"));
+        return userRepository.findByLoginIgnoreCase(login).orElseThrow(() -> new UserNotFoundException("User not found!"));
     }
 
     public Optional<User> findByEmail(final String email) {
