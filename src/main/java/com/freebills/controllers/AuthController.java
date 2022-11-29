@@ -46,7 +46,7 @@ public class AuthController {
     }
 
     private void lastAccess(Authentication authentication) {
-        final Optional<User> user = userRepository.findByLogin(((UserDetailsImpl) authentication.getPrincipal()).username());
+        final Optional<User> user = userRepository.findByLoginIgnoreCase(((UserDetailsImpl) authentication.getPrincipal()).username());
         if (user.isPresent()) {
             user.get().lastAccess();
             userRepository.save(user.get());

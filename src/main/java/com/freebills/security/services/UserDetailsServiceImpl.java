@@ -19,8 +19,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     @Transactional
-    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        User user = userRepository.findByLogin(login).orElseThrow(() -> new UsernameNotFoundException("User Not Found with login: " + login));
+    public UserDetails loadUserByUsername(final String login) throws UsernameNotFoundException {
+        final var user = userRepository.findByLoginIgnoreCase(login).orElseThrow(() -> new UsernameNotFoundException("User Not Found with login: " + login));
 
         final var authorityListAdmin = AuthorityUtils.createAuthorityList("ROLE_USER", "ROLE_ADMIN");
         final var authorityListUser = AuthorityUtils.createAuthorityList("ROLE_USER");
