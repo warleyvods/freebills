@@ -53,4 +53,9 @@ public class Transaction {
         this.paid = paid;
         this.account = account;
     }
+
+    @Convert(converter = TransactionTypeConverter.class)
+    public TransactionType getTransactionType() {
+        return transactionType;
+    }
 }

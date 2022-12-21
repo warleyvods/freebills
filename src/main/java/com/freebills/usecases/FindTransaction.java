@@ -14,15 +14,20 @@ public record FindTransaction(TransactionGateway transactionGateway, UserGateway
         return transactionGateway.findById(id);
     }
 
-    public Page<Transaction> findAllByUserDateFilter(final String login, final Integer month, final Integer year, final Pageable pageable, final String keyword) {
+    public Page<Transaction> findAllByUserDateFilter(final String login,
+                                                     final Integer month,
+                                                     final Integer year,
+                                                     final Pageable pageable,
+                                                     final String keyword) {
         return transactionGateway.findByUserDateFilter(login, month, year, pageable, keyword);
     }
 
-    public Page<Transaction> findAllRevenueByUser(final String login, final Integer month, final Integer year, final Pageable pageable, final String keyword) {
-        return transactionGateway.findByUserDateFilterRevenue(login, month, year, pageable, keyword);
-    }
-
-    public Page<Transaction> findAllExpenseByUser(final String login, final Integer month, final Integer year, final Pageable pageable, final String keyword) {
-        return transactionGateway.findByUserDateFilterExpense(login, month, year, pageable, keyword);
+    public Page<Transaction> findAllExpenseByUser(final String login,
+                                                  final Integer month,
+                                                  final Integer year,
+                                                  final Pageable pageable,
+                                                  final String keyword,
+                                                  final String transactionType) {
+        return transactionGateway.findByUserDateFilterTransactionType(login, month, year, pageable, keyword, transactionType);
     }
 }

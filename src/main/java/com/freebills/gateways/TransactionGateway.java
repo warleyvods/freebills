@@ -14,20 +14,25 @@ public record TransactionGateway(TransactionRepository transactionRepository) {
         return transactionRepository.save(transaction);
     }
 
-    public Page<Transaction> findByUserDateFilter(final String login, final Integer month, final Integer year, final Pageable pageable, final String keyword) {
+    public Page<Transaction> findByUserDateFilter(final String login,
+                                                  final Integer month,
+                                                  final Integer year,
+                                                  final Pageable pageable,
+                                                  final String keyword) {
         return transactionRepository.findByTransactionFilterByDate(login, month, year, keyword, pageable);
     }
 
-    public Page<Transaction> findByUserDateFilterRevenue(final String login, final Integer month, final Integer year, final Pageable pageable, final String keyword) {
-        return transactionRepository.findByTransactionFilterByDateRevenue(login, month, year, keyword, pageable);
+    public Page<Transaction> findByUserDateFilterTransactionType(final String login,
+                                                                 final Integer month,
+                                                                 final Integer year,
+                                                                 final Pageable pageable,
+                                                                 final String keyword,
+                                                                 final String transactionType) {
+        return transactionRepository.findByUserDateFilterTransactionType(login, month, year, keyword, transactionType, pageable);
     }
 
-    public Page<Transaction> findByUserDateFilterExpense(final String login, final Integer month, final Integer year, final Pageable pageable, final String keyword) {
-        return transactionRepository.findByTransactionFilterByDateExpense(login, month, year, keyword, pageable);
-    }
-
-    public Transaction findById(Long id) {
-        return transactionRepository.findById(id).orElseThrow(() -> new TransactionNotFoundException("Not Found!"));
+    public Transaction findById(final Long id) {
+        return transactionRepository.findById(id).orElseThrow(() -> new TransactionNotFoundException("Transaction not found!"));
     }
 
     public Transaction update(final Transaction transaction) {

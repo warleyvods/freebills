@@ -14,7 +14,7 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQL94Dialect
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     properties:
       hibernate:
         format_sql: false
@@ -29,12 +29,12 @@ springdoc:
     enabled: true
 
 
-logging:
-  level:
-    org:
-      hibernate:
-        type:
-          descriptor:
-            sql:
-              BasicBinder: TRACE
-      SQL: debug
+#logging:
+#  level:
+#    org:
+#      hibernate:
+#        type:
+#          descriptor:
+#            sql:
+#              BasicBinder: TRACE
+#      SQL: debug

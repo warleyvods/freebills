@@ -11,6 +11,7 @@ import com.freebills.security.jwt.JWTUtils;
 import com.freebills.security.services.UserDetailsImpl;
 import com.freebills.usecases.CreateUser;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.Optional;
 
+@Slf4j
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/v1/auth")
@@ -42,6 +44,7 @@ public class AuthController {
         var userDetails = (UserDetailsImpl) authentication.getPrincipal();
         var jwtCookie = jwtUtils.generateJwtCookie(userDetails);
         lastAccess(authentication);
+        log.info("logged");
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString()).body(null);
     }
 

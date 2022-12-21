@@ -5,6 +5,7 @@ import com.freebills.controllers.dtos.requests.TransactionPostRequestDTO;
 import com.freebills.controllers.dtos.requests.TransactionPutRequesDTO;
 import com.freebills.controllers.dtos.responses.TransactionResponseDTO;
 import com.freebills.controllers.mappers.TransactionMapper;
+import com.freebills.domains.enums.TransactionType;
 import com.freebills.usecases.CreateTransaction;
 import com.freebills.usecases.DeleteTransaction;
 import com.freebills.usecases.FindTransaction;
@@ -46,24 +47,27 @@ public class TransactionController {
         return findTransaction.findAllByUserDateFilter(principal.getName(), month, year, pageable, keyword).map(mapper::fromDomain);
     }
 
-    @ResponseStatus(OK)
-    @GetMapping("/revenue")
-    public Page<TransactionResponseDTO> allRevenueByUser(final Principal principal,
-                                                         @RequestParam(required = false) final Integer month,
-                                                         @RequestParam(required = false) final Integer year,
-                                                         @RequestParam(required = false) final String keyword,
-                                                         final Pageable pageable) {
-        return findTransaction.findAllRevenueByUser(principal.getName(), month, year, pageable, keyword).map(mapper::fromDomain);
-    }
+//    @ResponseStatus(OK)
+//    @GetMapping("/revenue")
+//    public Page<TransactionResponseDTO> allRevenueByUser(final Principal principal,
+//                                                         @RequestParam(required = false) final Integer month,
+//                                                         @RequestParam(required = false) final Integer year,
+//                                                         @RequestParam(required = false) final String keyword,
+//                                                         final Pageable pageable) {
+//        return findTransaction.findAllRevenueByUser(principal.getName(), month, year, pageable, keyword).map(mapper::fromDomain);
+//    }
 
     @ResponseStatus(OK)
-    @GetMapping("/expense")
-    public Page<TransactionResponseDTO> allExpenseByUser(final Principal principal,
-                                                         @RequestParam(required = false) final Integer month,
-                                                         @RequestParam(required = false) final Integer year,
-                                                         @RequestParam(required = false) final String keyword,
-                                                         final Pageable pageable) {
-        return findTransaction.findAllExpenseByUser(principal.getName(), month, year, pageable, keyword).map(mapper::fromDomain);
+    @GetMapping("transaction-type/{transactionType}")
+    public Page<TransactionResponseDTO> allExpenseByUser(
+            final Principal principal,
+            @RequestParam(required = false) final Integer month,
+            @RequestParam(required = false) final Integer year,
+            @RequestParam(required = false) final String keyword,
+            @PathVariable final String transactionType,
+            final Pageable pageable) {
+        return findTransaction.findAllExpenseByUser(principal.getName(), month, year, pageable, keyword, transactionType)
+                .map(mapper::fromDomain);
     }
 
     @ResponseStatus(OK)
