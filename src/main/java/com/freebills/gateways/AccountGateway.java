@@ -8,12 +8,17 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public record AccountGateway(AccountsRepository accountsRepository) {
+public final class AccountGateway {
+
+    private final AccountsRepository accountsRepository;
+
+    public AccountGateway(AccountsRepository accountsRepository) {
+        this.accountsRepository = accountsRepository;
+    }
 
     public Account save(final Account account) {
         return accountsRepository.save(account);
     }
-
 
     public List<Account> findByUserLogin(final String login) {
         return accountsRepository.findByUser_Login(login);

@@ -8,9 +8,7 @@ import com.freebills.domains.Transaction;
 import com.freebills.gateways.AccountGateway;
 import org.mapstruct.*;
 
-import java.util.List;
-
-@Mapper(componentModel = "spring", uses = {AccountGateway.class}, unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = "spring", uses = AccountGateway.class, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface TransactionMapper {
 
     @Mapping(source = "accountId", target = "account")

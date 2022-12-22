@@ -87,6 +87,6 @@ public record Dashboard(AccountGateway accountGateway, TransactionGateway transa
     }
 
     private Page<Transaction> getByUserDateFilter(String login, Integer month, Integer year) {
-        return transactionGateway.findByUserDateFilter(login, month, year, null, null);
+        return transactionGateway.findByUserDateFilter(login, month, year, null, null, null);
     }
 }
