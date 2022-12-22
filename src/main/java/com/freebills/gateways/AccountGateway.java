@@ -3,18 +3,16 @@ package com.freebills.gateways;
 import com.freebills.domains.Account;
 import com.freebills.exceptions.AccountNotFoundException;
 import com.freebills.repositories.AccountsRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public final class AccountGateway {
+@RequiredArgsConstructor
+public class AccountGateway {
 
     private final AccountsRepository accountsRepository;
-
-    public AccountGateway(AccountsRepository accountsRepository) {
-        this.accountsRepository = accountsRepository;
-    }
 
     public Account save(final Account account) {
         return accountsRepository.save(account);

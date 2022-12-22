@@ -4,19 +4,24 @@ import com.freebills.domains.Account;
 import com.freebills.domains.Transaction;
 import com.freebills.domains.enums.TransactionCategory;
 import com.freebills.domains.enums.TransactionType;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Slf4j
 @Component
-public record ReajustAccount(FindAccount findAccount,
-                             CreateTransaction createTransaction,
-                             UpdateAccount updateAccount) {
+@RequiredArgsConstructor
+public final class ReajustAccount {
 
     private static final String DESCRIPTION = "Reajuste";
+
+    private final FindAccount findAccount;
+    private final UpdateAccount updateAccount;
+    private final CreateTransaction createTransaction;
 
     public void reajust(final Long id, final BigDecimal value, final String type) {
         final Account account = findAccount.byId(id);
