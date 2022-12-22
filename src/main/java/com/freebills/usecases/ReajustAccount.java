@@ -12,7 +12,8 @@ import java.time.LocalDate;
 
 @Slf4j
 @Component
-public record ReajustAccount(FindAccount findAccount, CreateTransaction createTransaction,
+public record ReajustAccount(FindAccount findAccount,
+                             CreateTransaction createTransaction,
                              UpdateAccount updateAccount) {
 
     private static final String DESCRIPTION = "Reajuste";
@@ -27,7 +28,7 @@ public record ReajustAccount(FindAccount findAccount, CreateTransaction createTr
                     account.setAmount(account.getAmount().add(difference));
 
                     updateAccount.update(account);
-                    createTransaction.create(new Transaction(difference.multiply(new BigDecimal(-1)), LocalDate.now(), DESCRIPTION, TransactionType.REVENUE, TransactionCategory.REAJUST, true, account));
+                    createTransaction.create(new Transaction(difference.multiply(new BigDecimal(-1)), LocalDate.now(), DESCRIPTION, TransactionType.EXPENSE, TransactionCategory.REAJUST, true, account));
                 }
             } else {
                 if (value.compareTo(account.getAmount()) > 0) {

@@ -16,8 +16,7 @@ import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
 
-import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.*;
 
 @Tag(name = "Account Controller")
 @RestController
@@ -73,6 +72,7 @@ public class AccountController {
         return mapper.fromDomain(toJson);
     }
 
+    @ResponseStatus(NO_CONTENT)
     @DeleteMapping("{accountId}")
     public void deleteAccount(@PathVariable final Long accountId) {
         deleteAccount.deleteAccount(accountId);
