@@ -17,10 +17,10 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
             " INNER JOIN t1.account ac " +
             " INNER JOIN ac.user u " +
             " WHERE u.login = :login " +
-            " AND MONTH(t1.date) = COALESCE(:month, MONTH(t1.date))" +
-            " AND YEAR(t1.date) = COALESCE(:year, YEAR(t1.date)) " +
-            " AND t1.description LIKE concat('%', COALESCE(:keyword, t1.description), '%') " +
-            " AND t1.transactionType = COALESCE(:transactionType, t1.transactionType) ")
+            " AND (:month IS NULL OR MONTH(t1.date) = :month)" +
+            " AND (:year IS NULL OR YEAR(t1.date) = :year) " +
+            " AND (:keyword IS NULL OR t1.description LIKE concat('%', :keyword, '%')) " +
+            " AND (:transactionType IS NULL OR t1.transactionType = :transactionType) ")
     Page<Transaction> findByTransactionFilterByDate(
             @Param(value = "login") final String login,
             @Param(value = "month") final Integer month,
