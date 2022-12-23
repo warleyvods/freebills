@@ -26,27 +26,27 @@ public class Dashboard {
     private final TransactionGateway transactionGateway;
 
     public DashboardResponseDTO getTotalDashboard(String login, Integer month, Integer year) {
-        List<Transaction> transactions = getTransactionsByUserDateFilter(login, month, year);
-        BigDecimal totalRevenue = getTotalAmountByType(transactions, TransactionType.REVENUE);
-        BigDecimal totalExpense = getTotalAmountByType(transactions, TransactionType.EXPENSE);
+        final var transactions = getTransactionsByUserDateFilter(login, month, year);
+        final var totalRevenue = getTotalAmountByType(transactions, TransactionType.REVENUE);
+        final var totalExpense = getTotalAmountByType(transactions, TransactionType.EXPENSE);
         return new DashboardResponseDTO(getTotalValue(login), totalRevenue, totalExpense, BigDecimal.ZERO);
     }
 
     public DashboardExpenseResponseDTO getDashboardExpense(String login, Integer month, Integer year) {
-        List<Transaction> transactions = getTransactionsByUserDateFilter(login, month, year);
-        Map<Boolean, BigDecimal> amountsByPaidStatus = getAmountsByTypeAndPaidStatus(transactions, TransactionType.EXPENSE);
-        BigDecimal totalExpensePending = amountsByPaidStatus.getOrDefault(false, BigDecimal.ZERO);
-        BigDecimal totalExpenseReceived = amountsByPaidStatus.getOrDefault(true, BigDecimal.ZERO);
-        BigDecimal totalExpense = totalExpensePending.add(totalExpenseReceived);
+        final var transactions = getTransactionsByUserDateFilter(login, month, year);
+        final var amountsByPaidStatus = getAmountsByTypeAndPaidStatus(transactions, TransactionType.EXPENSE);
+        final var totalExpensePending = amountsByPaidStatus.getOrDefault(false, BigDecimal.ZERO);
+        final var totalExpenseReceived = amountsByPaidStatus.getOrDefault(true, BigDecimal.ZERO);
+        final var totalExpense = totalExpensePending.add(totalExpenseReceived);
         return new DashboardExpenseResponseDTO(getTotalValue(login), totalExpensePending, totalExpenseReceived, totalExpense);
     }
 
     public DashboardRevenueResponseDTO getDashboardRevenue(String login, Integer month, Integer year) {
-        List<Transaction> transactions = getTransactionsByUserDateFilter(login, month, year);
-        Map<Boolean, BigDecimal> amountsByPaidStatus = getAmountsByTypeAndPaidStatus(transactions, TransactionType.REVENUE);
-        BigDecimal totalRevenuePending = amountsByPaidStatus.getOrDefault(false, BigDecimal.ZERO);
-        BigDecimal totalRevenueReceived = amountsByPaidStatus.getOrDefault(true, BigDecimal.ZERO);
-        BigDecimal totalRevenue = totalRevenuePending.add(totalRevenueReceived);
+        final var transactions = getTransactionsByUserDateFilter(login, month, year);
+        final var amountsByPaidStatus = getAmountsByTypeAndPaidStatus(transactions, TransactionType.REVENUE);
+        final var totalRevenuePending = amountsByPaidStatus.getOrDefault(false, BigDecimal.ZERO);
+        final var totalRevenueReceived = amountsByPaidStatus.getOrDefault(true, BigDecimal.ZERO);
+        final var totalRevenue = totalRevenuePending.add(totalRevenueReceived);
         return new DashboardRevenueResponseDTO(getTotalValue(login), totalRevenuePending, totalRevenueReceived, totalRevenue);
     }
 
