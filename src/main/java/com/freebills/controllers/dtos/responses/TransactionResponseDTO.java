@@ -8,7 +8,6 @@ public record TransactionResponseDTO(
         Long id,
         Double amount,
         boolean paid,
-
         @JsonFormat(pattern="dd-MM-yyyy")
         LocalDate date,
         String description,

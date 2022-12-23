@@ -2,6 +2,7 @@ package com.freebills.gateways;
 
 import com.freebills.domains.Transaction;
 import com.freebills.domains.enums.TransactionType;
+import com.freebills.exceptions.LoginInvalidException;
 import com.freebills.exceptions.TransactionNotFoundException;
 import com.freebills.repositories.TransactionRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,9 @@ public class TransactionGateway {
             final Pageable pageable,
             final String keyword,
             final TransactionType transactionType) {
+        if (login == null) {
+            throw new LoginInvalidException("Login invalid!");
+        }
         return transactionRepository.findByTransactionFilterByDate(login, month, year, keyword, transactionType, pageable);
     }
 

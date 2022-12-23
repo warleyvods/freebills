@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Objects;
 
 @Slf4j
 @Component
@@ -33,19 +32,19 @@ public final class ReajustAccount {
                     account.setAmount(account.getAmount().add(difference));
 
                     updateAccount.update(account);
-                    createTransaction.create(new Transaction(difference.multiply(new BigDecimal(-1)), LocalDate.now(), DESCRIPTION, TransactionType.EXPENSE, TransactionCategory.REAJUST, true, account));
+                    createTransaction.execute(new Transaction(difference.multiply(new BigDecimal(-1)), LocalDate.now(), DESCRIPTION, TransactionType.EXPENSE, TransactionCategory.REAJUST, true, account));
                 }
             } else {
                 if (value.compareTo(account.getAmount()) > 0) {
                     final BigDecimal diff = value.subtract(account.getAmount());
                     account.setAmount(account.getAmount().add(diff));
                     updateAccount.update(account);
-                    createTransaction.create(new Transaction(diff, LocalDate.now(), DESCRIPTION, TransactionType.REVENUE, TransactionCategory.REAJUST, true, account));
+                    createTransaction.execute(new Transaction(diff, LocalDate.now(), DESCRIPTION, TransactionType.REVENUE, TransactionCategory.REAJUST, true, account));
                 } else {
                     final BigDecimal diff = account.getAmount().subtract(value);
                     account.setAmount(account.getAmount().subtract(diff));
                     updateAccount.update(account);
-                    createTransaction.create(new Transaction(diff, LocalDate.now(), DESCRIPTION, TransactionType.EXPENSE, TransactionCategory.REAJUST, true, account));
+                    createTransaction.execute(new Transaction(diff, LocalDate.now(), DESCRIPTION, TransactionType.EXPENSE, TransactionCategory.REAJUST, true, account));
                 }
             }
         } else {

@@ -35,7 +35,7 @@ public class TransactionController {
     @PostMapping
     public TransactionResponseDTO save(@RequestBody @Valid final TransactionPostRequestDTO transactionPostRequestDto) {
         final var transaction = mapper.toDomain(transactionPostRequestDto);
-        return mapper.fromDomain(createTransaction.create(transaction));
+        return mapper.fromDomain(createTransaction.execute(transaction));
     }
 
     @ResponseStatus(OK)
