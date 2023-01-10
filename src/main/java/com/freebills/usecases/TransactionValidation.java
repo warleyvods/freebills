@@ -5,6 +5,7 @@ import com.freebills.domains.Transaction;
 import com.freebills.domains.enums.TransactionCategory;
 import com.freebills.domains.enums.TransactionType;
 import com.freebills.gateways.AccountGateway;
+import com.freebills.repositories.TransactionLogRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +16,7 @@ import java.math.BigDecimal;
 public class TransactionValidation {
 
     private final AccountGateway accountGateway;
+    private final TransactionLogRepository transactionLogRepository;
 
     public void transactionCreationValidation(Transaction transaction) {
         if (transaction.getTransactionCategory() != TransactionCategory.REAJUST) {
@@ -95,14 +97,16 @@ public class TransactionValidation {
                 }
 
                 final Account account = accountGateway.findById(transaction.getAccount().getId());
+                final var transactionLog = transactionLogRepository.findTransactionLogByTransaction_Id(transaction.getId()).stream().reduce((a, b) -> b).orElse(null);
 
-                if (transaction.getPreviousAmount().compareTo(transaction.getAmount()) > 0) {
+                assert transactionLog != null;
+                if (transactionLog.getPreviousAmount().compareTo(transaction.getAmount()) > 0) {
                     final var difference = transaction.getPreviousAmount().subtract(transaction.getAmount());
                     account.setAmount(account.getAmount().subtract(difference));
-                } else if (transaction.getPreviousAmount().compareTo(transaction.getAmount()) == 0) {
+                } else if (transactionLog.getPreviousAmount().compareTo(transaction.getAmount()) == 0) {
                     account.setAmount(account.getAmount().add(transaction.getAmount()));
                 } else {
-                    final var difference = transaction.getPreviousAmount().subtract(transaction.getAmount()).multiply(BigDecimal.valueOf(-1));
+                    final var difference = transactionLog.getPreviousAmount().subtract(transaction.getAmount()).multiply(BigDecimal.valueOf(-1));
                     account.setAmount(account.getAmount().add(difference));
                 }
 
@@ -116,11 +120,14 @@ public class TransactionValidation {
                     accountGateway.save(acc);
                 }
 
+                final var transactionLog = transactionLogRepository.findTransactionLogByTransaction_Id(transaction.getId()).stream().reduce((a, b) -> b).orElse(null);
                 final Account account = accountGateway.findById(transaction.getAccount().getId());
-                if (transaction.getPreviousAmount().compareTo(transaction.getAmount()) > 0) {
-                    final var difference = transaction.getPreviousAmount().subtract(transaction.getAmount());
+
+                assert transactionLog != null;
+                if (transactionLog.getPreviousAmount().compareTo(transaction.getAmount()) > 0) {
+                    final var difference = transactionLog.getPreviousAmount().subtract(transaction.getAmount());
                     account.setAmount(account.getAmount().add(difference));
-                } else if (transaction.getPreviousAmount().compareTo(transaction.getAmount()) == 0) {
+                } else if (transactionLog.getPreviousAmount().compareTo(transaction.getAmount()) == 0) {
                     account.setAmount(account.getAmount().subtract(transaction.getAmount()));
                 } else {
                     account.setAmount(account.getAmount().subtract(transaction.getAmount()));

@@ -286,4 +286,41 @@ class UpdateTransactionTest {
         assertEquals(0, allAccounts.get(0).getAmount().compareTo(new BigDecimal(0)));
         assertEquals(0, allAccounts.get(1).getAmount().compareTo(new BigDecimal(0)));
     }
+
+    @Test
+    void shouldDecrementAndIncrementValueFromAccountChangingPaidStatusBUG() {
+        final var transaction = new Transaction();
+        transaction.setAmount(new BigDecimal("100"));
+        transaction.setDate(LocalDate.now());
+        transaction.setDescription("Arroz");
+        transaction.setBarCode(null);
+        transaction.setBankSlip(false);
+        transaction.setTransactionType(TransactionType.REVENUE);
+        transaction.setTransactionCategory(TransactionCategory.HOUSE);
+        transaction.setPaid(true);
+        transaction.setAccount(account.get(0));
+
+        final List<Account> beforeAccounts = accountsRepository.findAll();
+        assertEquals(0, beforeAccounts.get(0).getAmount().compareTo(new BigDecimal(0)));
+
+        // criei ja paga
+        final var savedTransaction = createTransaction.execute(transaction);
+
+        final List<Account> afterAccounts = accountsRepository.findAll();
+        assertEquals(0, afterAccounts.get(0).getAmount().compareTo(new BigDecimal(100)));
+
+        // altero o valor para menor
+        savedTransaction.setAmount(BigDecimal.valueOf(50));
+        final Transaction savedTransaction01 = updateTransaction.execute(savedTransaction);
+
+        final List<Account> alterValue = accountsRepository.findAll();
+        assertEquals(0, alterValue.get(0).getAmount().compareTo(new BigDecimal(50)));
+
+        // altero de volta pra 100 e salvo de novo
+        savedTransaction01.setAmount(BigDecimal.valueOf(100));
+        final Transaction savedTransaction02 = updateTransaction.execute(savedTransaction01);
+
+        final List<Account> alterValue01 = accountsRepository.findAll();
+        assertEquals(0, alterValue01.get(0).getAmount().compareTo(new BigDecimal(100)));
+    }
 }

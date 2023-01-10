@@ -15,6 +15,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Setter
@@ -54,6 +55,9 @@ public class Transaction {
     private Long toAccount;
     private boolean transactionChange;
     private BigDecimal previousAmount;
+
+    @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<TransactionLog> transactionLogs;
 
     @ManyToOne
     private Account account;
