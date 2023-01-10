@@ -16,6 +16,7 @@ public interface TransactionMapper {
     @Mapping(source = "accountId", target = "account")
     Transaction toDomain(TransactionPostRequestDTO transactionPostRequestDto);
 
+    @Mapping(source = "account.id", target = "accountId")
     TransactionResponseDTO fromDomain(Transaction transaction);
 
     @Mapping(source = "accountId", target = "account")
