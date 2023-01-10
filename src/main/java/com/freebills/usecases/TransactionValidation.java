@@ -5,21 +5,16 @@ import com.freebills.domains.Transaction;
 import com.freebills.domains.enums.TransactionCategory;
 import com.freebills.domains.enums.TransactionType;
 import com.freebills.gateways.AccountGateway;
-import com.freebills.gateways.TransactionGateway;
 import lombok.AllArgsConstructor;
-import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 
 @Component
 @AllArgsConstructor
 public class TransactionValidation {
 
     private final AccountGateway accountGateway;
-    private final TransactionGateway transactionGateway;
-    private final SessionFactory sessionFactory;
 
     public void transactionCreationValidation(Transaction transaction) {
         if (transaction.getTransactionCategory() != TransactionCategory.REAJUST) {
@@ -60,7 +55,7 @@ public class TransactionValidation {
                 } else if (transaction.getPreviousAmount().compareTo(transaction.getAmount()) == 0) {
                     account.setAmount(account.getAmount().subtract(transaction.getAmount()));
                 } else {
-                    final var difference = transaction.getPreviousAmount().subtract(transaction.getAmount()).multiply(new BigDecimal(-1));
+                    final var difference = transaction.getPreviousAmount().subtract(transaction.getAmount()).multiply(BigDecimal.valueOf(-1));
                     account.setAmount(account.getAmount().add(difference));
                 }
 
@@ -107,7 +102,7 @@ public class TransactionValidation {
                 } else if (transaction.getPreviousAmount().compareTo(transaction.getAmount()) == 0) {
                     account.setAmount(account.getAmount().add(transaction.getAmount()));
                 } else {
-                    final var difference = transaction.getPreviousAmount().subtract(transaction.getAmount()).multiply(new BigDecimal(-1));
+                    final var difference = transaction.getPreviousAmount().subtract(transaction.getAmount()).multiply(BigDecimal.valueOf(-1));
                     account.setAmount(account.getAmount().add(difference));
                 }
 
