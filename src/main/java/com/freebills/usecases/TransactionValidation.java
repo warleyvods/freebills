@@ -66,9 +66,7 @@ public class TransactionValidation {
 
             if (!transaction.isPaid() && transaction.getTransactionType() == TransactionType.EXPENSE) {
                 if (transaction.getFromAccount() != null && transaction.isTransactionChange()) {
-                    final Account acc = accountGateway.findById(transaction.getFromAccount());
-                    acc.setAmount(acc.getAmount().add(transaction.getAmount()));
-                    accountGateway.save(acc);
+                    return;
                 }
 
                 final Account account = accountGateway.findById(transaction.getAccount().getId());
@@ -115,9 +113,7 @@ public class TransactionValidation {
 
             if (!transaction.isPaid() && transaction.getTransactionType() == TransactionType.REVENUE) {
                 if (transaction.getFromAccount() != null && transaction.isTransactionChange()) {
-                    final Account acc = accountGateway.findById(transaction.getFromAccount());
-                    acc.setAmount(acc.getAmount().subtract(transaction.getAmount()));
-                    accountGateway.save(acc);
+                    return;
                 }
 
                 final var transactionLog = transactionLogRepository.findTransactionLogByTransaction_Id(transaction.getId()).stream().reduce((a, b) -> b).orElse(null);

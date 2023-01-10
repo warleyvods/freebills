@@ -1,7 +1,6 @@
 package com.freebills.security.services;
 
 
-import com.freebills.domains.User;
 import com.freebills.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -20,7 +19,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(final String login) throws UsernameNotFoundException {
-        final var user = userRepository.findByLoginIgnoreCase(login).orElseThrow(() -> new UsernameNotFoundException("User Not Found with login: " + login));
+        final var user = userRepository.findByLoginIgnoreCase(login)
+                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with login: " + login));
 
         final var authorityListAdmin = AuthorityUtils.createAuthorityList("ROLE_USER", "ROLE_ADMIN");
         final var authorityListUser = AuthorityUtils.createAuthorityList("ROLE_USER");

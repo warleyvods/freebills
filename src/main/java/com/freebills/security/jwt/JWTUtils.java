@@ -93,6 +93,13 @@ public class JWTUtils {
     }
 
     public String generateTokenFromUsername(User user) {
-        return Jwts.builder().claim("id", user.getId()).setSubject(user.getLogin()).claim("name", user.getName()).claim("email", user.getEmail()).setIssuedAt(new Date()).setExpiration(new Date((new Date()).getTime() + jwtExpirationMs)).signWith(SignatureAlgorithm.HS512, jwtSecret).compact();
+        return Jwts.builder().claim("id", user.getId())
+                .setSubject(user.getLogin())
+                .claim("name", user.getName())
+                .claim("email", user.getEmail())
+                .setIssuedAt(new Date())
+                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
+                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .compact();
     }
 }

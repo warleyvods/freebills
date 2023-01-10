@@ -15,7 +15,7 @@ public record FindAccount(AccountGateway accountGateway) {
         return accountGateway.findById(id);
     }
 
-    public List<Account> findByAccountsNonArchived(final String login){
+    public List<Account> findByAccountsNonArchived(final String login) {
         return accountGateway.findByUserLogin(login)
                 .stream()
                 .filter(acc -> !acc.isArchived())

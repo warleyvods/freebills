@@ -9,7 +9,12 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public record DeleteTransaction(TransactionGateway transactionGateway, FindTransaction findTransaction, FindAccount findAccount, UpdateAccount updateAccount) {
+public record DeleteTransaction(
+        TransactionGateway transactionGateway,
+        FindTransaction findTransaction,
+        FindAccount findAccount,
+        UpdateAccount updateAccount
+) {
 
     public void delete(final Long id) {
         log.info("[deleteAccount:{}] Deleting a account", id);
