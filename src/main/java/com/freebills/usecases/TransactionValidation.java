@@ -40,15 +40,14 @@ public class TransactionValidation {
 
     public void transactionUpdateValidation(Transaction transaction) {
         if (transaction.getTransactionCategory() != TransactionCategory.REAJUST) {
-
             if (transaction.isPaid() && transaction.getTransactionType() == TransactionType.EXPENSE) {
                 if (transaction.getFromAccount() != null && transaction.isTransactionChange()) {
                     final Account acc = accountGateway.findById(transaction.getFromAccount());
-                    acc.setAmount(acc.getAmount().subtract(transaction.getAmount()));
+                    acc.setAmount(acc.getAmount().add(transaction.getAmount()));
                     accountGateway.save(acc);
 
                     final Account account = accountGateway.findById(transaction.getAccount().getId());
-                    account.setAmount(acc.getAmount().add(transaction.getAmount()));
+                    account.setAmount(acc.getAmount().subtract(transaction.getAmount()));
                     accountGateway.save(account);
                     return;
                 }

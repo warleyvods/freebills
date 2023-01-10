@@ -82,7 +82,7 @@ class UpdateTransactionTest {
     }
 
     @Test
-    void shouldUpdateTransaction() {
+    void shouldUpdateTransactionToAnotherAccountREVENUE() {
         final var transaction = new Transaction();
         transaction.setAmount(new BigDecimal("100"));
         transaction.setDate(LocalDate.now());
@@ -93,9 +93,30 @@ class UpdateTransactionTest {
         transaction.setTransactionCategory(TransactionCategory.HOUSE);
         transaction.setPaid(true);
         transaction.setAccount(account.get(0));
+
+        // before transaction
+        final List<Account> beforeTransaction = accountsRepository.findAll();
+        assertEquals(0, beforeTransaction.get(0).getAmount().compareTo(new BigDecimal(0)));
+        assertEquals(BankType.INTER,  beforeTransaction.get(0).getBankType());
+
+        assertEquals(0, beforeTransaction.get(1).getAmount().compareTo(new BigDecimal(0)));
+        assertEquals(BankType.NUBANK,  beforeTransaction.get(1).getBankType());
+
+        // save transaction
         final var savedTransaction = createTransaction.execute(transaction);
 
+        // after transaction
+        final List<Account> afterTransaction = accountsRepository.findAll();
+        assertEquals(0, afterTransaction.get(0).getAmount().compareTo(new BigDecimal(100)));
+        assertEquals(BankType.INTER,  afterTransaction.get(0).getBankType());
+
+        assertEquals(0, afterTransaction.get(1).getAmount().compareTo(new BigDecimal(0)));
+        assertEquals(BankType.NUBANK,  afterTransaction.get(1).getBankType());
+
         // changing account
+        savedTransaction.setFromAccount(account.get(0).getId());
+        savedTransaction.setToAccount(account.get(1).getId());
+        savedTransaction.setTransactionChange(true);
         savedTransaction.setAccount(account.get(1));
 
         final Transaction response = updateTransaction.execute(savedTransaction);
@@ -104,6 +125,52 @@ class UpdateTransactionTest {
         assertEquals(BankType.NUBANK, response.getAccount().getBankType());
         assertEquals(0, allAccounts.get(0).getAmount().compareTo(new BigDecimal(0)));
         assertEquals(0, allAccounts.get(1).getAmount().compareTo(new BigDecimal(100)));
+    }
+
+    @Test
+    void shouldUpdateTransactionToAnotherAccountEXPENSE() {
+        final var transaction = new Transaction();
+        transaction.setAmount(new BigDecimal("100"));
+        transaction.setDate(LocalDate.now());
+        transaction.setDescription("Arroz");
+        transaction.setBarCode(null);
+        transaction.setBankSlip(false);
+        transaction.setTransactionType(TransactionType.EXPENSE);
+        transaction.setTransactionCategory(TransactionCategory.HOUSE);
+        transaction.setPaid(true);
+        transaction.setAccount(account.get(0));
+
+        // before transaction
+        final List<Account> beforeTransaction = accountsRepository.findAll();
+        assertEquals(0, beforeTransaction.get(0).getAmount().compareTo(new BigDecimal(0)));
+        assertEquals(BankType.INTER,  beforeTransaction.get(0).getBankType());
+
+        assertEquals(0, beforeTransaction.get(1).getAmount().compareTo(new BigDecimal(0)));
+        assertEquals(BankType.NUBANK,  beforeTransaction.get(1).getBankType());
+
+        // save transaction
+        final var savedTransaction = createTransaction.execute(transaction);
+
+        // after transaction
+        final List<Account> afterTransaction = accountsRepository.findAll();
+        assertEquals(0, afterTransaction.get(0).getAmount().compareTo(new BigDecimal(-100)));
+        assertEquals(BankType.INTER,  afterTransaction.get(0).getBankType());
+
+        assertEquals(0, afterTransaction.get(1).getAmount().compareTo(new BigDecimal(0)));
+        assertEquals(BankType.NUBANK,  afterTransaction.get(1).getBankType());
+
+        // changing account
+        savedTransaction.setFromAccount(account.get(0).getId());
+        savedTransaction.setToAccount(account.get(1).getId());
+        savedTransaction.setTransactionChange(true);
+        savedTransaction.setAccount(account.get(1));
+
+        final Transaction response = updateTransaction.execute(savedTransaction);
+        final List<Account> allAccounts = accountsRepository.findAll();
+
+        assertEquals(BankType.NUBANK, response.getAccount().getBankType());
+        assertEquals(0, allAccounts.get(0).getAmount().compareTo(new BigDecimal(0)));
+        assertEquals(0, allAccounts.get(1).getAmount().compareTo(new BigDecimal(-100)));
     }
 
     @Test
@@ -149,6 +216,74 @@ class UpdateTransactionTest {
 
         assertEquals(BankType.INTER, response.getAccount().getBankType());
         assertEquals(0, allAccounts.get(0).getAmount().compareTo(new BigDecimal(50)));
+        assertEquals(0, allAccounts.get(1).getAmount().compareTo(new BigDecimal(0)));
+    }
+
+    @Test
+    void shouldDecrementAndIncrementValueFromAccountChangingPaidStatusEXPENSE() {
+        final var transaction = new Transaction();
+        transaction.setAmount(new BigDecimal("100"));
+        transaction.setDate(LocalDate.now());
+        transaction.setDescription("Arroz");
+        transaction.setBarCode(null);
+        transaction.setBankSlip(false);
+        transaction.setTransactionType(TransactionType.EXPENSE);
+        transaction.setTransactionCategory(TransactionCategory.HOUSE);
+        transaction.setPaid(true);
+        transaction.setAccount(account.get(0));
+
+        final List<Account> beforeAccounts = accountsRepository.findAll();
+        assertEquals(0, beforeAccounts.get(0).getAmount().compareTo(new BigDecimal(0)));
+
+        final var savedTransaction = createTransaction.execute(transaction);
+
+        final List<Account> afterAccounts = accountsRepository.findAll();
+        assertEquals(0, afterAccounts.get(0).getAmount().compareTo(new BigDecimal(-100)));
+
+        // change status
+        savedTransaction.setPaid(false);
+
+        // act
+        final Transaction response = updateTransaction.execute(savedTransaction);
+
+        // asserts
+        final List<Account> allAccounts = accountsRepository.findAll();
+        assertEquals(BankType.INTER, response.getAccount().getBankType());
+        assertEquals(0, allAccounts.get(0).getAmount().compareTo(new BigDecimal(0)));
+        assertEquals(0, allAccounts.get(1).getAmount().compareTo(new BigDecimal(0)));
+    }
+
+    @Test
+    void shouldDecrementAndIncrementValueFromAccountChangingPaidStatusREVENUE() {
+        final var transaction = new Transaction();
+        transaction.setAmount(new BigDecimal("100"));
+        transaction.setDate(LocalDate.now());
+        transaction.setDescription("Arroz");
+        transaction.setBarCode(null);
+        transaction.setBankSlip(false);
+        transaction.setTransactionType(TransactionType.REVENUE);
+        transaction.setTransactionCategory(TransactionCategory.HOUSE);
+        transaction.setPaid(true);
+        transaction.setAccount(account.get(0));
+
+        final List<Account> beforeAccounts = accountsRepository.findAll();
+        assertEquals(0, beforeAccounts.get(0).getAmount().compareTo(new BigDecimal(0)));
+
+        final var savedTransaction = createTransaction.execute(transaction);
+
+        final List<Account> afterAccounts = accountsRepository.findAll();
+        assertEquals(0, afterAccounts.get(0).getAmount().compareTo(new BigDecimal(100)));
+
+        // change status
+        savedTransaction.setPaid(false);
+
+        // act
+        final Transaction response = updateTransaction.execute(savedTransaction);
+
+        // asserts
+        final List<Account> allAccounts = accountsRepository.findAll();
+        assertEquals(BankType.INTER, response.getAccount().getBankType());
+        assertEquals(0, allAccounts.get(0).getAmount().compareTo(new BigDecimal(0)));
         assertEquals(0, allAccounts.get(1).getAmount().compareTo(new BigDecimal(0)));
     }
 }

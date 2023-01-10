@@ -1,8 +1,5 @@
 package com.freebills.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.freebills.controllers.dtos.requests.LoginRequestDTO;
 import com.freebills.controllers.dtos.requests.TransactionPostRequestDTO;
 import com.freebills.controllers.dtos.requests.TransactionPutRequesDTO;
@@ -25,20 +22,16 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.*;
 import org.springframework.util.LinkedMultiValueMap;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Objects;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class TransactionControllerTest {
@@ -325,86 +318,6 @@ class TransactionControllerTest {
 
         //Account paid false
         assertEquals(0, new BigDecimal(0).compareTo(acc02.getAmount()));
-    }
-
-    @Test
-    @DisplayName(value = "Create transaction paid true with 100$ and change to paid false should remove amount from account.")
-    void shouldUpdateTransaction02() {
-        final var transaction = new TransactionPostRequestDTO(
-                account.getId(),
-                100.00D,
-                true,
-                "Arroz",
-                LocalDate.of(2022, 10, 10),
-                TransactionType.REVENUE.name(),
-                TransactionCategory.RESTAURANT.name(),
-                null,
-                false
-        );
-
-        final var headers = new HttpHeaders();
-        headers.set("Cookie", token);
-        final var request = new HttpEntity<>(transaction, headers);
-
-        final var transactionResponse = testRestTemplate.exchange("/v1/transactions",
-                HttpMethod.POST,
-                request,
-                TransactionResponseDTO.class);
-
-        final Account acc = accountGateway.findById(account.getId());
-
-        //Account paid true
-        assertEquals(0, new BigDecimal(100).compareTo(acc.getAmount()));
-
-        final var transactionPut = new TransactionPutRequesDTO(
-                account.getId(),
-                Objects.requireNonNull(transactionResponse.getBody()).id(),
-                transactionResponse.getBody().amount(),
-                false,
-                transactionResponse.getBody().description(),
-                transactionResponse.getBody().date(),
-                transactionResponse.getBody().transactionType(),
-                transactionResponse.getBody().transactionCategory(),
-                transactionResponse.getBody().bankSlip(),
-                transactionResponse.getBody().barCode()
-        );
-
-        final var request2 = new HttpEntity<>(transactionPut, headers);
-        final var update = testRestTemplate.exchange("/v1/transactions",
-                HttpMethod.PUT,
-                request2,
-                TransactionResponseDTO.class
-        );
-
-        final Account acc02 = accountGateway.findById(account.getId());
-
-        //Account paid false
-        assertEquals(0, new BigDecimal(0).compareTo(acc02.getAmount()));
-
-        final var transactionPut02 = new TransactionPutRequesDTO(
-                account.getId(),
-                Objects.requireNonNull(transactionResponse.getBody()).id(),
-                transactionResponse.getBody().amount(),
-                false,
-                transactionResponse.getBody().description(),
-                transactionResponse.getBody().date(),
-                TransactionType.EXPENSE.name(),
-                transactionResponse.getBody().transactionCategory(),
-                transactionResponse.getBody().bankSlip(),
-                transactionResponse.getBody().barCode()
-        );
-
-        final var request3 = new HttpEntity<>(transactionPut02, headers);
-        final var update03 = testRestTemplate.exchange("/v1/transactions",
-                HttpMethod.PUT,
-                request3,
-                TransactionResponseDTO.class
-        );
-
-        final Account acc03 = accountGateway.findById(account.getId());
-
-        //Account paid false
-        assertEquals(0, new BigDecimal(0).compareTo(acc03.getAmount()));
     }
 
     @Test
