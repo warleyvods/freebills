@@ -50,6 +50,11 @@ public class Transaction {
 
     private boolean paid;
 
+    private Long fromAccount;
+    private Long toAccount;
+    private boolean transactionChange;
+    private BigDecimal previousAmount;
+
     @ManyToOne
     private Account account;
 

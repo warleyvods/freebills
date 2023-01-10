@@ -16,6 +16,10 @@ public class CreateTransaction {
     private final  TransactionValidation transactionValidation;
 
     public Transaction execute(final Transaction transaction) {
+        if (transaction.getPreviousAmount() == null) {
+           transaction.setPreviousAmount(transaction.getAmount());
+        }
+
         final Transaction transactionSaved = transactionGateway.save(transaction);
         log.info("[createTransaction:{}] Creating new transaction", transactionSaved.getId());
         transactionValidation.transactionCreationValidation(transactionSaved);

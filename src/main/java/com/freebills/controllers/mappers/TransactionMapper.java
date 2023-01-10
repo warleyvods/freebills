@@ -8,6 +8,8 @@ import com.freebills.domains.Transaction;
 import com.freebills.gateways.AccountGateway;
 import org.mapstruct.*;
 
+import java.math.BigDecimal;
+
 @Mapper(componentModel = "spring", uses = AccountGateway.class, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface TransactionMapper {
 
@@ -18,6 +20,21 @@ public interface TransactionMapper {
 
     @Mapping(source = "accountId", target = "account")
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    Transaction updateTransactionFromDto(TransactionPutRequesDTO transactionPutRequesDTO, @MappingTarget Transaction transaction);
+    Transaction updateTransaction(TransactionPutRequesDTO transactionPutRequesDTO, @MappingTarget Transaction transaction);
 
+    default Transaction updateTransactionFromDto(TransactionPutRequesDTO transactionPutRequesDTO, Transaction transaction) {
+        if (transaction.getAccount() != null && !transaction.getAccount().getId().equals(transactionPutRequesDTO.accountId())) {
+            transaction.setFromAccount(transaction.getAccount().getId());
+            transaction.setToAccount(transactionPutRequesDTO.accountId());
+            transaction.setTransactionChange(true);
+            return updateTransaction(transactionPutRequesDTO, transaction);
+        }
+
+        if (transaction.getAmount().compareTo(BigDecimal.valueOf(transactionPutRequesDTO.amount())) != 0 || transaction.getPreviousAmount() == null) {
+            transaction.setPreviousAmount(transaction.getAmount());
+        }
+
+        transaction.setTransactionChange(false);
+        return updateTransaction(transactionPutRequesDTO, transaction);
+    }
 }

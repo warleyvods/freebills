@@ -30,7 +30,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@Disabled(value = "Ignorando até entender um meio de resolver o bug.")
+//@Disabled(value = "Ignorando até entender um meio de resolver o bug.")
 @SpringBootTest(classes = FreebillsApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class AUserControllerTest {
 

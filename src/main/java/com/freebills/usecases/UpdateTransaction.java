@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public record UpdateTransaction(TransactionGateway transactionGateway, TransactionValidation transactionValidation) {
 
-    public Transaction update(final Transaction transaction) {
+    public Transaction execute(final Transaction transaction) {
         if (Boolean.FALSE.equals(transaction.getBankSlip())) {
             transaction.setBarCode(null);
         }
