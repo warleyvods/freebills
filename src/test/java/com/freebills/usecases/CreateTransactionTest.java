@@ -9,12 +9,12 @@ import com.freebills.domains.enums.TransactionCategory;
 import com.freebills.domains.enums.TransactionType;
 import com.freebills.repositories.AccountsRepository;
 import com.freebills.repositories.UserRepository;
+import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import javax.validation.ConstraintViolationException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 

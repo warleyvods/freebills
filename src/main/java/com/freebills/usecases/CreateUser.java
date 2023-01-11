@@ -5,8 +5,6 @@ import com.freebills.gateways.UserGateway;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import javax.validation.Valid;
-
 @Slf4j
 @Component
 public record CreateUser(UserGateway userGateway) {

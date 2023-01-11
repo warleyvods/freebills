@@ -2,11 +2,10 @@ package com.freebills.usecases;
 
 import com.freebills.domains.CreditCard;
 import com.freebills.gateways.CreditCardGateway;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-
-import javax.validation.Valid;
 
 @Slf4j
 @Component

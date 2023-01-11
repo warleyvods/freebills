@@ -1,9 +1,9 @@
 package com.freebills.domains;
 
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Getter
@@ -17,10 +17,11 @@ public class TransactionLog {
 
     private BigDecimal inicialAmount;
     private BigDecimal previousAmount;
+    private BigDecimal atualAmount;
+
     private Long inicialAccount;
     private Long previousAccount;
     private Long atualAccount;
-    private BigDecimal atualAmount;
 
     @ManyToOne
     private Transaction transaction;
