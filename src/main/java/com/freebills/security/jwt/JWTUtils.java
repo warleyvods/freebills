@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.util.WebUtils;
 
 
-import java.util.Base64;
 import java.util.Date;
 import java.util.Optional;
 
@@ -78,7 +77,7 @@ public class JWTUtils {
 
     public boolean validateJwtToken(String authToken) {
         try {
-            Jwts.parser().setSigningKey(Base64.getDecoder().decode(jwtSecret)).parseClaimsJws(authToken);
+            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
             return true;
         } catch (SignatureException e) {
             LOGGER.error("Invalid JWT signature: {}", e.getMessage());
