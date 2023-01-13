@@ -3,6 +3,8 @@ package com.freebills.exceptions.handler;
 import com.freebills.exceptions.PermissionDeniedException;
 import com.freebills.exceptions.TransactionNotFoundException;
 import com.freebills.exceptions.UserNotFoundException;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
@@ -16,8 +18,6 @@ import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
 import javax.naming.NoPermissionException;
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
 import java.io.FileNotFoundException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;

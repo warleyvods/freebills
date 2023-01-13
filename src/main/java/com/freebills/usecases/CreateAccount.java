@@ -2,11 +2,11 @@ package com.freebills.usecases;
 
 import com.freebills.domains.Account;
 import com.freebills.gateways.AccountGateway;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import javax.validation.Valid;
 
 @Slf4j
 @Component

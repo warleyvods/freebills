@@ -156,7 +156,7 @@ class TransactionControllerTest {
         //Account
         assertEquals(0, new BigDecimal(100).compareTo(acc.getAmount()));
 
-        assertEquals(HttpStatus.CREATED.value(), transactionResponse.getStatusCodeValue());
+        assertEquals(HttpStatus.CREATED.value(), transactionResponse.getStatusCode().value());
         assertNotNull(transactionResponse.getBody());
     }
 
@@ -188,7 +188,7 @@ class TransactionControllerTest {
         //Account
         assertEquals(0, new BigDecimal(0).compareTo(acc.getAmount()));
 
-        assertEquals(HttpStatus.CREATED.value(), transactionResponse.getStatusCodeValue());
+        assertEquals(HttpStatus.CREATED.value(), transactionResponse.getStatusCode().value());
         assertNotNull(transactionResponse.getBody());
     }
 
@@ -220,7 +220,7 @@ class TransactionControllerTest {
         //Account
         assertEquals(0, new BigDecimal(-100).compareTo(acc.getAmount()));
 
-        assertEquals(HttpStatus.CREATED.value(), transactionResponse.getStatusCodeValue());
+        assertEquals(HttpStatus.CREATED.value(), transactionResponse.getStatusCode().value());
         assertNotNull(transactionResponse.getBody());
     }
 
@@ -236,7 +236,7 @@ class TransactionControllerTest {
                 request,
                 TransactionResponseDTO.class);
 
-        assertEquals(HttpStatus.OK.value(), transactionResponse.getStatusCodeValue());
+        assertEquals(HttpStatus.OK.value(), transactionResponse.getStatusCode().value());
         assertNotNull(transactionResponse.getBody());
     }
 
@@ -261,7 +261,7 @@ class TransactionControllerTest {
                 String.class
         );
 
-        assertEquals(200, transactionResponse.getStatusCodeValue());
+        assertEquals(200, transactionResponse.getStatusCode().value());
     }
 
     @Test

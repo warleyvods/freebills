@@ -2,10 +2,10 @@ package com.freebills.domains;
 
 import com.freebills.domains.enums.AccountType;
 import com.freebills.domains.enums.BankType;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
