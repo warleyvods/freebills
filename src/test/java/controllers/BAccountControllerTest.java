@@ -60,7 +60,7 @@ class BAccountControllerTest {
 
         final ResponseEntity<AccountResponseDTO> exchange = testRestTemplate.postForEntity("/v1/accounts", newRequest, AccountResponseDTO.class);
 
-        assertEquals(201, exchange.getStatusCodeValue());
+        assertEquals(201, exchange.getStatusCode().value());
     }
 
     @Test
@@ -103,6 +103,6 @@ class BAccountControllerTest {
 
         final var response = testRestTemplate.exchange("/v1/accounts?userId="+ userSaved.getId() , HttpMethod.GET, newReq, String.class);
 
-        assertEquals(200, response.getStatusCodeValue());
+        assertEquals(200, response.getStatusCode().value());
     }
 }
