@@ -10,6 +10,7 @@ import com.freebills.repositories.UserRepository;
 import com.freebills.security.jwt.JWTUtils;
 import com.freebills.security.services.UserDetailsImpl;
 import com.freebills.usecases.CreateUser;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
@@ -20,7 +21,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+
 import java.util.Optional;
 
 @CrossOrigin(origins = "*", maxAge = 3600)

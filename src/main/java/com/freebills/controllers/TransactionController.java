@@ -10,12 +10,12 @@ import com.freebills.usecases.CreateTransaction;
 import com.freebills.usecases.DeleteTransaction;
 import com.freebills.usecases.FindTransaction;
 import com.freebills.usecases.UpdateTransaction;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.security.Principal;
 
 import static org.springframework.http.HttpStatus.*;

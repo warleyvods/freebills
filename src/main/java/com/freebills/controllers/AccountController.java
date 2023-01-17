@@ -9,10 +9,10 @@ import com.freebills.controllers.dtos.responses.AccountResponseDTO;
 import com.freebills.controllers.mappers.AccountMapper;
 import com.freebills.usecases.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
 

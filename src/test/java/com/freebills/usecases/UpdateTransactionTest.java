@@ -14,6 +14,7 @@ import com.freebills.repositories.TransactionRepository;
 import com.freebills.repositories.UserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -334,7 +335,7 @@ class UpdateTransactionTest {
     }
 
     @Test
-    void shouldDecrementAndIncrementValueFromAccountChangingPaidStatusBUG() {
+    void shouldDecrementAndIncrementValueFromAccountChangingPaidStatus() {
         final var transaction = new Transaction();
         transaction.setAmount(new BigDecimal("100"));
         transaction.setDate(LocalDate.now());
@@ -368,5 +369,39 @@ class UpdateTransactionTest {
 
         final List<Account> alterValue01 = accountsRepository.findAll();
         assertEquals(0, alterValue01.get(0).getAmount().compareTo(new BigDecimal(100)));
+    }
+
+    //TODO arrumar o mais rapido possivel
+    @Disabled
+    @Test
+    void shouldDecreaseAmountIfPaidExpenseToPaidRevenue() {
+        final var transaction = new Transaction();
+        transaction.setAmount(new BigDecimal("100"));
+        transaction.setDate(LocalDate.now());
+        transaction.setDescription("Arroz");
+        transaction.setBarCode(null);
+        transaction.setBankSlip(false);
+        transaction.setTransactionType(TransactionType.EXPENSE);
+        transaction.setTransactionCategory(TransactionCategory.HOUSE);
+        transaction.setPaid(true);
+        transaction.setAccount(account.get(0));
+
+        // conta deve não ter valor algum R$ 0.00
+        final List<Account> beforeAccounts = accountsRepository.findAll();
+        assertEquals(0, beforeAccounts.get(0).getAmount().compareTo(new BigDecimal(0)));
+
+        // criei ja paga (deve reduzir o valor da conta 0 pra -100)
+        final var savedTransaction = createTransaction.execute(transaction);
+
+        final List<Account> afterAccounts = accountsRepository.findAll();
+        assertEquals(0, afterAccounts.get(0).getAmount().compareTo(new BigDecimal(-100)));
+
+        // altero o tipo de EXPENSE pra REVENUE e salvo
+        savedTransaction.setTransactionType(TransactionType.REVENUE);
+        final Transaction savedTransaction01 = updateTransaction.execute(savedTransaction);
+
+        // deve reduzir o valor da conta 0 para R$ 0.00 e adicionar 100 reais positivo pra conta.
+        final List<Account> alterValue = accountsRepository.findAll();
+        assertEquals(0, alterValue.get(0).getAmount().compareTo(new BigDecimal(100)));
     }
 }
