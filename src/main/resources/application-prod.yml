@@ -26,15 +26,4 @@ spring:
 
 springdoc:
   api-docs:
-    enabled: true
-
-
-logging:
-  level:
-    org:
-      hibernate:
-        type:
-          descriptor:
-            sql:
-              BasicBinder: TRACE
-      SQL: debug
+    enabled: false

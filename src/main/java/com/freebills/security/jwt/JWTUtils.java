@@ -8,12 +8,14 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.WebUtils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Optional;
 
@@ -24,6 +26,7 @@ public class JWTUtils {
     private static final Logger LOGGER = LoggerFactory.getLogger(JWTUtils.class);
 
     private final UserRepository userRepository;
+    private final Environment environment;
 
     @Value("${api.app.jwtSecret}")
     private String jwtSecret;
@@ -56,6 +59,7 @@ public class JWTUtils {
                     .domain(".wavods.com")
                     .build();
         }
+
         return null;
     }
 
@@ -93,7 +97,8 @@ public class JWTUtils {
     }
 
     public String generateTokenFromUsername(User user) {
-        return Jwts.builder().claim("id", user.getId())
+        return Jwts.builder()
+                .claim("id", user.getId())
                 .setSubject(user.getLogin())
                 .claim("name", user.getName())
                 .claim("email", user.getEmail())
