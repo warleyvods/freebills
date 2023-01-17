@@ -51,26 +51,33 @@ public class JWTUtils {
 
         if (findedUser.isPresent()) {
             String jwt = generateTokenFromUsername(findedUser.get());
-
-            return ResponseCookie.from(jwtCookie, jwt)
+            final var builder = ResponseCookie.from(jwtCookie, jwt)
                     .path("/").maxAge(3600000L)
                     .secure(true)
-                    .httpOnly(true)
-                    .domain(".wavods.com")
-                    .build();
+                    .httpOnly(true);
+
+            if (Arrays.asList(environment.getActiveProfiles()).contains("prod")) {
+                builder.domain(".wavods.com");
+            }
+
+            return builder.build();
         }
 
         return null;
     }
 
     public ResponseCookie getCleanJwtCookie() {
-        return ResponseCookie.from(jwtCookie, "")
+        final var builder = ResponseCookie.from(jwtCookie, "")
                 .path("/")
                 .maxAge(0)
                 .secure(true)
-                .httpOnly(true)
-                .domain(".wavods.com")
-                .build();
+                .httpOnly(true);
+
+        if (Arrays.asList(environment.getActiveProfiles()).contains("prod")) {
+            builder.domain(".wavods.com");
+        }
+
+        return builder.build();
     }
 
     public String getUserNameFromJwtToken(String token) {
