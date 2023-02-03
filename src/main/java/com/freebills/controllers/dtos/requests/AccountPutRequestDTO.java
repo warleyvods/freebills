@@ -7,7 +7,6 @@ import jakarta.validation.constraints.NotNull;
 
 
 public record AccountPutRequestDTO(
-
         @NotNull
         Long accountId,
 
@@ -25,7 +24,6 @@ public record AccountPutRequestDTO(
         @Schema(description = "Type of the bank")
         @NotBlank
         String bankType
-
 ) {
 
 }

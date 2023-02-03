@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 
+    //TODO ainda não está funcionando para lowercase.
     @Query(" SELECT t1 FROM Transaction t1 " +
             " INNER JOIN t1.account ac " +
             " INNER JOIN ac.user u " +

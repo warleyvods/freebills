@@ -6,12 +6,12 @@ import jakarta.validation.constraints.NotNull;
 
 
 public record UserPutPasswordRequestDTO(
-
         @Schema(description = "Id", example = "1", required = true)
-        @NotNull Long id,
+        @NotNull
+        Long id,
 
         @Schema(description = "Password", example = "fresh", required = true)
-        @NotBlank String password
-
+        @NotBlank
+        String password
 ) {
 }

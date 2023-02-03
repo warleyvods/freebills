@@ -13,7 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-public class Account {
+public class  Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

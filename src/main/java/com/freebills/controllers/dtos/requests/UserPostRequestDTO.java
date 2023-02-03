@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotBlank;
 
 
 public record UserPostRequestDTO(
-
         @Schema(description = "User name application", example = "Pudge Silva", required = true)
         @NotBlank String name,
 

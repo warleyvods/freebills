@@ -6,7 +6,6 @@ import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 public record CreditCardPostRequestDTO(
-
         @NotNull
         Long accountId,
 
@@ -24,6 +23,5 @@ public record CreditCardPostRequestDTO(
 
         @NotNull
         Integer closingDay
-
 ) {
 }

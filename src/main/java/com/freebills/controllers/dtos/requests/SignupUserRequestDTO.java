@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 
 public record SignupUserRequestDTO(
-
         @Schema(description = "User name application", example = "Pudge Silva", required = true)
         @NotBlank
         String name,
@@ -20,7 +19,6 @@ public record SignupUserRequestDTO(
         @Schema(description = "Email", example = "dota@dota.com", required = true)
         @NotBlank
         String email
-
 ) {
 
 

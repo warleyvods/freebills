@@ -6,7 +6,6 @@ import jakarta.validation.constraints.NotBlank;
 
 
 public record AccountPostRequestDTO(
-
         Long userId,
 
         @Schema(description = "Amount ")
