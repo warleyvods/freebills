@@ -33,7 +33,9 @@ public class UpdateTransaction {
                     transactionSaved.getFromAccount(),
                     transactionSaved.getAccount().getId(),
                     transactionSaved.getAmount(),
-                    transactionSaved
+                    transactionSaved,
+                    lastTransactionLog.getActualTransactionType(),
+                    transactionSaved.getTransactionType()
             ));
         } else {
             transactionLogRepository.save(new TransactionLog(
@@ -43,7 +45,9 @@ public class UpdateTransaction {
                     lastTransactionLog.getAtualAccount(),
                     transactionSaved.getAccount().getId(),
                     transactionSaved.getAmount(),
-                    transactionSaved
+                    transactionSaved,
+                    lastTransactionLog.getActualTransactionType(),
+                    transactionSaved.getTransactionType()
             ));
         }
 

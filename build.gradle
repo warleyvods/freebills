@@ -107,4 +107,5 @@ pitest {
 test {
     useJUnitPlatform()
     systemProperty 'spring.test.constructor.autowire.mode', 'all'
+    systemProperty 'spring.profiles.active', 'test'
 }

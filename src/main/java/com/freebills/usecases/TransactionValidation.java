@@ -37,6 +37,8 @@ public class TransactionValidation {
 
     public void transactionUpdateValidation(Transaction transaction) {
         if (transaction.getTransactionCategory() != TransactionCategory.REAJUST) {
+
+
             if (transaction.isPaid() && transaction.getTransactionType() == TransactionType.EXPENSE) {
                 if (transaction.getFromAccount() != null && transaction.isTransactionChange()) {
                     final Account acc = accountGateway.findById(transaction.getFromAccount());
@@ -50,12 +52,19 @@ public class TransactionValidation {
                 }
 
                 final Account account = accountGateway.findById(transaction.getAccount().getId());
+                final var transactionLog = transactionLogRepository.findTransactionLogByTransaction_Id(transaction.getId()).stream().reduce((a, b) -> b).orElse(null);
 
-                if (transaction.getPreviousAmount().compareTo(transaction.getAmount()) > 0) {
+                assert transactionLog != null;
+                if (transactionLog.getPreviousAmount().compareTo(transaction.getAmount()) > 0) {
                     final var difference = transaction.getPreviousAmount().subtract(transaction.getAmount());
                     account.setAmount(account.getAmount().subtract(difference));
-                } else if (transaction.getPreviousAmount().compareTo(transaction.getAmount()) == 0) {
-                    account.setAmount(account.getAmount().subtract(transaction.getAmount()));
+                } else if (transactionLog.getPreviousAmount().compareTo(transaction.getAmount()) == 0) {
+
+                    if (transactionLog.getPreviousTransactionType() != transaction.getTransactionType()) {
+                        account.setAmount(account.getAmount().subtract(transaction.getAmount().multiply(new BigDecimal(2))));
+                    } else {
+                        account.setAmount(account.getAmount().subtract(transaction.getAmount()));
+                    }
                 } else {
                     final var difference = transaction.getPreviousAmount().subtract(transaction.getAmount()).multiply(BigDecimal.valueOf(-1));
                     account.setAmount(account.getAmount().add(difference));
@@ -102,7 +111,12 @@ public class TransactionValidation {
                     final var difference = transaction.getPreviousAmount().subtract(transaction.getAmount());
                     account.setAmount(account.getAmount().subtract(difference));
                 } else if (transactionLog.getPreviousAmount().compareTo(transaction.getAmount()) == 0) {
-                    account.setAmount(account.getAmount().add(transaction.getAmount()));
+                    //trocando tipo
+                    if (transactionLog.getPreviousTransactionType() != transaction.getTransactionType()) {
+                        account.setAmount(account.getAmount().add(transaction.getAmount().multiply(new BigDecimal(2))));
+                    } else {
+                        account.setAmount(account.getAmount().add(transaction.getAmount()));
+                    }
                 } else {
                     final var difference = transactionLog.getPreviousAmount().subtract(transaction.getAmount()).multiply(BigDecimal.valueOf(-1));
                     account.setAmount(account.getAmount().add(difference));

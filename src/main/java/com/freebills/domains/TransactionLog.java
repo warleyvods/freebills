@@ -1,5 +1,6 @@
 package com.freebills.domains;
 
+import com.freebills.domains.enums.TransactionType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,6 +24,11 @@ public class TransactionLog {
     private Long previousAccount;
     private Long atualAccount;
 
+    @Enumerated(value = EnumType.STRING)
+    private TransactionType previousTransactionType;
+    @Enumerated(value = EnumType.STRING)
+    private TransactionType actualTransactionType;
+
     @ManyToOne
     private Transaction transaction;
 
@@ -32,7 +38,9 @@ public class TransactionLog {
                           Long previousAccount,
                           Long atualAccount,
                           BigDecimal atualAmount,
-                          Transaction transaction) {
+                          Transaction transaction,
+                          TransactionType previousTransactionType,
+                          TransactionType actualTransactionType) {
         this.inicialAmount = inicialAmount;
         this.previousAmount = previousAmount;
         this.inicialAccount = inicialAccount;
@@ -40,6 +48,8 @@ public class TransactionLog {
         this.atualAccount = atualAccount;
         this.atualAmount = atualAmount;
         this.transaction = transaction;
+        this.previousTransactionType = previousTransactionType;
+        this.actualTransactionType = actualTransactionType;
     }
 
     public TransactionLog() {

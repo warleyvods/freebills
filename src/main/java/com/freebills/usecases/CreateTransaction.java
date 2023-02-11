@@ -15,23 +15,26 @@ import org.springframework.stereotype.Component;
 public class CreateTransaction {
 
     private final TransactionGateway transactionGateway;
-    private final  TransactionValidation transactionValidation;
+    private final TransactionValidation transactionValidation;
     private final TransactionLogRepository transactionLogRepository;
 
     public Transaction execute(final Transaction transaction) {
         if (transaction.getPreviousAmount() == null) {
-           transaction.setPreviousAmount(transaction.getAmount());
+            transaction.setPreviousAmount(transaction.getAmount());
         }
 
         final Transaction transactionSaved = transactionGateway.save(transaction);
         transactionLogRepository.save(new TransactionLog(
-                transactionSaved.getAmount(),
+                        transactionSaved.getAmount(),
+                        null,
+                        transactionSaved.getAccount().getId(),
+                        null,
+                        transactionSaved.getAccount().getId(),
+                        transactionSaved.getAmount(),
+                        transactionSaved,
                 null,
-                transactionSaved.getAccount().getId(),
-                null,
-                transactionSaved.getAccount().getId(),
-                transactionSaved.getAmount(),
-                transactionSaved)
+                transactionSaved.getTransactionType()
+                )
         );
         log.info("[createTransaction:{}] Creating new transaction", transactionSaved.getId());
         transactionValidation.transactionCreationValidation(transactionSaved);
