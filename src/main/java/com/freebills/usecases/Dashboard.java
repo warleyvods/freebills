@@ -2,9 +2,11 @@ package com.freebills.usecases;
 
 import com.freebills.controllers.dtos.responses.DashboardExpenseResponseDTO;
 import com.freebills.controllers.dtos.responses.DashboardResponseDTO;
+import com.freebills.controllers.dtos.responses.DashboardGraphResponseDTO;
 import com.freebills.controllers.dtos.responses.DashboardRevenueResponseDTO;
 import com.freebills.domains.Account;
 import com.freebills.domains.Transaction;
+import com.freebills.domains.enums.TransactionCategory;
 import com.freebills.domains.enums.TransactionType;
 import com.freebills.gateways.AccountGateway;
 import com.freebills.gateways.TransactionGateway;
@@ -12,8 +14,10 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.reducing;
@@ -24,6 +28,33 @@ public class Dashboard {
 
     private final AccountGateway accountGateway;
     private final TransactionGateway transactionGateway;
+
+    public DashboardGraphResponseDTO getDonutsGraph(String login, Integer month, Integer year, TransactionType transactionType) {
+        var transactions = getTransactionsByUserDateFilter(login, month, year)
+                .stream()
+                .filter(transaction -> transaction.getTransactionType() == transactionType)
+                .filter(Transaction::isPaid)
+                .toList();
+
+        var transactionTypesLabels = transactions.stream()
+                .map(Transaction::getTransactionCategory)
+                .map(TransactionCategory::name)
+                .distinct()
+                .sorted()
+                .toList();
+
+        var values = transactions.stream()
+                .collect(Collectors.groupingBy(
+                        transaction -> transaction.getTransactionCategory().name(),
+                        Collectors.summingDouble(transaction -> transaction.getAmount().doubleValue())
+                ))
+                .entrySet().stream()
+                .sorted(Comparator.comparingInt(t -> transactionTypesLabels.indexOf(t.getKey())))
+                .map(Map.Entry::getValue)
+                .toList();
+
+        return new DashboardGraphResponseDTO(transactionTypesLabels, values);
+    }
 
     public DashboardResponseDTO getTotalDashboard(String login, Integer month, Integer year) {
         final var transactions = getTransactionsByUserDateFilter(login, month, year);
