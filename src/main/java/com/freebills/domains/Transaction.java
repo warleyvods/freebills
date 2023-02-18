@@ -15,6 +15,7 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Setter
@@ -75,5 +76,30 @@ public class Transaction {
         this.transactionCategory = transactionCategory;
         this.paid = paid;
         this.account = account;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Transaction that = (Transaction) o;
+        return paid == that.paid &&
+                Objects.equals(id, that.id) &&
+                amount.compareTo(that.getAmount()) == 0 &&
+                Objects.equals(date, that.date) &&
+                Objects.equals(description, that.description) &&
+                Objects.equals(barCode, that.barCode) &&
+                Objects.equals(bankSlip, that.bankSlip) &&
+                transactionType == that.transactionType &&
+                transactionCategory == that.transactionCategory &&
+                Objects.equals(fromAccount, that.fromAccount) &&
+                Objects.equals(toAccount, that.toAccount) &&
+                Objects.equals(transactionChange, that.transactionChange) &&
+                account.equals(that.account);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, amount, date, description, barCode, bankSlip, transactionType, transactionCategory, paid, account);
     }
 }

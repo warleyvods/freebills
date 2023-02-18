@@ -38,7 +38,6 @@ public class TransactionValidation {
     public void transactionUpdateValidation(Transaction transaction) {
         if (transaction.getTransactionCategory() != TransactionCategory.REAJUST) {
 
-
             if (transaction.isPaid() && transaction.getTransactionType() == TransactionType.EXPENSE) {
                 if (transaction.getFromAccount() != null && transaction.isTransactionChange()) {
                     final Account acc = accountGateway.findById(transaction.getFromAccount());

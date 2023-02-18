@@ -3,6 +3,7 @@ package com.freebills.domains;
 import com.freebills.domains.enums.AccountType;
 import com.freebills.domains.enums.BankType;
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,6 +14,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
+@EqualsAndHashCode(of = "id", exclude = {"transactions", "cards"})
 public class  Account {
 
     @Id
@@ -39,5 +41,5 @@ public class  Account {
 
     private boolean archived;
     private boolean dashboard;
-
+    
 }

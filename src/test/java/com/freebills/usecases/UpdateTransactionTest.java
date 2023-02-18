@@ -233,13 +233,18 @@ class UpdateTransactionTest {
         transaction.setPaid(true);
         transaction.setAccount(account.get(0));
         final var savedTransaction = createTransaction.execute(transaction);
-        savedTransaction.setAmount(new BigDecimal(100));
+
+        final List<Account> allBefore = accountsRepository.findAll();
+        assertEquals(0, allBefore.get(0).getAmount().compareTo(new BigDecimal(100)));
+        assertEquals(0, allBefore.get(1).getAmount().compareTo(new BigDecimal(0)));
+
+        savedTransaction.setAmount(new BigDecimal(150));
 
         final Transaction response = updateTransaction.execute(savedTransaction);
         final List<Account> allAccounts = accountsRepository.findAll();
 
         assertEquals(BankType.INTER, response.getAccount().getBankType());
-        assertEquals(0, allAccounts.get(0).getAmount().compareTo(new BigDecimal(200)));
+        assertEquals(0, allAccounts.get(0).getAmount().compareTo(new BigDecimal(150)));
         assertEquals(0, allAccounts.get(1).getAmount().compareTo(new BigDecimal(0)));
     }
 
@@ -433,5 +438,35 @@ class UpdateTransactionTest {
         // deve reduzir o valor da conta 0 para R$ 100 e adicionar 0.00 reais pra conta.
         final List<Account> alterValue = accountsRepository.findAll();
         assertEquals(0, alterValue.get(0).getAmount().compareTo(new BigDecimal(-100)));
+    }
+
+    @Test
+    void shouldNotCreateANewTransactionIfNotChangeNothingFromTransaction() {
+        final var transaction = new Transaction();
+        transaction.setAmount(new BigDecimal("100"));
+        transaction.setDate(LocalDate.now());
+        transaction.setDescription("Arroz");
+        transaction.setBarCode(null);
+        transaction.setBankSlip(false);
+        transaction.setTransactionType(TransactionType.REVENUE);
+        transaction.setTransactionCategory(TransactionCategory.HOUSE);
+        transaction.setPaid(true);
+        transaction.setAccount(account.get(0));
+
+        // conta deve não ter valor algum R$ 0.00
+        final List<Account> beforeAccounts = accountsRepository.findAll();
+        assertEquals(0, beforeAccounts.get(0).getAmount().compareTo(new BigDecimal(0)));
+
+        // criei ja paga (deve reduzir o valor da conta 0 pra +100)
+        final var savedTransaction = createTransaction.execute(transaction);
+
+        final List<Account> afterAccounts = accountsRepository.findAll();
+        assertEquals(0, afterAccounts.get(0).getAmount().compareTo(new BigDecimal(100)));
+
+        //SALVA DE NOVO
+        updateTransaction.execute(savedTransaction);
+
+        final List<Account> afterAccounts2 = accountsRepository.findAll();
+        assertEquals(0, afterAccounts2.get(0).getAmount().compareTo(new BigDecimal(100)));
     }
 }
