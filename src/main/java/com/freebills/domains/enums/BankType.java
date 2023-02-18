@@ -9,6 +9,7 @@ public enum BankType {
     BRADESCO,
     BB,
     ITAU,
-    OTHERS
+    SICOOB,
+    OTHERS,
 
 }
