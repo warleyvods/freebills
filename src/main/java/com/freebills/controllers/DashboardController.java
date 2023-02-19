@@ -27,7 +27,7 @@ public class DashboardController {
             @RequestParam(required = false) final Integer month,
             @RequestParam(required = false) final Integer year,
             final Principal principal) {
-        final var date = LocalDate.now(); //TODO provisório remover após adicionar botoes de troca no front.
+        final var date = LocalDate.now();
         return dashboard.getDonutsGraph(
                 principal.getName(),
                 month == null ? date.getMonthValue() : month,
@@ -41,7 +41,7 @@ public class DashboardController {
             @RequestParam(required = false) final Integer month,
             @RequestParam(required = false) final Integer year,
             final Principal principal) {
-        final var date = LocalDate.now(); //TODO provisório remover após adicionar botoes de troca no front.
+        final var date = LocalDate.now();
         return dashboard.getDonutsGraph(
                 principal.getName(),
                 month == null ? date.getMonthValue() : month,
@@ -55,7 +55,12 @@ public class DashboardController {
             @RequestParam(required = false) final Integer month,
             @RequestParam(required = false) final Integer year,
             final Principal principal) {
-        return dashboard.getTotalDashboard(principal.getName(), month, year);
+        final var date = LocalDate.now();
+        return dashboard.getTotalDashboard(
+                principal.getName(),
+                month == null ? date.getMonthValue() : month,
+                year == null ? date.getYear() : year
+        );
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -64,7 +69,12 @@ public class DashboardController {
             @RequestParam(required = false) final Integer month,
             @RequestParam(required = false) final Integer year,
             final Principal principal) {
-        return dashboard.getDashboardRevenue(principal.getName(), month, year);
+        final var date = LocalDate.now();
+        return dashboard.getDashboardRevenue(
+                principal.getName(),
+                month == null ? date.getMonthValue() : month,
+                year == null ? date.getYear() : year
+        );
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -73,6 +83,11 @@ public class DashboardController {
             @RequestParam(required = false) final Integer month,
             @RequestParam(required = false) final Integer year,
             final Principal principal) {
-        return dashboard.getDashboardExpense(principal.getName(), month, year);
+        final var date = LocalDate.now();
+        return dashboard.getDashboardExpense(
+                principal.getName(),
+                month == null ? date.getMonthValue() : month,
+                year == null ? date.getYear() : year
+        );
     }
 }
