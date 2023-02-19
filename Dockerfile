@@ -1,4 +1,4 @@
-FROM openjdk:17-alpine
+FROM warleyvods/java17-with-newrelic
 
 EXPOSE 9000
 WORKDIR /app
