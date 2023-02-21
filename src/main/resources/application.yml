@@ -30,8 +30,8 @@ api:
 cloud:
   aws:
     credentials:
-      secret-key: low8Ft7tHcj918mmm0HWyo7md87v3qYAoO5V9YGy
-      access-key: AKIAVJR5J2NFEXTPPJFQ
+      access-key: ${AWS_ACCESS_KEY}
+      secret-key: ${AWS_SECRET_KEY}
     region:
       static: us-west-2
     stack:
