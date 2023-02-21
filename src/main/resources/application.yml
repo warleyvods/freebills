@@ -26,3 +26,13 @@ api:
     jwtCookieName: token
     jwtSecret: ${SECRET:localSecret}
     jwtExpirationMs: 86400000
+
+cloud:
+  aws:
+    credentials:
+      secret-key: low8Ft7tHcj918mmm0HWyo7md87v3qYAoO5V9YGy
+      access-key: AKIAVJR5J2NFEXTPPJFQ
+    region:
+      static: us-west-2
+    stack:
+      auto: 'false'

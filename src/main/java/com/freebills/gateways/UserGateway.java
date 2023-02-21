@@ -3,6 +3,7 @@ package com.freebills.gateways;
 import com.freebills.domains.User;
 import com.freebills.exceptions.UserNotFoundException;
 import com.freebills.repositories.UserRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,7 +13,10 @@ import java.util.Optional;
 
 @Slf4j
 @Service
-public record UserGateway(UserRepository userRepository) {
+@RequiredArgsConstructor
+public class UserGateway {
+
+    private final UserRepository userRepository;
 
     public User save(final User user) {
         return userRepository.save(user);

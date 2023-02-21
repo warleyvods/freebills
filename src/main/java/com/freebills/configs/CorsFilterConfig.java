@@ -14,7 +14,7 @@ import java.io.IOException;
 
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
-public class SimpleCorsFilter implements Filter {
+public class CorsFilterConfig implements Filter {
 	private static final String ACCESS_CONTROL_ALLOW_ORIGIN = "Access-Control-Allow-Origin";
 	private static final String ACCESS_CONTROL_EXPOSE_HEADERS = "Access-Control-Expose-Headers";
 	private static final String ACCESS_CONTROL_ALLOW_METHODS = "Access-Control-Allow-Methods";

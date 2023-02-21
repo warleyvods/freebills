@@ -3,12 +3,16 @@ package com.freebills.gateways;
 import com.freebills.domains.CreditCard;
 import com.freebills.exceptions.CreditCardNotFoundException;
 import com.freebills.repositories.CreditCardRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public record CreditCardGateway(CreditCardRepository creditCardRepository) {
+@RequiredArgsConstructor
+public class CreditCardGateway {
+
+    private final CreditCardRepository creditCardRepository;
 
     public CreditCard save(final CreditCard creditCard) {
         return creditCardRepository.save(creditCard);
