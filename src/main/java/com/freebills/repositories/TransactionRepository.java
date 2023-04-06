@@ -13,14 +13,13 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 
-    //TODO ainda não está funcionando para lowercase.
     @Query(" SELECT t1 FROM Transaction t1 " +
             " INNER JOIN t1.account ac " +
             " INNER JOIN ac.user u " +
             " WHERE u.login = :login " +
             " AND (:month IS NULL OR MONTH(t1.date) = :month)" +
             " AND (:year IS NULL OR YEAR(t1.date) = :year) " +
-            " AND (:keyword IS NULL OR t1.description LIKE concat('%', :keyword, '%')) " +
+            " AND (:keyword IS NULL OR t1.description ilike concat('%', :keyword, '%')) " +
             " AND (:transactionType IS NULL OR t1.transactionType = :transactionType) ")
     Page<Transaction> findByTransactionFilterByDate(
             @Param(value = "login") final String login,
