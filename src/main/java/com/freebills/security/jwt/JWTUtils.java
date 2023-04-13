@@ -22,6 +22,7 @@ import java.util.Optional;
 @Component
 @RequiredArgsConstructor
 public class JWTUtils {
+    //comment
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JWTUtils.class);
 
