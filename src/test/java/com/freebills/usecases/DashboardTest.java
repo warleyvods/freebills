@@ -382,11 +382,47 @@ class DashboardTest {
         assertEquals("TRANSPORT", result.labels().get(4));
 
         assertEquals(5, result.series().size());
-        assertEquals(400D, result.series().get(0));
-        assertEquals(1600D, result.series().get(1));
-        assertEquals(200D, result.series().get(2));
-        assertEquals(3200D, result.series().get(3));
-        assertEquals(800D, result.series().get(4));
+        assertEquals(new BigDecimal("400.00"), result.series().get(0));
+        assertEquals(new BigDecimal("1600.00"), result.series().get(1));
+        assertEquals(new BigDecimal("200.00"), result.series().get(2));
+        assertEquals(new BigDecimal("3200.00"), result.series().get(3));
+        assertEquals(new BigDecimal("800.00"), result.series().get(4));
+    }
+
+    @Test
+    void testGetExpenseDonutsGraphWithFloatPoint() {
+        Transaction t1 = new Transaction();
+        t1.setAmount(new BigDecimal("1.1"));
+        t1.setDate(LocalDate.of(2022, 1, 1));
+        t1.setDescription("Arroz");
+        t1.setBarCode(null);
+        t1.setBankSlip(false);
+        t1.setTransactionType(TransactionType.EXPENSE);
+        t1.setTransactionCategory(TransactionCategory.HOUSE);
+        t1.setPaid(true);
+        t1.setAccount(account);
+
+        Transaction t2 = new Transaction();
+        t2.setAmount(new BigDecimal("1.3"));
+        t2.setDate(LocalDate.of(2022, 1, 1));
+        t2.setDescription("Arroz");
+        t2.setBarCode(null);
+        t2.setBankSlip(false);
+        t2.setTransactionType(TransactionType.EXPENSE);
+        t2.setTransactionCategory(TransactionCategory.HOUSE);
+        t2.setPaid(true);
+        t2.setAccount(account);
+
+        List<Transaction> transactions = List.of(t1, t2);
+        transactions.forEach(transaction -> createTransaction.execute(transaction));
+
+        final var result = dashboard.getDonutsGraph("admin", 1, 2022, TransactionType.EXPENSE);
+
+        assertEquals(1, result.labels().size());
+        assertEquals("HOUSE", result.labels().get(0));
+
+        assertEquals(1, result.series().size());
+        assertEquals(new BigDecimal("2.40"), result.series().get(0));
     }
 
     @Test
@@ -401,8 +437,8 @@ class DashboardTest {
         assertEquals("SALARY", result.labels().get(1));
 
         assertEquals(2, result.series().size());
-        assertEquals(1200D, result.series().get(0));
-        assertEquals(3000D, result.series().get(1));
+        assertEquals(new BigDecimal("1200.00"), result.series().get(0));
+        assertEquals(new BigDecimal("3000.00"), result.series().get(1));
     }
 
     @Test

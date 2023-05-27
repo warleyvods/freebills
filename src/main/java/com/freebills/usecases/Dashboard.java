@@ -46,7 +46,7 @@ public class Dashboard {
         var values = transactions.stream()
                 .collect(Collectors.groupingBy(
                         transaction -> transaction.getTransactionCategory().name(),
-                        Collectors.summingDouble(transaction -> transaction.getAmount().doubleValue())
+                        Collectors.reducing(BigDecimal.ZERO, Transaction::getAmount, BigDecimal::add)
                 ))
                 .entrySet().stream()
                 .sorted(Comparator.comparingInt(t -> transactionTypesLabels.indexOf(t.getKey())))
