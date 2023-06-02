@@ -1,5 +1,8 @@
 package controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.freebills.FreebillsApplication;
 import com.freebills.controllers.dtos.requests.LoginRequestDTO;
 import com.freebills.controllers.dtos.requests.UserPostRequestDTO;
@@ -8,13 +11,11 @@ import com.freebills.domains.User;
 import com.freebills.exceptions.handler.ExceptionFilters;
 import com.freebills.gateways.UserGateway;
 import com.freebills.repositories.UserRepository;
-import org.junit.FixMethodOrder;
-import org.junit.Ignore;
+import com.freebills.utils.PageWrapper;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -31,7 +32,6 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-//@Disabled(value = "Ignorando até entender um meio de resolver o bug.")
 @SpringBootTest(classes = FreebillsApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class AUserControllerTest {
 
@@ -43,6 +43,9 @@ class AUserControllerTest {
 
     @Autowired
     private UserGateway userGateway;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     private static ApplicationContext context;
 
@@ -219,7 +222,7 @@ class AUserControllerTest {
 
     @Order(5)
     @Test
-    void shouldFindAllUsers() {
+    void shouldFindAllUsers() throws JsonProcessingException {
         userRepository.deleteAll();
         var roleAdmin = new User();
         roleAdmin.setName("Administrator");
@@ -241,6 +244,10 @@ class AUserControllerTest {
         final var newRequest = new HttpEntity<>(null, headers);
 
         var userResponseEntity = testRestTemplate.exchange("/v1/user", HttpMethod.GET, newRequest, String.class);
+
+        final var pageWrapper = objectMapper.readValue(userResponseEntity.getBody(), new TypeReference<PageWrapper<UserResponseDTO>>() {});
+
+        assertEquals(1, pageWrapper.getContent().size());
         assertEquals(200, userResponseEntity.getStatusCode().value());
     }
 
