@@ -26,7 +26,7 @@ spring:
 
 springdoc:
   api-docs:
-    enabled: false
+    enabled: true
 
 
 logging:

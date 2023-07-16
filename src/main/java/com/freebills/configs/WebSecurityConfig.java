@@ -7,7 +7,6 @@ import com.freebills.security.services.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -61,14 +60,15 @@ public class WebSecurityConfig {
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeHttpRequests()
-
-                .requestMatchers("/v1/user/public/save/**").permitAll()
-                .requestMatchers("/v1/auth/**").permitAll()
-                .requestMatchers("/*/forget/**").permitAll()
-
-                .requestMatchers("/*/actuator/**").permitAll()
-                .requestMatchers("/*/h2-console/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                .requestMatchers(
+                        "/v1/user/public/save/**",
+                        "/v1/auth/**",
+                        "/*/actuator/**",
+                        "/*/h2-console/**",
+                        "/swagger-ui/**",
+                        "/v3/api-docs/**",
+                        "/error"
+                ).permitAll()
                 .anyRequest().authenticated();
 
         // fix H2 database console: Refused to display ' in a frame because it set 'X-Frame-Options' to 'deny'
