@@ -50,4 +50,4 @@ jobs:
           context: .
           file: ./Dockerfile
           platforms: linux/amd64,linux/arm64
-          tags: warleyvods/freebills-api:${{steps.docker_meta.outputs.tags}}
+          tags: warleyvods/freebills-api
