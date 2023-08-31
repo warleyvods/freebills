@@ -24,11 +24,16 @@ jobs:
         run: ./gradlew assemble
 
       - name: Docker meta
-        id: docker_meta
-        uses: crazy-max/ghaction-docker-meta@v1
+        id: meta
+        uses: docker/metadata-action@v4
         with:
-          images: warleyvods/freebills-api
-          tag-sha: true
+          images: |
+            name/app
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -43,11 +48,10 @@ jobs:
           password: ${{secrets.DOCKER_PASSWORD}}
 
       - name: Build and push
-        id: docker_build
         uses: docker/build-push-action@v4
         with:
-          push: true
           context: .
-          file: ./Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
           platforms: linux/amd64,linux/arm64
-          tags: warleyvods/freebills-api
