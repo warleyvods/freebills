@@ -31,8 +31,8 @@ jobs:
           images: |
             warleyvods/freebills-api
           tags: |
+            type=ref,event=pr
             type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
