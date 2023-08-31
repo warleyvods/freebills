@@ -30,6 +30,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }} # if you don't want to set write permissions use a PAT token
           WITH_V: true
           PRERELEASE: true
+          INITIAL_VERSION: 0.0.0
+          DEFAULT_BUMP: patch
 
       - name: Docker meta
         id: meta
