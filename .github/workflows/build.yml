@@ -28,12 +28,9 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: |
-            name/app
+            warleyvods/freebills-api
           tags: |
-            type=ref,event=branch
-            type=ref,event=pr
             type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -48,6 +45,7 @@ jobs:
           password: ${{secrets.DOCKER_PASSWORD}}
 
       - name: Build and push
+        id: docker_build
         uses: docker/build-push-action@v4
         with:
           context: .
