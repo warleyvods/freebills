@@ -38,14 +38,11 @@ jobs:
 #          PRERELEASE: true
 #          DEFAULT_BUMP: patch
 
-#      - name: Docker meta
-#        id: meta
-#        uses: docker/metadata-action@v4
-#        with:
-#          images: |
-#            warleyvods/freebills-api
-#          tags: |
-#            type=semver,pattern={{version}}
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: warleyvods/freebills-api
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
