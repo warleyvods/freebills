@@ -25,21 +25,27 @@ jobs:
         run: ./gradlew assemble
 
       - name: Bump version and push tag
-        uses: anothrNick/github-tag-action@1.64.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
-          WITH_V: true
-          PRERELEASE: true
-          DEFAULT_BUMP: patch
-
-      - name: Docker meta
-        id: meta
-        uses: docker/metadata-action@v4
+        id: tagging
+        uses: mathieudutour/github-tag-action@v4.5
         with:
-          images: |
-            warleyvods/freebills-api
-          tags: |
-            type=semver,pattern={{version}}
+          github_token: ${{ secrets.GIT_TOKEN }}
+
+#      - name: Bump version and push tag
+#        uses: anothrNick/github-tag-action@1.64.0
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
+#          WITH_V: true
+#          PRERELEASE: true
+#          DEFAULT_BUMP: patch
+
+#      - name: Docker meta
+#        id: meta
+#        uses: docker/metadata-action@v4
+#        with:
+#          images: |
+#            warleyvods/freebills-api
+#          tags: |
+#            type=semver,pattern={{version}}
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -59,7 +65,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: ${{ steps.tagging.outputs.new_version }}
           labels: ${{ steps.meta.outputs.labels }}
           platforms: linux/amd64,linux/arm64
 
@@ -67,4 +73,4 @@ jobs:
         uses: steebchen/kubectl@v2.1.1
         with:
           config: ${{ secrets.KUBE_CONFIG }}
-          command: set image --record deployment/freebills-api freebills-api=warleyvods/freebills-api:$${{ steps.meta.outputs.tags }}
+          command: set image deployment/freebills-api freebills-api=warleyvods/freebills-api:${{ steps.tagging.outputs.new_version }}
