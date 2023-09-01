@@ -26,9 +26,16 @@ jobs:
 
       - name: Bump version and push tag
         id: tagging
-        uses: mathieudutour/github-tag-action@v6.1
+        uses: mathieudutour/github-tag-action@v4.5
         with:
           github_token: ${{ secrets.GIT_TOKEN }}
+
+      - name: Create a GitHub release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ steps.tagging.outputs.new_tag }}
+          name: Release ${{ steps.tagging.outputs.new_tag }}
+          body: ${{ steps.tagging.outputs.changelog }}
 
 #      - name: Bump version and push tag
 #        uses: anothrNick/github-tag-action@1.64.0
