@@ -71,3 +71,4 @@ jobs:
         with:
           config: ${{ secrets.KUBE_CONFIG }}
           command: set image deployment/freebills-api freebills-api=warleyvods/freebills-api:${{ steps.tagging.outputs.new_version }}
+
