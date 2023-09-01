@@ -10,7 +10,7 @@ jobs:
   Build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Set up JDK 17
         uses: actions/setup-java@v2
         with:
@@ -25,12 +25,11 @@ jobs:
         run: ./gradlew assemble
 
       - name: Bump version and push tag
-        uses: anothrNick/github-tag-action@1.64.0 # Don't use @master or @v1 unless you're happy to test the latest version
+        uses: anothrNick/github-tag-action@1.64.0
         env:
-          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }} # if you don't want to set write permissions use a PAT token
+          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
           WITH_V: true
           PRERELEASE: true
-          INITIAL_VERSION: 0.0.0
           DEFAULT_BUMP: patch
 
       - name: Docker meta
@@ -63,3 +62,9 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           platforms: linux/amd64,linux/arm64
+
+      - name: Deploy Kubernetes
+        uses: steebchen/kubectl@v2.1.1
+        with:
+          config: ${{ secrets.KUBE_CONFIG }}
+          command: set image --record deployment/freebills-api freebills-api=warleyvods/freebills-api:$${{ steps.meta.outputs.tags }}
