@@ -36,5 +36,6 @@ public class OpenApiConfig {
                         .version("v0.0.1")
                         .license(new License().name("All rights reserved").url("")))
                 .externalDocs(new ExternalDocumentation());
+
     }
 }
