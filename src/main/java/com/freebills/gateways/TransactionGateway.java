@@ -7,7 +7,10 @@ import com.freebills.exceptions.TransactionNotFoundException;
 import com.freebills.repositories.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -31,7 +34,15 @@ public class TransactionGateway {
         if (login == null) {
             throw new LoginInvalidException("Login invalid!");
         }
-        return transactionRepository.findByTransactionFilterByDate(login, month, year, keyword, transactionType, pageable);
+
+        // Gambiarra, remover depois
+        Pageable pageableWithSort = PageRequest.of(
+                pageable.getPageNumber(),
+                pageable.getPageSize(),
+                Sort.by(Direction.ASC, "description")
+        );
+
+        return transactionRepository.findByTransactionFilterByDate(login, month, year, keyword, transactionType, pageableWithSort);
     }
 
     public Transaction findById(Long id) {
