@@ -11,6 +11,7 @@ import com.freebills.usecases.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -18,6 +19,7 @@ import java.util.List;
 
 import static org.springframework.http.HttpStatus.*;
 
+@Slf4j
 @Tag(name = "Account Controller")
 @RestController
 @RequiredArgsConstructor
@@ -52,8 +54,10 @@ public class AccountController {
 
     @ResponseStatus(OK)
     @GetMapping("{id}")
-    public AccountResponseDTO findById(@PathVariable final Long id) {
-        return mapper.fromDomain(findAccount.byId(id));
+    public AccountResponseDTO findById(@PathVariable final Long id, Principal principal) {
+        final var account = mapper.fromDomain(findAccount.byId(id));
+        log.info("account: {} finded by {}", account.id(), principal.getName());
+        return account;
     }
 
     @ResponseStatus(OK)
