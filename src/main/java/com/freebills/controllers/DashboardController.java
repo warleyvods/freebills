@@ -56,6 +56,7 @@ public class DashboardController {
             @RequestParam(required = false) final Integer year,
             final Principal principal) {
         final var date = LocalDate.now();
+        validateDate(month);
         return dashboard.getTotalDashboard(
                 principal.getName(),
                 month == null ? date.getMonthValue() : month,
@@ -70,6 +71,7 @@ public class DashboardController {
             @RequestParam(required = false) final Integer year,
             final Principal principal) {
         final var date = LocalDate.now();
+        validateDate(month);
         return dashboard.getDashboardRevenue(
                 principal.getName(),
                 month == null ? date.getMonthValue() : month,
@@ -84,10 +86,17 @@ public class DashboardController {
             @RequestParam(required = false) final Integer year,
             final Principal principal) {
         final var date = LocalDate.now();
+        validateDate(month);
         return dashboard.getDashboardExpense(
                 principal.getName(),
                 month == null ? date.getMonthValue() : month,
                 year == null ? date.getYear() : year
         );
+    }
+
+    private void validateDate(final Integer month) {
+        if (month < 1 || month > 12) {
+            throw new IllegalArgumentException("invalid month!");
+        }
     }
 }

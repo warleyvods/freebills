@@ -18,7 +18,7 @@ spring:
     properties:
       hibernate:
         format_sql: false
-    show-sql: true
+    show-sql: false
 
   h2:
     console:
