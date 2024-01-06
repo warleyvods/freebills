@@ -1,7 +1,7 @@
 package com.freebills.usecases;
 
-import com.freebills.entities.Transaction;
-import com.freebills.entities.enums.TransactionType;
+import com.freebills.gateways.entities.Transaction;
+import com.freebills.gateways.entities.enums.TransactionType;
 import com.freebills.gateways.TransactionGateway;
 import com.freebills.gateways.UserGateway;
 import lombok.extern.slf4j.Slf4j;

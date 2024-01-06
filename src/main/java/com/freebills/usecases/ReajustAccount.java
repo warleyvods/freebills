@@ -1,9 +1,9 @@
 package com.freebills.usecases;
 
-import com.freebills.entities.Account;
-import com.freebills.entities.Transaction;
-import com.freebills.entities.enums.TransactionCategory;
-import com.freebills.entities.enums.TransactionType;
+import com.freebills.gateways.entities.Account;
+import com.freebills.gateways.entities.Transaction;
+import com.freebills.gateways.entities.enums.TransactionCategory;
+import com.freebills.gateways.entities.enums.TransactionType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

@@ -1,4 +1,4 @@
-package com.freebills.entities.enums;
+package com.freebills.gateways.entities.enums;
 
 public enum TransactionCategory {
 

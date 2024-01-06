@@ -1,8 +1,8 @@
-package com.freebills.entities;
+package com.freebills.gateways.entities;
 
 
-import com.freebills.entities.enums.TransactionCategory;
-import com.freebills.entities.enums.TransactionType;
+import com.freebills.gateways.entities.enums.TransactionCategory;
+import com.freebills.gateways.entities.enums.TransactionType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

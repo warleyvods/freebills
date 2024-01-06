@@ -7,7 +7,7 @@ import com.freebills.FreebillsApplication;
 import com.freebills.controllers.dtos.requests.LoginRequestDTO;
 import com.freebills.controllers.dtos.requests.UserPostRequestDTO;
 import com.freebills.controllers.dtos.responses.UserResponseDTO;
-import com.freebills.entities.User;
+import com.freebills.gateways.entities.User;
 import com.freebills.exceptions.handler.ExceptionFilters;
 import com.freebills.gateways.UserGateway;
 import com.freebills.repositories.UserRepository;

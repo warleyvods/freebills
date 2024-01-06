@@ -1,4 +1,4 @@
-package com.freebills.entities;
+package com.freebills.gateways.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;

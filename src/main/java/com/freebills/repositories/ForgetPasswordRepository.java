@@ -1,6 +1,6 @@
 package com.freebills.repositories;
 
-import com.freebills.entities.ForgetPassword;
+import com.freebills.gateways.entities.ForgetPassword;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

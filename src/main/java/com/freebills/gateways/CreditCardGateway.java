@@ -1,6 +1,6 @@
 package com.freebills.gateways;
 
-import com.freebills.entities.CreditCard;
+import com.freebills.gateways.entities.CreditCard;
 import com.freebills.exceptions.CreditCardNotFoundException;
 import com.freebills.repositories.CreditCardRepository;
 import org.springframework.stereotype.Service;

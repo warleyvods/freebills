@@ -1,6 +1,6 @@
 package com.freebills.usecases;
 
-import com.freebills.entities.User;
+import com.freebills.gateways.entities.User;
 import com.freebills.gateways.UserGateway;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

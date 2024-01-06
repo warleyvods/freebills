@@ -4,7 +4,7 @@ package com.freebills.controllers.mappers;
 import com.freebills.controllers.dtos.requests.TransactionPostRequestDTO;
 import com.freebills.controllers.dtos.requests.TransactionPutRequesDTO;
 import com.freebills.controllers.dtos.responses.TransactionResponseDTO;
-import com.freebills.entities.Transaction;
+import com.freebills.gateways.entities.Transaction;
 import com.freebills.gateways.AccountGateway;
 import org.mapstruct.*;
 

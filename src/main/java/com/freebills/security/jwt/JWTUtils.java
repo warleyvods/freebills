@@ -1,6 +1,6 @@
 package com.freebills.security.jwt;
 
-import com.freebills.entities.User;
+import com.freebills.gateways.entities.User;
 import com.freebills.repositories.UserRepository;
 import com.freebills.security.services.UserDetailsImpl;
 import io.jsonwebtoken.*;

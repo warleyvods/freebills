@@ -1,7 +1,7 @@
 package com.freebills.usecases;
 
-import com.freebills.entities.Transaction;
-import com.freebills.entities.TransactionLog;
+import com.freebills.gateways.entities.Transaction;
+import com.freebills.gateways.entities.TransactionLog;
 import com.freebills.exceptions.TransactionNotFoundException;
 import com.freebills.gateways.TransactionGateway;
 import com.freebills.repositories.TransactionLogRepository;

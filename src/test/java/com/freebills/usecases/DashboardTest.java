@@ -1,13 +1,13 @@
 package com.freebills.usecases;
 
 import com.freebills.controllers.dtos.responses.DashboardResponseDTO;
-import com.freebills.entities.Account;
-import com.freebills.entities.Transaction;
-import com.freebills.entities.User;
-import com.freebills.entities.enums.AccountType;
-import com.freebills.entities.enums.BankType;
-import com.freebills.entities.enums.TransactionCategory;
-import com.freebills.entities.enums.TransactionType;
+import com.freebills.gateways.entities.Account;
+import com.freebills.gateways.entities.Transaction;
+import com.freebills.gateways.entities.User;
+import com.freebills.gateways.entities.enums.AccountType;
+import com.freebills.gateways.entities.enums.BankType;
+import com.freebills.gateways.entities.enums.TransactionCategory;
+import com.freebills.gateways.entities.enums.TransactionType;
 import com.freebills.repositories.AccountsRepository;
 import com.freebills.repositories.TransactionRepository;
 import com.freebills.repositories.UserRepository;

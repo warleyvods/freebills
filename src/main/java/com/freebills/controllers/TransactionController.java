@@ -5,7 +5,7 @@ import com.freebills.controllers.dtos.requests.TransactionPostRequestDTO;
 import com.freebills.controllers.dtos.requests.TransactionPutRequesDTO;
 import com.freebills.controllers.dtos.responses.TransactionResponseDTO;
 import com.freebills.controllers.mappers.TransactionMapper;
-import com.freebills.entities.enums.TransactionType;
+import com.freebills.gateways.entities.enums.TransactionType;
 import com.freebills.usecases.CreateTransaction;
 import com.freebills.usecases.DeleteTransaction;
 import com.freebills.usecases.FindTransaction;

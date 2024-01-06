@@ -5,7 +5,7 @@ import com.freebills.controllers.dtos.requests.AccountPatchArchivedRequestDTO;
 import com.freebills.controllers.dtos.requests.AccountPostRequestDTO;
 import com.freebills.controllers.dtos.requests.AccountPutRequestDTO;
 import com.freebills.controllers.dtos.responses.AccountResponseDTO;
-import com.freebills.entities.Account;
+import com.freebills.gateways.entities.Account;
 import com.freebills.gateways.UserGateway;
 import org.mapstruct.*;
 
