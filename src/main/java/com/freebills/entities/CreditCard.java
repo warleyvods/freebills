@@ -1,7 +1,7 @@
-package com.freebills.domains;
+package com.freebills.entities;
 
 
-import com.freebills.domains.enums.CardFlag;
+import com.freebills.entities.enums.CardFlag;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

@@ -7,7 +7,7 @@ import com.freebills.controllers.dtos.requests.SignupUserRequestDTO;
 import com.freebills.controllers.dtos.requests.UserPutPasswordRequestDTO;
 import com.freebills.controllers.dtos.requests.UserPutRequestDTO;
 import com.freebills.controllers.dtos.responses.UserResponseDTO;
-import com.freebills.domains.User;
+import com.freebills.entities.User;
 import org.mapstruct.*;
 
 @Mapper(componentModel = "spring", uses = PasswordEncoderMapper.class, unmappedTargetPolicy = ReportingPolicy.IGNORE)

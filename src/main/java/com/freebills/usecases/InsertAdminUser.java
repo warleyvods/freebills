@@ -1,6 +1,6 @@
 package com.freebills.usecases;
 
-import com.freebills.domains.User;
+import com.freebills.entities.User;
 import com.freebills.repositories.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

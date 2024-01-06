@@ -1,4 +1,4 @@
-package com.freebills.domains.enums;
+package com.freebills.entities.enums;
 
 public enum TransactionCategory {
 

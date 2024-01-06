@@ -3,7 +3,7 @@ package com.freebills.controllers.mappers;
 import com.freebills.controllers.dtos.requests.CreditCardPostRequestDTO;
 import com.freebills.controllers.dtos.requests.CreditCardPutRequestDTO;
 import com.freebills.controllers.dtos.responses.CreditCardResponseDTO;
-import com.freebills.domains.CreditCard;
+import com.freebills.entities.CreditCard;
 import com.freebills.gateways.AccountGateway;
 import org.mapstruct.*;
 

@@ -1,6 +1,6 @@
 package com.freebills.usecases;
 
-import com.freebills.domains.User;
+import com.freebills.entities.User;
 import com.freebills.exceptions.PermissionDeniedException;
 import com.freebills.gateways.UserGateway;
 import org.springframework.stereotype.Component;

@@ -1,6 +1,6 @@
 package com.freebills.security.jwt;
 
-import com.freebills.domains.User;
+import com.freebills.entities.User;
 import com.freebills.repositories.UserRepository;
 import com.freebills.security.services.UserDetailsImpl;
 import io.jsonwebtoken.*;
@@ -22,7 +22,6 @@ import java.util.Optional;
 @Component
 @RequiredArgsConstructor
 public class JWTUtils {
-    //comment
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JWTUtils.class);
 

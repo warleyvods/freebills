@@ -1,7 +1,7 @@
 package com.freebills.usecases;
 
 
-import com.freebills.domains.Account;
+import com.freebills.entities.Account;
 import com.freebills.gateways.AccountGateway;
 import org.springframework.stereotype.Component;
 

@@ -2,7 +2,7 @@ package com.freebills.security.services;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.freebills.domains.User;
+import com.freebills.entities.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

@@ -1,6 +1,6 @@
 package com.freebills.gateways;
 
-import com.freebills.domains.User;
+import com.freebills.entities.User;
 import com.freebills.exceptions.UserNotFoundException;
 import com.freebills.repositories.UserRepository;
 import lombok.extern.slf4j.Slf4j;

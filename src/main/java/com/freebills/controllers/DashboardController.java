@@ -5,7 +5,7 @@ import com.freebills.controllers.dtos.responses.DashboardExpenseResponseDTO;
 import com.freebills.controllers.dtos.responses.DashboardGraphResponseDTO;
 import com.freebills.controllers.dtos.responses.DashboardResponseDTO;
 import com.freebills.controllers.dtos.responses.DashboardRevenueResponseDTO;
-import com.freebills.domains.enums.TransactionType;
+import com.freebills.entities.enums.TransactionType;
 import com.freebills.usecases.Dashboard;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

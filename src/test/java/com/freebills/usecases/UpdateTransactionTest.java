@@ -1,20 +1,19 @@
 package com.freebills.usecases;
-import com.freebills.domains.enums.TransactionCategory;
+import com.freebills.entities.enums.TransactionCategory;
 import java.time.LocalDate;
-import com.freebills.domains.enums.TransactionType;
+import com.freebills.entities.enums.TransactionType;
 
-import com.freebills.domains.Account;
-import com.freebills.domains.Transaction;
-import com.freebills.domains.User;
-import com.freebills.domains.enums.AccountType;
-import com.freebills.domains.enums.BankType;
+import com.freebills.entities.Account;
+import com.freebills.entities.Transaction;
+import com.freebills.entities.User;
+import com.freebills.entities.enums.AccountType;
+import com.freebills.entities.enums.BankType;
 import com.freebills.gateways.TransactionGateway;
 import com.freebills.repositories.AccountsRepository;
 import com.freebills.repositories.TransactionRepository;
 import com.freebills.repositories.UserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

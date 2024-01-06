@@ -1,7 +1,7 @@
 package com.freebills.repositories;
 
-import com.freebills.domains.Transaction;
-import com.freebills.domains.enums.TransactionType;
+import com.freebills.entities.Transaction;
+import com.freebills.entities.enums.TransactionType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

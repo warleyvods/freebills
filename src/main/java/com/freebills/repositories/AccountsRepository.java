@@ -1,6 +1,6 @@
 package com.freebills.repositories;
 
-import com.freebills.domains.Account;
+import com.freebills.entities.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

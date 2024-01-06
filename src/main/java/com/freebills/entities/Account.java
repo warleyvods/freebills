@@ -1,7 +1,7 @@
-package com.freebills.domains;
+package com.freebills.entities;
 
-import com.freebills.domains.enums.AccountType;
-import com.freebills.domains.enums.BankType;
+import com.freebills.entities.enums.AccountType;
+import com.freebills.entities.enums.BankType;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
