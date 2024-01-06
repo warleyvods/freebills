@@ -1,6 +1,6 @@
 package com.freebills.usecases;
 
-import com.freebills.gateways.entities.User;
+import com.freebills.gateways.entities.UserEntity;
 import com.freebills.repositories.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -15,7 +15,7 @@ public record InsertAdminUser(UserRepository userRepository) {
     public void insertAdminUser() {
         if (userRepository.findByLoginIgnoreCase(ADMIN).isEmpty()) {
             log.debug("Administrator user not found, creating...");
-            final var user = new User();
+            final var user = new UserEntity();
             user.setName("Administrator");
             user.setLogin(ADMIN);
             user.setAdmin(true);

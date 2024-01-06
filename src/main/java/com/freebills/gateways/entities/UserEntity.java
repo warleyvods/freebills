@@ -21,7 +21,7 @@ import java.util.List;
                 @UniqueConstraint(columnNames = "email")
         })
 @EntityListeners(AuditingEntityListener.class)
-public class User extends AbstractEntity {
+public class UserEntity extends AbstractEntity {
 
     @NotBlank
     @Column(nullable = false)

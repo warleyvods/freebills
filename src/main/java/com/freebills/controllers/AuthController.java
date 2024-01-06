@@ -5,7 +5,7 @@ import com.freebills.controllers.dtos.requests.LoginRequestDTO;
 import com.freebills.controllers.dtos.requests.SignupUserRequestDTO;
 import com.freebills.controllers.dtos.responses.MessageResponse;
 import com.freebills.controllers.mappers.UserMapper;
-import com.freebills.gateways.entities.User;
+import com.freebills.gateways.entities.UserEntity;
 import com.freebills.repositories.UserRepository;
 import com.freebills.security.jwt.JWTUtils;
 import com.freebills.security.services.UserDetailsImpl;
@@ -47,7 +47,7 @@ public class AuthController {
     }
 
     private void lastAccess(Authentication authentication) {
-        final Optional<User> user = userRepository.findByLoginIgnoreCase(((UserDetailsImpl) authentication.getPrincipal()).username());
+        final Optional<UserEntity> user = userRepository.findByLoginIgnoreCase(((UserDetailsImpl) authentication.getPrincipal()).username());
         if (user.isPresent()) {
             user.get().lastAccess();
             userRepository.save(user.get());
@@ -64,8 +64,8 @@ public class AuthController {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Email is already in use!"));
         }
 
-        final User user = userMapper.toDomainUser(signUpRequestDTO);
-        return ResponseEntity.ok(createUser.create(user));
+        final UserEntity userEntity = userMapper.toDomainUser(signUpRequestDTO);
+        return ResponseEntity.ok(createUser.create(userEntity));
     }
 
     @PostMapping("/logout")

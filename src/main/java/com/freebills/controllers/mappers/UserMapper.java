@@ -7,24 +7,24 @@ import com.freebills.controllers.dtos.requests.SignupUserRequestDTO;
 import com.freebills.controllers.dtos.requests.UserPutPasswordRequestDTO;
 import com.freebills.controllers.dtos.requests.UserPutRequestDTO;
 import com.freebills.controllers.dtos.responses.UserResponseDTO;
-import com.freebills.gateways.entities.User;
+import com.freebills.gateways.entities.UserEntity;
 import org.mapstruct.*;
 
 @Mapper(componentModel = "spring", uses = PasswordEncoderMapper.class, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface UserMapper {
 
     @Mapping(source = "password", target = "password", qualifiedBy = EncodedMapping.class)
-    User toDomain(UserPostRequestDTO userPostRequestDTO);
+    UserEntity toDomain(UserPostRequestDTO userPostRequestDTO);
 
     @Mapping(source = "password", target = "password", qualifiedBy = EncodedMapping.class)
-    User toDomainUser(SignupUserRequestDTO signupUserRequestDTO);
+    UserEntity toDomainUser(SignupUserRequestDTO signupUserRequestDTO);
 
-    UserResponseDTO fromDomain(User user);
+    UserResponseDTO fromDomain(UserEntity userEntity);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    User updateUserFromDTO(UserPutRequestDTO userPutRequestDTO, @MappingTarget User user);
+    UserEntity updateUserFromDTO(UserPutRequestDTO userPutRequestDTO, @MappingTarget UserEntity userEntity);
 
     @Mapping(source = "password", target = "password", qualifiedBy = EncodedMapping.class)
-    User updatePasswordFromDTO(UserPutPasswordRequestDTO userPutPasswordRequestDTO, @MappingTarget User user);
+    UserEntity updatePasswordFromDTO(UserPutPasswordRequestDTO userPutPasswordRequestDTO, @MappingTarget UserEntity userEntity);
 
 }

@@ -31,7 +31,7 @@ public class  Account {
     private BankType bankType;
 
     @ManyToOne
-    private User user;
+    private UserEntity user;
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Transaction> transactions = new ArrayList<>();

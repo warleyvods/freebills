@@ -1,6 +1,6 @@
 package com.freebills.security.jwt;
 
-import com.freebills.gateways.entities.User;
+import com.freebills.gateways.entities.UserEntity;
 import com.freebills.repositories.UserRepository;
 import com.freebills.security.services.UserDetailsImpl;
 import io.jsonwebtoken.*;
@@ -47,7 +47,7 @@ public class JWTUtils {
     }
 
     public ResponseCookie generateJwtCookie(UserDetailsImpl userPrincipal) {
-        final Optional<User> findedUser = userRepository.findByLoginIgnoreCase(userPrincipal.getUsername());
+        final Optional<UserEntity> findedUser = userRepository.findByLoginIgnoreCase(userPrincipal.getUsername());
 
         if (findedUser.isPresent()) {
             String jwt = generateTokenFromUsername(findedUser.get());
@@ -103,12 +103,12 @@ public class JWTUtils {
         return false;
     }
 
-    public String generateTokenFromUsername(User user) {
+    public String generateTokenFromUsername(UserEntity userEntity) {
         return Jwts.builder()
-                .claim("id", user.getId())
-                .setSubject(user.getLogin())
-                .claim("name", user.getName())
-                .claim("email", user.getEmail())
+                .claim("id", userEntity.getId())
+                .setSubject(userEntity.getLogin())
+                .claim("name", userEntity.getName())
+                .claim("email", userEntity.getEmail())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)

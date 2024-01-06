@@ -5,7 +5,7 @@ import com.freebills.gateways.entities.enums.TransactionType;
 
 import com.freebills.gateways.entities.Account;
 import com.freebills.gateways.entities.Transaction;
-import com.freebills.gateways.entities.User;
+import com.freebills.gateways.entities.UserEntity;
 import com.freebills.gateways.entities.enums.AccountType;
 import com.freebills.gateways.entities.enums.BankType;
 import com.freebills.gateways.TransactionGateway;
@@ -51,14 +51,14 @@ class UpdateTransactionTest {
 
     @BeforeEach
     void beforeSetup() {
-        User user = userRepository.findById(1L).orElse(null);
+        UserEntity userEntity = userRepository.findById(1L).orElse(null);
 
         final var acc01 = new Account();
         acc01.setAmount(new BigDecimal("0"));
         acc01.setDescription("Conta Inter");
         acc01.setAccountType(AccountType.CHECKING_ACCOUNT);
         acc01.setBankType(BankType.INTER);
-        acc01.setUser(user);
+        acc01.setUser(userEntity);
         acc01.setArchived(false);
         acc01.setDashboard(false);
 
@@ -67,7 +67,7 @@ class UpdateTransactionTest {
         acc02.setDescription("Conta Nubank");
         acc02.setAccountType(AccountType.CHECKING_ACCOUNT);
         acc02.setBankType(BankType.NUBANK);
-        acc02.setUser(user);
+        acc02.setUser(userEntity);
         acc02.setArchived(false);
         acc02.setDashboard(false);
 

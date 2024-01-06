@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.freebills.controllers.dtos.requests.*;
 import com.freebills.controllers.dtos.responses.AccountResponseDTO;
 import com.freebills.gateways.entities.Account;
-import com.freebills.gateways.entities.User;
+import com.freebills.gateways.entities.UserEntity;
 import com.freebills.gateways.entities.enums.AccountType;
 import com.freebills.gateways.entities.enums.BankType;
 import com.freebills.gateways.entities.enums.TransactionCategory;
@@ -51,11 +51,11 @@ class AccountControllerTest {
     private TransactionRepository transactionRepository;
 
     private static String token;
-    private static User user;
+    private static UserEntity userEntity;
 
     @BeforeEach
     void beforeSetup() {
-        user = userRepository.findById(1L).orElse(null);
+        userEntity = userRepository.findById(1L).orElse(null);
         accountsRepository.deleteAll();
         final var request = new HttpEntity<>(new LoginRequestDTO("admin", "baguvix"));
         ResponseEntity<Object> objectResponseEntity = testRestTemplate.postForEntity("/v1/auth/login", request, Object.class);
@@ -89,7 +89,7 @@ class AccountControllerTest {
         acc01.setDescription("Conta Inter");
         acc01.setAccountType(AccountType.CHECKING_ACCOUNT);
         acc01.setBankType(BankType.INTER);
-        acc01.setUser(user);
+        acc01.setUser(userEntity);
         acc01.setArchived(false);
         acc01.setDashboard(false);
 
@@ -98,7 +98,7 @@ class AccountControllerTest {
         acc02.setDescription("Conta Inter");
         acc02.setAccountType(AccountType.CHECKING_ACCOUNT);
         acc02.setBankType(BankType.NUBANK);
-        acc02.setUser(user);
+        acc02.setUser(userEntity);
         acc02.setArchived(false);
         acc02.setDashboard(false);
 
@@ -121,7 +121,7 @@ class AccountControllerTest {
         acc01.setDescription("Conta Inter");
         acc01.setAccountType(AccountType.CHECKING_ACCOUNT);
         acc01.setBankType(BankType.INTER);
-        acc01.setUser(user);
+        acc01.setUser(userEntity);
         acc01.setArchived(true);
         acc01.setDashboard(false);
 
@@ -130,7 +130,7 @@ class AccountControllerTest {
         acc02.setDescription("Conta Inter");
         acc02.setAccountType(AccountType.CHECKING_ACCOUNT);
         acc02.setBankType(BankType.NUBANK);
-        acc02.setUser(user);
+        acc02.setUser(userEntity);
         acc02.setArchived(true);
         acc02.setDashboard(false);
 
@@ -153,7 +153,7 @@ class AccountControllerTest {
         acc01.setDescription("Conta Inter");
         acc01.setAccountType(AccountType.CHECKING_ACCOUNT);
         acc01.setBankType(BankType.INTER);
-        acc01.setUser(user);
+        acc01.setUser(userEntity);
         acc01.setArchived(true);
         acc01.setDashboard(false);
 
@@ -174,7 +174,7 @@ class AccountControllerTest {
         acc01.setDescription("Conta Inter");
         acc01.setAccountType(AccountType.CHECKING_ACCOUNT);
         acc01.setBankType(BankType.INTER);
-        acc01.setUser(user);
+        acc01.setUser(userEntity);
         acc01.setArchived(true);
         acc01.setDashboard(false);
 
@@ -206,7 +206,7 @@ class AccountControllerTest {
         acc01.setDescription("Conta Inter");
         acc01.setAccountType(AccountType.CHECKING_ACCOUNT);
         acc01.setBankType(BankType.INTER);
-        acc01.setUser(user);
+        acc01.setUser(userEntity);
         acc01.setArchived(true);
         acc01.setDashboard(false);
 
@@ -236,7 +236,7 @@ class AccountControllerTest {
         acc01.setDescription("Conta Inter");
         acc01.setAccountType(AccountType.CHECKING_ACCOUNT);
         acc01.setBankType(BankType.INTER);
-        acc01.setUser(user);
+        acc01.setUser(userEntity);
         acc01.setArchived(false);
         acc01.setDashboard(false);
 
@@ -269,7 +269,7 @@ class AccountControllerTest {
         acc01.setDescription("Conta Inter");
         acc01.setAccountType(AccountType.CHECKING_ACCOUNT);
         acc01.setBankType(BankType.INTER);
-        acc01.setUser(user);
+        acc01.setUser(userEntity);
         acc01.setArchived(false);
         acc01.setDashboard(false);
 
@@ -294,7 +294,7 @@ class AccountControllerTest {
         acc01.setDescription("Conta Inter");
         acc01.setAccountType(AccountType.CHECKING_ACCOUNT);
         acc01.setBankType(BankType.INTER);
-        acc01.setUser(user);
+        acc01.setUser(userEntity);
         acc01.setArchived(true);
         acc01.setDashboard(false);
 
@@ -329,7 +329,7 @@ class AccountControllerTest {
         acc01.setDescription("Conta Inter");
         acc01.setAccountType(AccountType.CHECKING_ACCOUNT);
         acc01.setBankType(BankType.INTER);
-        acc01.setUser(user);
+        acc01.setUser(userEntity);
         acc01.setArchived(true);
         acc01.setDashboard(false);
 
@@ -364,7 +364,7 @@ class AccountControllerTest {
         acc01.setDescription("Conta Inter");
         acc01.setAccountType(AccountType.CHECKING_ACCOUNT);
         acc01.setBankType(BankType.INTER);
-        acc01.setUser(user);
+        acc01.setUser(userEntity);
         acc01.setArchived(true);
         acc01.setDashboard(false);
 

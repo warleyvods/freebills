@@ -2,7 +2,7 @@ package com.freebills.usecases;
 
 import com.freebills.gateways.entities.Account;
 import com.freebills.gateways.entities.Transaction;
-import com.freebills.gateways.entities.User;
+import com.freebills.gateways.entities.UserEntity;
 import com.freebills.gateways.entities.enums.AccountType;
 import com.freebills.gateways.entities.enums.BankType;
 import com.freebills.gateways.entities.enums.TransactionCategory;
@@ -38,14 +38,14 @@ class CreateTransactionTest {
 
     @BeforeEach
     void beforeSetup() {
-        User user = userRepository.findById(1L).orElse(null);
+        UserEntity userEntity = userRepository.findById(1L).orElse(null);
 
         final var acc01 = new Account();
         acc01.setAmount(new BigDecimal("0"));
         acc01.setDescription("Conta Inter");
         acc01.setAccountType(AccountType.CHECKING_ACCOUNT);
         acc01.setBankType(BankType.INTER);
-        acc01.setUser(user);
+        acc01.setUser(userEntity);
         acc01.setArchived(false);
         acc01.setDashboard(false);
 

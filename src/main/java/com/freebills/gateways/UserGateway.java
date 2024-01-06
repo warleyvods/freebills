@@ -1,6 +1,6 @@
 package com.freebills.gateways;
 
-import com.freebills.gateways.entities.User;
+import com.freebills.gateways.entities.UserEntity;
 import com.freebills.exceptions.UserNotFoundException;
 import com.freebills.repositories.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -14,28 +14,28 @@ import java.util.Optional;
 @Service
 public record UserGateway(UserRepository userRepository) {
 
-    public User save(final User user) {
-        return userRepository.save(user);
+    public UserEntity save(final UserEntity userEntity) {
+        return userRepository.save(userEntity);
     }
 
-    public Page<User> getAll(final Pageable pageable) {
+    public Page<UserEntity> getAll(final Pageable pageable) {
         return userRepository.findAll(pageable);
     }
 
-    public User findById(final Long id) {
+    public UserEntity findById(final Long id) {
         return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found!"));
     }
 
-    public User findByLogin(final String login) {
+    public UserEntity findByLogin(final String login) {
         return userRepository.findByLoginIgnoreCase(login).orElseThrow(() -> new UserNotFoundException("User not found!"));
     }
 
-    public Optional<User> findByEmail(final String email) {
+    public Optional<UserEntity> findByEmail(final String email) {
         return userRepository.findByEmail(email);
     }
 
-    public User update(final User user) {
-        return userRepository.save(user);
+    public UserEntity update(final UserEntity userEntity) {
+        return userRepository.save(userEntity);
     }
 
     public void deleteById(final Long id) {
