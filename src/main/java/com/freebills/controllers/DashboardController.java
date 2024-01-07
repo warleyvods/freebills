@@ -28,6 +28,7 @@ public class DashboardController {
             @RequestParam(required = false) final Integer year,
             final Principal principal) {
         final var date = LocalDate.now();
+        validateDate(month);
         return dashboard.getDonutsGraph(
                 principal.getName(),
                 month == null ? date.getMonthValue() : month,
@@ -42,6 +43,7 @@ public class DashboardController {
             @RequestParam(required = false) final Integer year,
             final Principal principal) {
         final var date = LocalDate.now();
+        validateDate(month);
         return dashboard.getDonutsGraph(
                 principal.getName(),
                 month == null ? date.getMonthValue() : month,
