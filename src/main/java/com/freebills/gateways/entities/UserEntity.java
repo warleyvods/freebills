@@ -56,7 +56,4 @@ public class UserEntity extends AbstractEntity {
 
     private LocalDateTime lastAccess;
 
-    public void lastAccess() {
-        this.lastAccess = LocalDateTime.now();
-    }
 }

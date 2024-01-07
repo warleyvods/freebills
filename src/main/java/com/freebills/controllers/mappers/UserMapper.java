@@ -7,6 +7,7 @@ import com.freebills.controllers.dtos.requests.SignupUserRequestDTO;
 import com.freebills.controllers.dtos.requests.UserPutPasswordRequestDTO;
 import com.freebills.controllers.dtos.requests.UserPutRequestDTO;
 import com.freebills.controllers.dtos.responses.UserResponseDTO;
+import com.freebills.domain.User;
 import com.freebills.gateways.entities.UserEntity;
 import org.mapstruct.*;
 
@@ -14,17 +15,17 @@ import org.mapstruct.*;
 public interface UserMapper {
 
     @Mapping(source = "password", target = "password", qualifiedBy = EncodedMapping.class)
-    UserEntity toDomain(UserPostRequestDTO userPostRequestDTO);
+    User toDomain(UserPostRequestDTO userPostRequestDTO);
 
     @Mapping(source = "password", target = "password", qualifiedBy = EncodedMapping.class)
-    UserEntity toDomainUser(SignupUserRequestDTO signupUserRequestDTO);
+    User toDomainUser(SignupUserRequestDTO signupUserRequestDTO);
 
-    UserResponseDTO fromDomain(UserEntity userEntity);
+    UserResponseDTO fromDomain(User user);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    UserEntity updateUserFromDTO(UserPutRequestDTO userPutRequestDTO, @MappingTarget UserEntity userEntity);
+    User updateUserFromDTO(UserPutRequestDTO userPutRequestDTO, @MappingTarget User user);
 
     @Mapping(source = "password", target = "password", qualifiedBy = EncodedMapping.class)
-    UserEntity updatePasswordFromDTO(UserPutPasswordRequestDTO userPutPasswordRequestDTO, @MappingTarget UserEntity userEntity);
+    User updatePasswordFromDTO(UserPutPasswordRequestDTO userPutPasswordRequestDTO, @MappingTarget User user);
 
 }

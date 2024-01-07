@@ -105,7 +105,7 @@ class AUserControllerTestEntity {
 
         ResponseEntity<UserResponseDTO> userResponseEntity = testRestTemplate.postForEntity("/v1/user", newRequest, UserResponseDTO.class);
 
-        UserEntity userEntityFound = userGateway.findById(Objects.requireNonNull(userResponseEntity.getBody()).id());
+        var userEntityFound = userGateway.findById(Objects.requireNonNull(userResponseEntity.getBody()).id());
 
         assertNotNull(userEntityFound);
         assertEquals(user.getLogin(), userEntityFound.getLogin());

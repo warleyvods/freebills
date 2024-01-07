@@ -11,10 +11,10 @@ import org.mapstruct.*;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring",uses = {UserGateway.class}, unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = "spring", uses = UserGateway.class, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface AccountMapper {
 
-    @Mapping(source = "userId",target = "user")
+    @Mapping(source = "userId", target = "user")
     Account toDomain(AccountPostRequestDTO accountPostRequestDTO);
 
     AccountResponseDTO fromDomain(Account account);

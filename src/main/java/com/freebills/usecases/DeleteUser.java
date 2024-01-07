@@ -3,25 +3,31 @@ package com.freebills.usecases;
 import com.freebills.exceptions.PermissionDeniedException;
 import com.freebills.gateways.UserGateway;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Slf4j
 @Component
-public record DeleteUser(UserGateway userService, FindUser findUser) {
+public record DeleteUser(UserGateway userGateway, FindUser findUser) {
 
     private static final String ADMIN = "admin";
 
+    public void byIds(final List<Long> ids) {
+        ids.forEach(this::deleteValidation);
+        userGateway.deleteByIds(ids);
+    }
+
     public void byId(final Long id) {
         deleteValidation(id);
-        userService.deleteById(id);
+        userGateway.deleteById(id);
         log.info("[deleteUser][userId deleted: {}]", id);
     }
 
     private void deleteValidation(Long id) {
         final var user = findUser.byId(id);
-        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        final var authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (user.getLogin().equalsIgnoreCase(ADMIN)) {
             throw new PermissionDeniedException("You cannot delete a developer user");

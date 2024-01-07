@@ -5,11 +5,11 @@ import com.freebills.controllers.dtos.requests.LoginRequestDTO;
 import com.freebills.controllers.dtos.requests.SignupUserRequestDTO;
 import com.freebills.controllers.dtos.responses.MessageResponse;
 import com.freebills.controllers.mappers.UserMapper;
-import com.freebills.gateways.entities.UserEntity;
-import com.freebills.repositories.UserRepository;
 import com.freebills.security.jwt.JWTUtils;
 import com.freebills.security.services.UserDetailsImpl;
 import com.freebills.usecases.CreateUser;
+import com.freebills.usecases.FindUser;
+import com.freebills.usecases.UpdateUser;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -21,8 +21,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-
-import java.util.Optional;
+import static org.springframework.http.HttpHeaders.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -31,10 +30,11 @@ import java.util.Optional;
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
-    private final UserRepository userRepository;
+    private final FindUser findUser;
+    private final UpdateUser updateUser;
+    private final CreateUser createUser;
     private final JWTUtils jwtUtils;
     private final UserMapper userMapper;
-    private final CreateUser createUser;
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequestDTO loginRequestDTO) {
@@ -43,34 +43,33 @@ public class AuthController {
         var userDetails = (UserDetailsImpl) authentication.getPrincipal();
         var jwtCookie = jwtUtils.generateJwtCookie(userDetails);
         lastAccess(authentication);
-        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString()).body(null);
+        return ResponseEntity.ok().header(SET_COOKIE, jwtCookie.toString()).body(null);
     }
 
     private void lastAccess(Authentication authentication) {
-        final Optional<UserEntity> user = userRepository.findByLoginIgnoreCase(((UserDetailsImpl) authentication.getPrincipal()).username());
-        if (user.isPresent()) {
-            user.get().lastAccess();
-            userRepository.save(user.get());
-        }
+        final String username = ((UserDetailsImpl) authentication.getPrincipal()).username();
+        final var user = findUser.byLogin(username);
+        user.getLastAccess();
+        updateUser.update(user);
     }
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupUserRequestDTO signUpRequestDTO) {
-        if (Boolean.TRUE.equals(userRepository.existsByLogin(signUpRequestDTO.login()))) {
+        if (Boolean.TRUE.equals(findUser.existsByLogin(signUpRequestDTO.login()))) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already taken!"));
         }
 
-        if (Boolean.TRUE.equals(userRepository.existsByEmail(signUpRequestDTO.email()))) {
+        if (Boolean.TRUE.equals(findUser.existsByEmail(signUpRequestDTO.email()))) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Email is already in use!"));
         }
 
-        final UserEntity userEntity = userMapper.toDomainUser(signUpRequestDTO);
+        final var userEntity = userMapper.toDomainUser(signUpRequestDTO);
         return ResponseEntity.ok(createUser.create(userEntity));
     }
 
     @PostMapping("/logout")
     public ResponseEntity<?> logoutUser() {
         ResponseCookie cookie = jwtUtils.getCleanJwtCookie();
-        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body(new MessageResponse("You've been signed out!"));
+        return ResponseEntity.ok().header(SET_COOKIE, cookie.toString()).body(new MessageResponse("You've been signed out!"));
     }
 }
