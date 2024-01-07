@@ -49,7 +49,7 @@ public class AuthController {
     private void lastAccess(Authentication authentication) {
         final String username = ((UserDetailsImpl) authentication.getPrincipal()).username();
         final var user = findUser.byLogin(username);
-        user.getLastAccess();
+        user.setLastAccess();
         updateUser.update(user);
     }
 

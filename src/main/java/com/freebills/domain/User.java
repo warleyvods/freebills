@@ -24,7 +24,7 @@ public class User {
 
     private String lastLogin;
 
-    public void getLastAccess() {
+    public void setLastAccess() {
         if (lastAccess == null) {
             this.lastAccess = now();
         }
