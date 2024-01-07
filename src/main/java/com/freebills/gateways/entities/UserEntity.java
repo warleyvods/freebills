@@ -12,6 +12,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static jakarta.persistence.CascadeType.*;
+import static jakarta.persistence.FetchType.*;
+
 @Getter
 @Setter
 @Entity
@@ -51,7 +54,7 @@ public class UserEntity extends AbstractEntity {
     @CreatedDate
     private LocalDate createdAt;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = ALL, fetch = LAZY)
     private List<Account> accounts;
 
     private LocalDateTime lastAccess;
