@@ -18,7 +18,7 @@ public record FindUser(UserGateway userGateway) {
     }
 
     public Boolean existsByLogin(final String login) {
-        return userGateway.existsByEmail(login);
+        return userGateway.existsByLogin(login);
     }
 
     public Boolean existsByEmail(final String email) {
