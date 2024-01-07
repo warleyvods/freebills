@@ -1,19 +1,22 @@
 package com.freebills.usecases;
 
-import com.freebills.domains.User;
+import com.freebills.domain.User;
 import com.freebills.exceptions.PermissionDeniedException;
 import com.freebills.gateways.UserGateway;
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
+
 @Component
-public record UpdateUser(UserGateway userGateway) {
+public record UpdateUser(UserGateway userGateway, FindUser findUser) {
 
     private static final String ADMIN = "admin";
 
     public User update(final User user) {
-        if (user.getLogin().equalsIgnoreCase(ADMIN)) {
-            throw new PermissionDeniedException("You cannot change any developer attributes");
+        if (user.getId() != null && lastLogin(user.getId()).equals(ADMIN)) {
+            validationLoginChange(user);
         }
+
         return userGateway.update(user);
     }
 
@@ -22,5 +25,16 @@ public record UpdateUser(UserGateway userGateway) {
             throw new PermissionDeniedException("You cannot change a developer password");
         }
         update(user);
+    }
+
+    private void validationLoginChange(final User user) {
+        if (!Objects.equals(user.getLogin(), ADMIN)) {
+            throw new PermissionDeniedException("You cannot change a developer login");
+        }
+    }
+
+    private String lastLogin(final Long id) {
+        final var user = findUser.byId(id);
+        return user.getLastLogin();
     }
 }

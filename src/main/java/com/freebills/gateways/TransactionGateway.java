@@ -1,7 +1,7 @@
 package com.freebills.gateways;
 
-import com.freebills.domains.Transaction;
-import com.freebills.domains.enums.TransactionType;
+import com.freebills.gateways.entities.Transaction;
+import com.freebills.gateways.entities.enums.TransactionType;
 import com.freebills.exceptions.LoginInvalidException;
 import com.freebills.exceptions.TransactionNotFoundException;
 import com.freebills.repositories.TransactionRepository;

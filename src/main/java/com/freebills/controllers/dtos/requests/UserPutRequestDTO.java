@@ -5,8 +5,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record UserPutRequestDTO(
-        @Schema(description = "User name application", example = "Pudge Silva", required = true)
-        @NotNull
+
+        @Schema(description = "User id", example = "1")
         Long id,
 
         @Schema(description = "User name application", example = "Pudge Silva", required = true)

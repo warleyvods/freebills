@@ -1,6 +1,6 @@
 package com.freebills.usecases;
 
-import com.freebills.domains.Account;
+import com.freebills.gateways.entities.Account;
 import com.freebills.gateways.AccountGateway;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

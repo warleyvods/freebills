@@ -5,7 +5,7 @@ import com.freebills.controllers.dtos.requests.TransactionPostRequestDTO;
 import com.freebills.controllers.dtos.requests.TransactionPutRequesDTO;
 import com.freebills.controllers.dtos.responses.TransactionResponseDTO;
 import com.freebills.controllers.mappers.TransactionMapper;
-import com.freebills.domains.enums.TransactionType;
+import com.freebills.gateways.entities.enums.TransactionType;
 import com.freebills.usecases.CreateTransaction;
 import com.freebills.usecases.DeleteTransaction;
 import com.freebills.usecases.FindTransaction;
@@ -25,7 +25,7 @@ import static org.springframework.http.HttpStatus.*;
 @RequestMapping("/v1/transactions")
 public class TransactionController {
 
-    private final TransactionMapper mapper;
+    private final TransactionMapper transactionMapper;
     private final CreateTransaction createTransaction;
     private final UpdateTransaction updateTransaction;
     private final FindTransaction findTransaction;
@@ -34,37 +34,38 @@ public class TransactionController {
     @ResponseStatus(CREATED)
     @PostMapping
     public TransactionResponseDTO save(@RequestBody @Valid final TransactionPostRequestDTO transactionPostRequestDto) {
-        final var transaction = mapper.toDomain(transactionPostRequestDto);
-        return mapper.fromDomain(createTransaction.execute(transaction));
+        final var transaction = transactionMapper.toDomain(transactionPostRequestDto);
+        return transactionMapper.fromDomain(createTransaction.execute(transaction));
     }
 
     @ResponseStatus(OK)
     @GetMapping("/filter")
-    public Page<TransactionResponseDTO> byUserDateFilter(
+    public Page<TransactionResponseDTO> findAllWithFilters(
             final Principal principal,
             @RequestParam(required = false) final Integer month,
             @RequestParam(required = false) final Integer year,
             @RequestParam(required = false) final String keyword,
             @RequestParam(required = false) final String transactionType,
             final Pageable pageable) {
-        return findTransaction.findAllByUserDateFilter(
+
+        return findTransaction.findAllWithFilters(
                         principal.getName(), month, year, pageable, keyword,
                         transactionType != null ? TransactionType.valueOf(transactionType) : null)
-                .map(mapper::fromDomain);
+                .map(transactionMapper::fromDomain);
     }
 
     @ResponseStatus(OK)
     @GetMapping("{id}")
     public TransactionResponseDTO findTransactionById(@PathVariable final Long id) {
-        return mapper.fromDomain(findTransaction.findById(id));
+        return transactionMapper.fromDomain(findTransaction.findById(id));
     }
 
     @ResponseStatus(OK)
     @PutMapping
     public TransactionResponseDTO update(@RequestBody @Valid final TransactionPutRequesDTO transactionPutRequesDTO) {
         final var transactionFinded = findTransaction.findById(transactionPutRequesDTO.id());
-        final var update = updateTransaction.execute(mapper.updateTransactionFromDto(transactionPutRequesDTO, transactionFinded));
-        return mapper.fromDomain(update);
+        final var update = updateTransaction.execute(transactionMapper.updateTransactionFromDto(transactionPutRequesDTO, transactionFinded));
+        return transactionMapper.fromDomain(update);
     }
 
     @ResponseStatus(NO_CONTENT)

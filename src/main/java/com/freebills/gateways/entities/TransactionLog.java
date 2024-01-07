@@ -1,6 +1,6 @@
-package com.freebills.domains;
+package com.freebills.gateways.entities;
 
-import com.freebills.domains.enums.TransactionType;
+import com.freebills.gateways.entities.enums.TransactionType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

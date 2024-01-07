@@ -13,12 +13,16 @@ import com.freebills.usecases.UpdateUser;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+
+import java.security.Principal;
+import java.util.List;
 
 import static org.springframework.http.HttpStatus.*;
 
@@ -32,31 +36,31 @@ public class UserController {
     private final CreateUser createUser;
     private final FindUser findUser;
     private final DeleteUser deleteUser;
-    private final UserMapper mapper;
+    private final UserMapper userMapper;
     private final UpdateUser updateUser;
 
     @ResponseStatus(CREATED)
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
     public UserResponseDTO save(@RequestBody @Valid final UserPostRequestDTO userPostRequestDTO) {
-        final var user = createUser.create(mapper.toDomain(userPostRequestDTO));
-        return mapper.fromDomain(user);
+        final var user = createUser.create(userMapper.toDomain(userPostRequestDTO));
+        return userMapper.fromDomain(user);
     }
 
     @ResponseStatus(CREATED)
     @PostMapping("/public/save")
     public UserResponseDTO savePublicUser(@RequestBody @Valid final SignupUserRequestDTO signupUserRequestDTO) {
-        final var user = createUser.create(mapper.toDomainUser(signupUserRequestDTO));
-        return mapper.fromDomain(user);
+        final var user = createUser.create(userMapper.toDomainUser(signupUserRequestDTO));
+        return userMapper.fromDomain(user);
     }
 
     @ResponseStatus(OK)
     @PutMapping
     @PreAuthorize("hasRole('USER')")
-    public UserResponseDTO update(@RequestBody @Valid final UserPutRequestDTO userPutRequestDTO) {
-        final var userFinded = findUser.byId(userPutRequestDTO.id());
-        final var toJson = updateUser.update(mapper.updateUserFromDTO(userPutRequestDTO, userFinded));
-        return mapper.fromDomain(toJson);
+    public UserResponseDTO update(@RequestBody @Valid final UserPutRequestDTO userPutRequestDTO, Principal principal) {
+        final var userFinded = findUser.byLogin(principal.getName());
+        final var toJson = updateUser.update(userMapper.updateUserFromDTO(userPutRequestDTO, userFinded));
+        return userMapper.fromDomain(toJson);
     }
 
     @ResponseStatus(OK)
@@ -64,7 +68,7 @@ public class UserController {
     @PreAuthorize("hasRole('USER')")
     public void updatePassword(@RequestBody @Valid final UserPutPasswordRequestDTO userPassword) {
         final var userFinded = findUser.byId(userPassword.id());
-        updateUser.updatePassword(mapper.updatePasswordFromDTO(userPassword, userFinded));
+        updateUser.updatePassword(userMapper.updatePasswordFromDTO(userPassword, userFinded));
     }
 
     @ResponseStatus(OK)
@@ -72,7 +76,7 @@ public class UserController {
     @PreAuthorize("hasRole('ADMIN')")
     public UserResponseDTO findById(@PathVariable final Long id) {
         final var user = findUser.byId(id);
-        return mapper.fromDomain(user);
+        return userMapper.fromDomain(user);
     }
 
     @ResponseStatus(OK)
@@ -80,7 +84,7 @@ public class UserController {
     @PreAuthorize("hasRole('ADMIN')")
     public UserResponseDTO findByLogin(@PathVariable final String login) {
         final var user = findUser.byLogin(login);
-        return mapper.fromDomain(user);
+        return userMapper.fromDomain(user);
     }
 
 
@@ -91,10 +95,17 @@ public class UserController {
         deleteUser.byId(id);
     }
 
+    @ResponseStatus(NO_CONTENT)
+    @DeleteMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    public void deleteByIds(@RequestParam final List<Long> ids) {
+        deleteUser.byIds(ids);
+    }
+
     @ResponseStatus(OK)
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
     public Page<UserResponseDTO> findAll(Pageable pageable) {
-        return findUser.all(pageable).map(mapper::fromDomain);
+        return findUser.all(pageable).map(userMapper::fromDomain);
     }
 }

@@ -2,7 +2,7 @@ package com.freebills.usecases;
 
 import com.freebills.controllers.dtos.requests.UserPutPasswordRequestDTO;
 import com.freebills.controllers.mappers.UserMapper;
-import com.freebills.domains.ForgetPassword;
+import com.freebills.gateways.entities.ForgetPassword;
 import com.freebills.gateways.EmailGateway;
 import com.freebills.gateways.UserGateway;
 import com.freebills.repositories.ForgetPasswordRepository;

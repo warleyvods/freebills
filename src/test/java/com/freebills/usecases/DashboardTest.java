@@ -1,13 +1,13 @@
 package com.freebills.usecases;
 
 import com.freebills.controllers.dtos.responses.DashboardResponseDTO;
-import com.freebills.domains.Account;
-import com.freebills.domains.Transaction;
-import com.freebills.domains.User;
-import com.freebills.domains.enums.AccountType;
-import com.freebills.domains.enums.BankType;
-import com.freebills.domains.enums.TransactionCategory;
-import com.freebills.domains.enums.TransactionType;
+import com.freebills.gateways.entities.Account;
+import com.freebills.gateways.entities.Transaction;
+import com.freebills.gateways.entities.UserEntity;
+import com.freebills.gateways.entities.enums.AccountType;
+import com.freebills.gateways.entities.enums.BankType;
+import com.freebills.gateways.entities.enums.TransactionCategory;
+import com.freebills.gateways.entities.enums.TransactionType;
 import com.freebills.repositories.AccountsRepository;
 import com.freebills.repositories.TransactionRepository;
 import com.freebills.repositories.UserRepository;
@@ -93,14 +93,14 @@ class DashboardTest {
 
     @BeforeEach
     void beforeSetup() {
-        User user = userRepository.findById(1L).orElse(null);
+        UserEntity userEntity = userRepository.findById(1L).orElse(null);
 
         final var acc01 = new Account();
         acc01.setAmount(new BigDecimal("0"));
         acc01.setDescription("Conta Inter");
         acc01.setAccountType(AccountType.CHECKING_ACCOUNT);
         acc01.setBankType(BankType.INTER);
-        acc01.setUser(user);
+        acc01.setUser(userEntity);
         acc01.setArchived(false);
         acc01.setDashboard(false);
 
@@ -151,14 +151,14 @@ class DashboardTest {
 
     @Test
     void testGetTotalValue() {
-        User user = userRepository.findById(1L).orElse(null);
+        UserEntity userEntity = userRepository.findById(1L).orElse(null);
 
         final var acc01 = new Account();
         acc01.setAmount(new BigDecimal("100"));
         acc01.setDescription("Conta Inter");
         acc01.setAccountType(AccountType.CHECKING_ACCOUNT);
         acc01.setBankType(BankType.INTER);
-        acc01.setUser(user);
+        acc01.setUser(userEntity);
         acc01.setArchived(false);
         acc01.setDashboard(false);
 
@@ -167,7 +167,7 @@ class DashboardTest {
         acc02.setDescription("Conta Inter");
         acc02.setAccountType(AccountType.CHECKING_ACCOUNT);
         acc02.setBankType(BankType.INTER);
-        acc02.setUser(user);
+        acc02.setUser(userEntity);
         acc02.setArchived(false);
         acc02.setDashboard(false);
 
@@ -181,14 +181,14 @@ class DashboardTest {
 
     @Test
     void testGetTotalValueWhenDashboardAreTrue() {
-        User user = userRepository.findById(1L).orElse(null);
+        UserEntity userEntity = userRepository.findById(1L).orElse(null);
 
         final var acc01 = new Account();
         acc01.setAmount(new BigDecimal("100"));
         acc01.setDescription("Conta Inter");
         acc01.setAccountType(AccountType.CHECKING_ACCOUNT);
         acc01.setBankType(BankType.INTER);
-        acc01.setUser(user);
+        acc01.setUser(userEntity);
         acc01.setArchived(false);
         acc01.setDashboard(false);
 
@@ -197,7 +197,7 @@ class DashboardTest {
         acc02.setDescription("Conta Inter");
         acc02.setAccountType(AccountType.CHECKING_ACCOUNT);
         acc02.setBankType(BankType.INTER);
-        acc02.setUser(user);
+        acc02.setUser(userEntity);
         acc02.setArchived(false);
         acc02.setDashboard(true);
 

@@ -4,10 +4,10 @@ import com.freebills.FreebillsApplication;
 import com.freebills.controllers.dtos.requests.AccountPostRequestDTO;
 import com.freebills.controllers.dtos.requests.LoginRequestDTO;
 import com.freebills.controllers.dtos.responses.AccountResponseDTO;
-import com.freebills.domains.Account;
-import com.freebills.domains.User;
-import com.freebills.domains.enums.AccountType;
-import com.freebills.domains.enums.BankType;
+import com.freebills.gateways.entities.Account;
+import com.freebills.gateways.entities.UserEntity;
+import com.freebills.gateways.entities.enums.AccountType;
+import com.freebills.gateways.entities.enums.BankType;
 import com.freebills.repositories.AccountsRepository;
 import com.freebills.repositories.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -65,7 +65,7 @@ class BAccountControllerTest {
 
     @Test
     void shouldFindAll() {
-        final var user = new User();
+        final var user = new UserEntity();
         user.setName("abcd");
         user.setLogin("abcd");
         user.setEmail("abcd@teste.com");
@@ -73,7 +73,7 @@ class BAccountControllerTest {
         user.setAdmin(true);
         user.setActive(true);
 
-        final User userSaved = userRepository.save(user);
+        final UserEntity userEntitySaved = userRepository.save(user);
 
         final var request = new HttpEntity<>(new LoginRequestDTO("abcd", "123"));
         ResponseEntity<Object> objectResponseEntity = testRestTemplate.postForEntity("/login", request, Object.class);
@@ -85,7 +85,7 @@ class BAccountControllerTest {
         account.setAccountType(AccountType.MONEY);
         account.setDashboard(true);
         account.setBankType(BankType.INTER);
-        account.setUser(userSaved);
+        account.setUser(userEntitySaved);
 
         final var account1 = new Account();
         account1.setAmount(BigDecimal.valueOf(500));
@@ -93,7 +93,7 @@ class BAccountControllerTest {
         account1.setAccountType(AccountType.MONEY);
         account1.setDashboard(true);
         account1.setBankType(BankType.INTER);
-        account1.setUser(userSaved);
+        account1.setUser(userEntitySaved);
 
         accountsRepository.saveAll(List.of(account, account1));
 
@@ -101,7 +101,7 @@ class BAccountControllerTest {
         headers.set("Cookie", token);
         var newReq = new HttpEntity<>(null, headers);
 
-        final var response = testRestTemplate.exchange("/v1/accounts?userId="+ userSaved.getId() , HttpMethod.GET, newReq, String.class);
+        final var response = testRestTemplate.exchange("/v1/accounts?userId="+ userEntitySaved.getId() , HttpMethod.GET, newReq, String.class);
 
         assertEquals(200, response.getStatusCode().value());
     }

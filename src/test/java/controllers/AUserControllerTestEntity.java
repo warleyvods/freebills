@@ -7,7 +7,7 @@ import com.freebills.FreebillsApplication;
 import com.freebills.controllers.dtos.requests.LoginRequestDTO;
 import com.freebills.controllers.dtos.requests.UserPostRequestDTO;
 import com.freebills.controllers.dtos.responses.UserResponseDTO;
-import com.freebills.domains.User;
+import com.freebills.gateways.entities.UserEntity;
 import com.freebills.exceptions.handler.ExceptionFilters;
 import com.freebills.gateways.UserGateway;
 import com.freebills.repositories.UserRepository;
@@ -33,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest(classes = FreebillsApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class AUserControllerTest {
+class AUserControllerTestEntity {
 
     @Autowired
     private UserRepository userRepository;
@@ -56,7 +56,7 @@ class AUserControllerTest {
 
     @AfterAll
     public static void setUserAfter() {
-        var roleAdmin = new User();
+        var roleAdmin = new UserEntity();
         roleAdmin.setName("Administrator");
         roleAdmin.setLogin("admin");
         roleAdmin.setAdmin(true);
@@ -65,7 +65,7 @@ class AUserControllerTest {
         roleAdmin.setEmail("email@email.com");
 
         final UserRepository bean = context.getBean(UserRepository.class);
-        final Optional<User> admin = bean.findByLoginIgnoreCase("admin");
+        final Optional<UserEntity> admin = bean.findByLoginIgnoreCase("admin");
 
         if (admin.isEmpty()) {
             bean.save(roleAdmin);
@@ -77,7 +77,7 @@ class AUserControllerTest {
     void shouldSaveUserIfUserAreAdmin() {
         userRepository.deleteAll();
 
-        var roleAdmin = new User();
+        var roleAdmin = new UserEntity();
         roleAdmin.setName("Administrator");
         roleAdmin.setLogin("admin");
         roleAdmin.setAdmin(true);
@@ -90,7 +90,7 @@ class AUserControllerTest {
         ResponseEntity<Object> objectResponseEntity = testRestTemplate.postForEntity("/v1/auth/login", request, Object.class);
         String token = Objects.requireNonNull(objectResponseEntity.getHeaders().get("Set-Cookie")).get(0);
 
-        final var user = new User();
+        final var user = new UserEntity();
         user.setName("Pudge silva");
         user.setLogin("pudge01");
         user.setEmail("pudge01@dota.com");
@@ -105,10 +105,10 @@ class AUserControllerTest {
 
         ResponseEntity<UserResponseDTO> userResponseEntity = testRestTemplate.postForEntity("/v1/user", newRequest, UserResponseDTO.class);
 
-        User userFound = userGateway.findById(Objects.requireNonNull(userResponseEntity.getBody()).id());
+        var userEntityFound = userGateway.findById(Objects.requireNonNull(userResponseEntity.getBody()).id());
 
-        assertNotNull(userFound);
-        assertEquals(user.getLogin(), userFound.getLogin());
+        assertNotNull(userEntityFound);
+        assertEquals(user.getLogin(), userEntityFound.getLogin());
     }
 
     @Disabled
@@ -116,7 +116,7 @@ class AUserControllerTest {
     @Test
     void shouldNotSaveUserIfUserIsNotAdmin() {
         userRepository.deleteAll();
-        var roleAdmin = new User();
+        var roleAdmin = new UserEntity();
         roleAdmin.setName("Administrator");
         roleAdmin.setLogin("admin");
         roleAdmin.setAdmin(false);
@@ -151,7 +151,7 @@ class AUserControllerTest {
     @Disabled(value = "todo fix")
     void shouldNotLoginIfUserAreInactive() {
         userRepository.deleteAll();
-        var roleAdmin = new User();
+        var roleAdmin = new UserEntity();
         roleAdmin.setName("Administrator");
         roleAdmin.setLogin("admin");
         roleAdmin.setAdmin(true);
@@ -169,14 +169,14 @@ class AUserControllerTest {
     @Test
     void shouldNotFindUserById() {
         userRepository.deleteAll();
-        var roleAdmin = new User();
+        var roleAdmin = new UserEntity();
         roleAdmin.setName("Administrator");
         roleAdmin.setLogin("admin");
         roleAdmin.setAdmin(true);
         roleAdmin.setActive(true);
         roleAdmin.setPassword(new BCryptPasswordEncoder().encode("baguvix"));
         roleAdmin.setEmail("email@email.com");
-        User user = userRepository.save(roleAdmin);
+        UserEntity userEntity = userRepository.save(roleAdmin);
 
         final var request = new HttpEntity<>(new LoginRequestDTO("admin", "baguvix"));
         ResponseEntity<Object> objectResponseEntity = testRestTemplate.postForEntity("/v1/auth/login", request, Object.class);
@@ -197,7 +197,7 @@ class AUserControllerTest {
     @Test
     void shouldNotFindUserByLogin() {
         userRepository.deleteAll();
-        var roleAdmin = new User();
+        var roleAdmin = new UserEntity();
         roleAdmin.setName("Administrator");
         roleAdmin.setLogin("admin");
         roleAdmin.setAdmin(true);
@@ -224,7 +224,7 @@ class AUserControllerTest {
     @Test
     void shouldFindAllUsers() throws JsonProcessingException {
         userRepository.deleteAll();
-        var roleAdmin = new User();
+        var roleAdmin = new UserEntity();
         roleAdmin.setName("Administrator");
         roleAdmin.setLogin("admin");
         roleAdmin.setAdmin(true);
@@ -255,7 +255,7 @@ class AUserControllerTest {
     @Test
     void shouldDeleteAUserById() {
         userRepository.deleteAll();
-        var roleAdmin = new User();
+        var roleAdmin = new UserEntity();
         roleAdmin.setName("Administrator");
         roleAdmin.setLogin("admin");
         roleAdmin.setAdmin(true);
@@ -264,14 +264,14 @@ class AUserControllerTest {
         roleAdmin.setEmail("email02@email.com");
         userRepository.save(roleAdmin);
 
-        var roleUser = new User();
+        var roleUser = new UserEntity();
         roleUser.setName("Maicom");
         roleUser.setLogin("maicom");
         roleUser.setAdmin(true);
         roleUser.setActive(true);
         roleUser.setPassword(new BCryptPasswordEncoder().encode("baguvix"));
         roleUser.setEmail("email01@email.com");
-        User savedUser = userRepository.save(roleUser);
+        UserEntity savedUserEntity = userRepository.save(roleUser);
 
         final var request = new HttpEntity<>(new LoginRequestDTO("admin", "baguvix"));
         ResponseEntity<Object> objectResponseEntity = testRestTemplate.postForEntity("/v1/auth/login", request, Object.class);
@@ -283,7 +283,7 @@ class AUserControllerTest {
 
         final var newRequest = new HttpEntity<>(null, headers);
 
-        ResponseEntity<Void> userResponseEntity = testRestTemplate.exchange("/v1/user/" + savedUser.getId(), HttpMethod.DELETE, newRequest, Void.class);
+        ResponseEntity<Void> userResponseEntity = testRestTemplate.exchange("/v1/user/" + savedUserEntity.getId(), HttpMethod.DELETE, newRequest, Void.class);
         assertEquals(204, userResponseEntity.getStatusCode().value());
     }
 
@@ -291,14 +291,14 @@ class AUserControllerTest {
     @Test
     void shouldNotDeleteAUserIfUserAreDevelop() {
         userRepository.deleteAll();
-        var roleAdmin = new User();
+        var roleAdmin = new UserEntity();
         roleAdmin.setName("Administrator");
         roleAdmin.setLogin("admin");
         roleAdmin.setAdmin(true);
         roleAdmin.setActive(true);
         roleAdmin.setPassword(new BCryptPasswordEncoder().encode("baguvix"));
         roleAdmin.setEmail("email02@email.com");
-        User savedUser = userRepository.save(roleAdmin);
+        UserEntity savedUserEntity = userRepository.save(roleAdmin);
 
 
         final var request = new HttpEntity<>(new LoginRequestDTO("admin", "baguvix"));
@@ -311,7 +311,7 @@ class AUserControllerTest {
 
         final var newRequest = new HttpEntity<>(null, headers);
 
-        ResponseEntity<ExceptionFilters> userResponseEntity = testRestTemplate.exchange("/v1/user/" + savedUser.getId(), HttpMethod.DELETE, newRequest, ExceptionFilters.class);
+        ResponseEntity<ExceptionFilters> userResponseEntity = testRestTemplate.exchange("/v1/user/" + savedUserEntity.getId(), HttpMethod.DELETE, newRequest, ExceptionFilters.class);
         assertEquals(401, userResponseEntity.getStatusCode().value());
         assertEquals("You cannot delete a developer user", Objects.requireNonNull(userResponseEntity.getBody()).getDetails());
     }
@@ -320,14 +320,14 @@ class AUserControllerTest {
     @Test
     void shouldNotDeleteAUserIfUserAreOwnUser() {
         userRepository.deleteAll();
-        var roleAdmin = new User();
+        var roleAdmin = new UserEntity();
         roleAdmin.setName("Administrator");
         roleAdmin.setLogin("jose");
         roleAdmin.setAdmin(true);
         roleAdmin.setActive(true);
         roleAdmin.setPassword(new BCryptPasswordEncoder().encode("baguvix"));
         roleAdmin.setEmail("email02@email.com");
-        User savedUser = userRepository.save(roleAdmin);
+        UserEntity savedUserEntity = userRepository.save(roleAdmin);
 
 
         final var request = new HttpEntity<>(new LoginRequestDTO("jose", "baguvix"));
@@ -340,7 +340,7 @@ class AUserControllerTest {
 
         final var newRequest = new HttpEntity<>(null, headers);
 
-        ResponseEntity<ExceptionFilters> userResponseEntity = testRestTemplate.exchange("/v1/user/" + savedUser.getId(), HttpMethod.DELETE, newRequest, ExceptionFilters.class);
+        ResponseEntity<ExceptionFilters> userResponseEntity = testRestTemplate.exchange("/v1/user/" + savedUserEntity.getId(), HttpMethod.DELETE, newRequest, ExceptionFilters.class);
         assertEquals(401, userResponseEntity.getStatusCode().value());
         assertEquals("You cannot delete your own user", Objects.requireNonNull(userResponseEntity.getBody()).getDetails());
     }
@@ -349,14 +349,14 @@ class AUserControllerTest {
     @Test
     void shouldFindUserById() {
         userRepository.deleteAll();
-        var roleAdmin = new User();
+        var roleAdmin = new UserEntity();
         roleAdmin.setName("Administrator");
         roleAdmin.setLogin("admin");
         roleAdmin.setAdmin(true);
         roleAdmin.setActive(true);
         roleAdmin.setPassword(new BCryptPasswordEncoder().encode("baguvix"));
         roleAdmin.setEmail("email@email.com");
-        User user = userRepository.save(roleAdmin);
+        UserEntity userEntity = userRepository.save(roleAdmin);
 
         final var request = new HttpEntity<>(new LoginRequestDTO("admin", "baguvix"));
         ResponseEntity<Object> objectResponseEntity = testRestTemplate.postForEntity("/v1/auth/login", request, Object.class);
@@ -368,7 +368,7 @@ class AUserControllerTest {
 
         final var newRequest = new HttpEntity<>(null, headers);
 
-        ResponseEntity<UserResponseDTO> userResponseEntity = testRestTemplate.exchange("/v1/user/" + user.getId(), HttpMethod.GET, newRequest, UserResponseDTO.class);
+        ResponseEntity<UserResponseDTO> userResponseEntity = testRestTemplate.exchange("/v1/user/" + userEntity.getId(), HttpMethod.GET, newRequest, UserResponseDTO.class);
         assertEquals(roleAdmin.getName(), Objects.requireNonNull(userResponseEntity.getBody()).name());
         assertEquals(roleAdmin.getLogin(), userResponseEntity.getBody().login());
     }

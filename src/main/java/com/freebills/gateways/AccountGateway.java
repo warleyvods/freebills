@@ -1,6 +1,6 @@
 package com.freebills.gateways;
 
-import com.freebills.domains.Account;
+import com.freebills.gateways.entities.Account;
 import com.freebills.exceptions.AccountNotFoundException;
 import com.freebills.repositories.AccountsRepository;
 import lombok.RequiredArgsConstructor;

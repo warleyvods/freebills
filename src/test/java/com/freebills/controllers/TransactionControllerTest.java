@@ -4,13 +4,13 @@ import com.freebills.controllers.dtos.requests.LoginRequestDTO;
 import com.freebills.controllers.dtos.requests.TransactionPostRequestDTO;
 import com.freebills.controllers.dtos.requests.TransactionPutRequesDTO;
 import com.freebills.controllers.dtos.responses.TransactionResponseDTO;
-import com.freebills.domains.Account;
-import com.freebills.domains.Transaction;
-import com.freebills.domains.User;
-import com.freebills.domains.enums.AccountType;
-import com.freebills.domains.enums.BankType;
-import com.freebills.domains.enums.TransactionCategory;
-import com.freebills.domains.enums.TransactionType;
+import com.freebills.gateways.entities.Account;
+import com.freebills.gateways.entities.Transaction;
+import com.freebills.gateways.entities.UserEntity;
+import com.freebills.gateways.entities.enums.AccountType;
+import com.freebills.gateways.entities.enums.BankType;
+import com.freebills.gateways.entities.enums.TransactionCategory;
+import com.freebills.gateways.entities.enums.TransactionType;
 import com.freebills.gateways.AccountGateway;
 import com.freebills.repositories.AccountsRepository;
 import com.freebills.repositories.TransactionRepository;
@@ -56,14 +56,14 @@ class TransactionControllerTest {
 
     @BeforeEach
     void beforeSetup() {
-        User user = userRepository.findById(1L).orElse(null);
+        UserEntity userEntity = userRepository.findById(1L).orElse(null);
 
         final var acc01 = new Account();
         acc01.setAmount(new BigDecimal("0"));
         acc01.setDescription("Conta Inter");
         acc01.setAccountType(AccountType.CHECKING_ACCOUNT);
         acc01.setBankType(BankType.INTER);
-        acc01.setUser(user);
+        acc01.setUser(userEntity);
         acc01.setArchived(false);
         acc01.setDashboard(false);
 

@@ -1,9 +1,9 @@
 package com.freebills.usecases;
 
-import com.freebills.domains.Account;
-import com.freebills.domains.Transaction;
-import com.freebills.domains.enums.TransactionCategory;
-import com.freebills.domains.enums.TransactionType;
+import com.freebills.gateways.entities.Account;
+import com.freebills.gateways.entities.Transaction;
+import com.freebills.gateways.entities.enums.TransactionCategory;
+import com.freebills.gateways.entities.enums.TransactionType;
 import com.freebills.gateways.AccountGateway;
 import com.freebills.repositories.TransactionLogRepository;
 import lombok.AllArgsConstructor;

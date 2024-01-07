@@ -1,23 +1,31 @@
 package com.freebills.usecases;
 
-import com.freebills.domains.User;
+import com.freebills.domain.User;
 import com.freebills.gateways.UserGateway;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 @Component
-public record FindUser(UserGateway userService) {
+public record FindUser(UserGateway userGateway) {
 
     public User byId(final Long id) {
-        return userService.findById(id);
+        return userGateway.findById(id);
     }
 
     public User byLogin(final String login) {
-        return userService.findByLogin(login);
+        return userGateway.findByLogin(login);
+    }
+
+    public Boolean existsByLogin(final String login) {
+        return userGateway.existsByLogin(login);
+    }
+
+    public Boolean existsByEmail(final String email) {
+        return userGateway.existsByEmail(email);
     }
 
     public Page<User> all(Pageable pageable) {
-        return userService.getAll(pageable);
+        return userGateway.getAll(pageable);
     }
 }

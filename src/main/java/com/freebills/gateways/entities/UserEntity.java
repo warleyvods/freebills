@@ -1,4 +1,4 @@
-package com.freebills.domains;
+package com.freebills.gateways.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -21,7 +21,7 @@ import java.util.List;
                 @UniqueConstraint(columnNames = "email")
         })
 @EntityListeners(AuditingEntityListener.class)
-public class User extends AbstractEntity {
+public class UserEntity extends AbstractEntity {
 
     @NotBlank
     @Column(nullable = false)
@@ -56,7 +56,4 @@ public class User extends AbstractEntity {
 
     private LocalDateTime lastAccess;
 
-    public void lastAccess() {
-        this.lastAccess = LocalDateTime.now();
-    }
 }

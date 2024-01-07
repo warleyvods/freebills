@@ -1,4 +1,4 @@
-package com.freebills.domains;
+package com.freebills.gateways.entities;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

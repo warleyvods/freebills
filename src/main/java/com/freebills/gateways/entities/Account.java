@@ -1,7 +1,7 @@
-package com.freebills.domains;
+package com.freebills.gateways.entities;
 
-import com.freebills.domains.enums.AccountType;
-import com.freebills.domains.enums.BankType;
+import com.freebills.gateways.entities.enums.AccountType;
+import com.freebills.gateways.entities.enums.BankType;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -31,7 +31,7 @@ public class  Account {
     private BankType bankType;
 
     @ManyToOne
-    private User user;
+    private UserEntity user;
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Transaction> transactions = new ArrayList<>();
