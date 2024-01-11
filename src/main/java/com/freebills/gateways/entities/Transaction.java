@@ -33,7 +33,7 @@ public class Transaction {
     private LocalDate date;
 
     @NotBlank
-    @Size(max = 50)
+    @Size(max = 255)
     private String description;
 
     @Size(max = 50)
