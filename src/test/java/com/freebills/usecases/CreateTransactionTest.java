@@ -160,8 +160,11 @@ class CreateTransactionTest {
     @Test
     void testCreateTransactionWithLargeDescription() {
         String description = "This is a very long description that exceeds the maximum length allowed by the database column for the description field." +
-                " It should trigger a constraint violation exception when attempting to save the transaction.";
-        Transaction transaction = new Transaction();
+                " It should trigger a constraint violation exception when attempting to save the transaction." +
+                        " It should trigger a constraint violation exception when attempting to save the transaction." +
+                        " It should trigger a constraint violation exception when attempting to save the transaction." +
+                        " It should trigger a constraint violation exception when attempting to save the transaction.";
+                Transaction transaction = new Transaction();
         transaction.setAmount(new BigDecimal("100.00"));
         transaction.setDate(LocalDate.now());
         transaction.setDescription(description);
