@@ -100,6 +100,7 @@ public class AccountController {
         deleteAccount.deleteAccount(accountId);
     }
 
+    //TODO refatorar este método!
 //    @ResponseStatus(OK)
 //    @PatchMapping("/readjustment")
 //    public void reajustAmount(@RequestBody @Valid final AccountReajustDTO accountReajustDTO) {

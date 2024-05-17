@@ -30,11 +30,6 @@ public record UserGateway(UserRepository userRepository, UserGatewayMapper userG
         return userGatewayMapper.toDomain(userRepository.findById(id).orElseThrow(UserNotFoundException::new));
     }
 
-    //TODO temp (bug no mapstruct ele precisa encontrar uma entidade ate eu arrumar account.)
-    public UserEntity findByIdX(final Long id) {
-        return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
-    }
-
     public User findByLogin(final String login) {
         return userGatewayMapper.toDomain(userRepository.findByLoginIgnoreCase(login).orElseThrow(UserNotFoundException::new));
     }
