@@ -26,7 +26,7 @@ jobs:
         run: ./gradlew jacocotestReport
 
       - name: SonarQube Scan
-        uses: sonarsource/sonarqube-scan-action@master
+        uses: sonarsource/sonarqube-scan-action@v2.0.1
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_KEY }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}

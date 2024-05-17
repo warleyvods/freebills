@@ -11,8 +11,14 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
-public record UserDetailsImpl(Long id, String username, String email, @JsonIgnore String password,
-                              Collection<? extends GrantedAuthority> authorities) implements UserDetails {
+public record UserDetailsImpl(
+        Long id,
+        String username,
+        String email,
+        @JsonIgnore
+        String password,
+        Collection<? extends GrantedAuthority> authorities
+) implements UserDetails {
 
     @Serial
     private static final long serialVersionUID = 1L;

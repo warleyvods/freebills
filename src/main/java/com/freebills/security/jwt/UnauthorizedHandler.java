@@ -16,9 +16,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
-public class AuthEntryPointJWT implements AuthenticationEntryPoint {
+public class UnauthorizedHandler implements AuthenticationEntryPoint {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AuthEntryPointJWT.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UnauthorizedHandler.class);
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {

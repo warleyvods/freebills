@@ -35,8 +35,7 @@ public class TransactionGateway {
             throw new LoginInvalidException("Login invalid!");
         }
 
-        final var byTransactionFilterByDate = transactionRepository.findByTransactionFilterByDate(login, month, year, keyword, transactionType, pageable);
-        return byTransactionFilterByDate.map(transactionGatewayMapper::toDomain);
+        return transactionRepository.findByTransactionFilterByDate(login, month, year, keyword, transactionType, pageable).map(transactionGatewayMapper::toDomain);
     }
 
     public Transaction findById(Long id) {

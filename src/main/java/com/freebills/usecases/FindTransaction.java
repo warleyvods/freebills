@@ -1,10 +1,9 @@
 package com.freebills.usecases;
 
 import com.freebills.domain.Transaction;
-import com.freebills.gateways.entities.TransactionEntity;
-import com.freebills.gateways.entities.enums.TransactionType;
 import com.freebills.gateways.TransactionGateway;
 import com.freebills.gateways.UserGateway;
+import com.freebills.gateways.entities.enums.TransactionType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
