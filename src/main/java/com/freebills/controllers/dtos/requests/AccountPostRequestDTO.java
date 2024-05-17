@@ -25,6 +25,4 @@ public record AccountPostRequestDTO(
         @Schema(description = "Type of the bank")
         @NotBlank
         String bankType
-) {
-
-}
+) { }

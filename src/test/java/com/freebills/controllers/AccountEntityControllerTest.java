@@ -3,7 +3,7 @@ package com.freebills.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.freebills.controllers.dtos.requests.*;
 import com.freebills.controllers.dtos.responses.AccountResponseDTO;
-import com.freebills.gateways.entities.Account;
+import com.freebills.gateways.entities.AccountEntity;
 import com.freebills.gateways.entities.UserEntity;
 import com.freebills.gateways.entities.enums.AccountType;
 import com.freebills.gateways.entities.enums.BankType;
@@ -36,7 +36,7 @@ import java.util.Objects;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class AccountControllerTest {
+class AccountEntityControllerTest {
 
     @Autowired
     private TestRestTemplate testRestTemplate;
@@ -84,7 +84,7 @@ class AccountControllerTest {
 
     @Test
     void shouldfindAllAccountsNonArchived() {
-        final var acc01 = new Account();
+        final var acc01 = new AccountEntity();
         acc01.setAmount(new BigDecimal("100"));
         acc01.setDescription("Conta Inter");
         acc01.setAccountType(AccountType.CHECKING_ACCOUNT);
@@ -93,7 +93,7 @@ class AccountControllerTest {
         acc01.setArchived(false);
         acc01.setDashboard(false);
 
-        final var acc02 = new Account();
+        final var acc02 = new AccountEntity();
         acc02.setAmount(new BigDecimal("100"));
         acc02.setDescription("Conta Inter");
         acc02.setAccountType(AccountType.CHECKING_ACCOUNT);
@@ -116,7 +116,7 @@ class AccountControllerTest {
 
     @Test
     void findAllAccountsArchived() {
-        final var acc01 = new Account();
+        final var acc01 = new AccountEntity();
         acc01.setAmount(new BigDecimal("100"));
         acc01.setDescription("Conta Inter");
         acc01.setAccountType(AccountType.CHECKING_ACCOUNT);
@@ -125,7 +125,7 @@ class AccountControllerTest {
         acc01.setArchived(true);
         acc01.setDashboard(false);
 
-        final var acc02 = new Account();
+        final var acc02 = new AccountEntity();
         acc02.setAmount(new BigDecimal("100"));
         acc02.setDescription("Conta Inter");
         acc02.setAccountType(AccountType.CHECKING_ACCOUNT);
@@ -148,7 +148,7 @@ class AccountControllerTest {
 
     @Test
     void shouldFindAccountById() {
-        final var acc01 = new Account();
+        final var acc01 = new AccountEntity();
         acc01.setAmount(new BigDecimal("100"));
         acc01.setDescription("Conta Inter");
         acc01.setAccountType(AccountType.CHECKING_ACCOUNT);
@@ -157,19 +157,19 @@ class AccountControllerTest {
         acc01.setArchived(true);
         acc01.setDashboard(false);
 
-        final Account savedAccount = accountsRepository.save(acc01);
+        final AccountEntity savedAccountEntity = accountsRepository.save(acc01);
 
         final var headers = new HttpHeaders();
         headers.set("Cookie", token);
         final var request = new HttpEntity<>(null, headers);
 
-        var accountResponse = testRestTemplate.exchange("/v1/accounts/" + savedAccount.getId(), HttpMethod.GET, request, AccountResponseDTO.class);
+        var accountResponse = testRestTemplate.exchange("/v1/accounts/" + savedAccountEntity.getId(), HttpMethod.GET, request, AccountResponseDTO.class);
         assertEquals(200, accountResponse.getStatusCodeValue());
     }
 
     @Test
     void shouldUpdateAnAccount() {
-        final var acc01 = new Account();
+        final var acc01 = new AccountEntity();
         acc01.setAmount(new BigDecimal("100"));
         acc01.setDescription("Conta Inter");
         acc01.setAccountType(AccountType.CHECKING_ACCOUNT);
@@ -178,14 +178,14 @@ class AccountControllerTest {
         acc01.setArchived(true);
         acc01.setDashboard(false);
 
-        final Account savedAccount = accountsRepository.save(acc01);
+        final AccountEntity savedAccountEntity = accountsRepository.save(acc01);
 
         var account = new AccountPutRequestDTO(
-                savedAccount.getId(),
+                savedAccountEntity.getId(),
                 "Conta Nubanco",
-                savedAccount.getAccountType().name(),
-                savedAccount.isDashboard(),
-                savedAccount.getBankType().name()
+                savedAccountEntity.getAccountType().name(),
+                savedAccountEntity.isDashboard(),
+                savedAccountEntity.getBankType().name()
         );
 
         final var headers = new HttpHeaders();
@@ -201,7 +201,7 @@ class AccountControllerTest {
     @Disabled
     @Test
     void shouldUpdateToArchiveAccount() {
-        final var acc01 = new Account();
+        final var acc01 = new AccountEntity();
         acc01.setAmount(new BigDecimal("100"));
         acc01.setDescription("Conta Inter");
         acc01.setAccountType(AccountType.CHECKING_ACCOUNT);
@@ -210,10 +210,10 @@ class AccountControllerTest {
         acc01.setArchived(true);
         acc01.setDashboard(false);
 
-        final Account savedAccount = accountsRepository.save(acc01);
+        final AccountEntity savedAccountEntity = accountsRepository.save(acc01);
 
         var account = new AccountPatchArchivedRequestDTO(
-                savedAccount.getId(),
+                savedAccountEntity.getId(),
                 false
         );
 
@@ -231,7 +231,7 @@ class AccountControllerTest {
     @Disabled
     @Test
     void shouldUpdateToArchiveAccountToTrue() throws IOException {
-        final var acc01 = new Account();
+        final var acc01 = new AccountEntity();
         acc01.setAmount(new BigDecimal("100"));
         acc01.setDescription("Conta Inter");
         acc01.setAccountType(AccountType.CHECKING_ACCOUNT);
@@ -240,10 +240,10 @@ class AccountControllerTest {
         acc01.setArchived(false);
         acc01.setDashboard(false);
 
-        final Account savedAccount = accountsRepository.save(acc01);
+        final AccountEntity savedAccountEntity = accountsRepository.save(acc01);
 
         var account = new AccountPatchArchivedRequestDTO(
-                savedAccount.getId(),
+                savedAccountEntity.getId(),
                 true
         );
 
@@ -264,7 +264,7 @@ class AccountControllerTest {
 
     @Test
     void shouldDeleteAccount() {
-        final var acc01 = new Account();
+        final var acc01 = new AccountEntity();
         acc01.setAmount(new BigDecimal("100"));
         acc01.setDescription("Conta Inter");
         acc01.setAccountType(AccountType.CHECKING_ACCOUNT);
@@ -277,19 +277,19 @@ class AccountControllerTest {
         headers.set("Cookie", token);
         final var request = new HttpEntity<>(null, headers);
 
-        final Account savedAccount = accountsRepository.save(acc01);
+        final AccountEntity savedAccountEntity = accountsRepository.save(acc01);
 
-        final var accountResponse = testRestTemplate.exchange("/v1/accounts/" + savedAccount.getId(), HttpMethod.DELETE, request, Void.class);
-        final Account account = accountsRepository.findById(savedAccount.getId()).orElse(null);
+        final var accountResponse = testRestTemplate.exchange("/v1/accounts/" + savedAccountEntity.getId(), HttpMethod.DELETE, request, Void.class);
+        final AccountEntity accountEntity = accountsRepository.findById(savedAccountEntity.getId()).orElse(null);
 
         assertEquals(204, accountResponse.getStatusCodeValue());
-        assertNull(account);
+        assertNull(accountEntity);
     }
 
     @Disabled
     @Test
     void shouldReajustAmountIfValueIsLessThanActualAmount() {
-        final var acc01 = new Account();
+        final var acc01 = new AccountEntity();
         acc01.setAmount(new BigDecimal("100"));
         acc01.setDescription("Conta Inter");
         acc01.setAccountType(AccountType.CHECKING_ACCOUNT);
@@ -298,9 +298,9 @@ class AccountControllerTest {
         acc01.setArchived(true);
         acc01.setDashboard(false);
 
-        final Account savedAccount = accountsRepository.save(acc01);
+        final AccountEntity savedAccountEntity = accountsRepository.save(acc01);
 
-        final var reajustBody = new AccountReajustDTO(savedAccount.getId(), new BigDecimal("50"), "true");
+        final var reajustBody = new AccountReajustDTO(savedAccountEntity.getId(), new BigDecimal("50"), "true");
 
         final var headers = new HttpHeaders();
         headers.set("Cookie", token);
@@ -308,7 +308,7 @@ class AccountControllerTest {
 
         final var accountResponse = testRestTemplate.exchange("/v1/accounts/readjustment", HttpMethod.PATCH, request, Void.class);
 
-        final Account account = accountsRepository.findById(savedAccount.getId()).orElse(null);
+        final AccountEntity accountEntity = accountsRepository.findById(savedAccountEntity.getId()).orElse(null);
         final var transaction = transactionRepository.findByTransactionFilterByDate("admin", null, null, null, null, null).getContent();
 
         assertEquals(1, transaction.size());
@@ -318,13 +318,13 @@ class AccountControllerTest {
         assertEquals(TransactionCategory.REAJUST, transaction.get(0).getTransactionCategory());
 
         assertEquals(200, accountResponse.getStatusCodeValue());
-        assertEquals(0, new BigDecimal(50).compareTo(account.getAmount()));
+        assertEquals(0, new BigDecimal(50).compareTo(accountEntity.getAmount()));
     }
 
     @Disabled
     @Test
     void shouldReajustAmountIfValueIsBiggestThanActualAmount() {
-        final var acc01 = new Account();
+        final var acc01 = new AccountEntity();
         acc01.setAmount(new BigDecimal("100"));
         acc01.setDescription("Conta Inter");
         acc01.setAccountType(AccountType.CHECKING_ACCOUNT);
@@ -333,9 +333,9 @@ class AccountControllerTest {
         acc01.setArchived(true);
         acc01.setDashboard(false);
 
-        final Account savedAccount = accountsRepository.save(acc01);
+        final AccountEntity savedAccountEntity = accountsRepository.save(acc01);
 
-        final var reajustBody = new AccountReajustDTO(savedAccount.getId(), new BigDecimal("200"), "true");
+        final var reajustBody = new AccountReajustDTO(savedAccountEntity.getId(), new BigDecimal("200"), "true");
 
         final var headers = new HttpHeaders();
         headers.set("Cookie", token);
@@ -343,7 +343,7 @@ class AccountControllerTest {
 
         final var accountResponse = testRestTemplate.exchange("/v1/accounts/readjustment", HttpMethod.PATCH, request, Void.class);
 
-        final Account account = accountsRepository.findById(savedAccount.getId()).orElse(null);
+        final AccountEntity accountEntity = accountsRepository.findById(savedAccountEntity.getId()).orElse(null);
         final var transaction = transactionRepository.findByTransactionFilterByDate("admin", null, null, null, null, null).getContent();
 
         assertEquals(1, transaction.size());
@@ -353,13 +353,13 @@ class AccountControllerTest {
         assertEquals(TransactionCategory.REAJUST, transaction.get(0).getTransactionCategory());
 
         assertEquals(200, accountResponse.getStatusCodeValue());
-        assertEquals(0, new BigDecimal(200).compareTo(account.getAmount()));
+        assertEquals(0, new BigDecimal(200).compareTo(accountEntity.getAmount()));
     }
 
     @Disabled
     @Test
     void shouldReajustAmountIfValueIsZero() {
-        final var acc01 = new Account();
+        final var acc01 = new AccountEntity();
         acc01.setAmount(new BigDecimal("100"));
         acc01.setDescription("Conta Inter");
         acc01.setAccountType(AccountType.CHECKING_ACCOUNT);
@@ -368,9 +368,9 @@ class AccountControllerTest {
         acc01.setArchived(true);
         acc01.setDashboard(false);
 
-        final Account savedAccount = accountsRepository.save(acc01);
+        final AccountEntity savedAccountEntity = accountsRepository.save(acc01);
 
-        final var reajustBody = new AccountReajustDTO(savedAccount.getId(), new BigDecimal("0"), "true");
+        final var reajustBody = new AccountReajustDTO(savedAccountEntity.getId(), new BigDecimal("0"), "true");
 
         final var headers = new HttpHeaders();
         headers.set("Cookie", token);
@@ -378,7 +378,7 @@ class AccountControllerTest {
 
         final var accountResponse = testRestTemplate.exchange("/v1/accounts/readjustment", HttpMethod.PATCH, request, Void.class);
 
-        final Account account = accountsRepository.findById(savedAccount.getId()).orElse(null);
+        final AccountEntity accountEntity = accountsRepository.findById(savedAccountEntity.getId()).orElse(null);
         final var transaction = transactionRepository.findByTransactionFilterByDate("admin", null, null, null, null, null).getContent();
 
         assertEquals(1, transaction.size());
@@ -388,6 +388,6 @@ class AccountControllerTest {
         assertEquals(TransactionCategory.REAJUST, transaction.get(0).getTransactionCategory());
 
         assertEquals(200, accountResponse.getStatusCodeValue());
-        assertEquals(0, new BigDecimal(0).compareTo(account.getAmount()));
+        assertEquals(0, new BigDecimal(0).compareTo(accountEntity.getAmount()));
     }
 }

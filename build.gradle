@@ -37,10 +37,13 @@ dependencies {
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
     implementation 'org.mapstruct:mapstruct:1.5.3.Final'
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
+
     implementation 'org.springdoc:springdoc-openapi-ui:1.6.14'
     implementation 'org.springdoc:springdoc-openapi-security:1.6.14'
+
     implementation 'org.apache.httpcomponents:httpclient:4.5.14'
     implementation 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
     implementation 'com.mailjet:mailjet-client:4.2.0'

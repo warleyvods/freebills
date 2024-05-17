@@ -80,7 +80,9 @@ public class JWTUtils {
         return builder.build();
     }
 
-    public String getUserNameFromJwtToken(String token) {
+    public String getUserNameFromJwtToken(final String token) {
+        final Object email = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().get("email");
+
         return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
     }
 

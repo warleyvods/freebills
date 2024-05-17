@@ -4,7 +4,8 @@ import com.freebills.controllers.dtos.responses.DashboardExpenseResponseDTO;
 import com.freebills.controllers.dtos.responses.DashboardResponseDTO;
 import com.freebills.controllers.dtos.responses.DashboardGraphResponseDTO;
 import com.freebills.controllers.dtos.responses.DashboardRevenueResponseDTO;
-import com.freebills.gateways.entities.Account;
+import com.freebills.domain.Account;
+import com.freebills.gateways.entities.AccountEntity;
 import com.freebills.gateways.entities.Transaction;
 import com.freebills.gateways.entities.enums.TransactionCategory;
 import com.freebills.gateways.entities.enums.TransactionType;
@@ -84,7 +85,7 @@ public class Dashboard {
     private BigDecimal getTotalValue(String login) {
         return accountGateway.findByUserLogin(login)
                 .stream()
-                .filter(Account::isDashboard)
+                .filter(Account::getDashboard)
                 .map(Account::getAmount)
                 .reduce(BigDecimal::add)
                 .orElse(BigDecimal.ZERO);

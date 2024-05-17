@@ -4,20 +4,37 @@ package com.freebills.controllers;
 import com.freebills.controllers.dtos.requests.AccountPatchArchivedRequestDTO;
 import com.freebills.controllers.dtos.requests.AccountPostRequestDTO;
 import com.freebills.controllers.dtos.requests.AccountPutRequestDTO;
-import com.freebills.controllers.dtos.requests.AccountReajustDTO;
 import com.freebills.controllers.dtos.responses.AccountResponseDTO;
 import com.freebills.controllers.mappers.AccountMapper;
-import com.freebills.usecases.*;
+import com.freebills.domain.User;
+import com.freebills.usecases.CreateAccount;
+import com.freebills.usecases.DeleteAccount;
+import com.freebills.usecases.FindAccount;
+import com.freebills.usecases.FindUser;
+import com.freebills.usecases.ReajustAccount;
+import com.freebills.usecases.UpdateAccount;
+import com.freebills.usecases.VerifyPrincipal;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
 import java.util.List;
 
-import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
+import static org.springframework.http.HttpStatus.OK;
 
 @Slf4j
 @Tag(name = "Account Controller")
@@ -33,29 +50,30 @@ public class AccountController {
     private final DeleteAccount deleteAccount;
     private final ReajustAccount reajustAccount;
 
+
     @ResponseStatus(CREATED)
     @PostMapping
-    public AccountResponseDTO save(@RequestBody @Valid final AccountPostRequestDTO accountPostRequestDTO) {
+    public AccountResponseDTO save(@RequestBody @Valid final AccountPostRequestDTO accountPostRequestDTO, Principal principal) {
         final var account = mapper.toDomain(accountPostRequestDTO);
-        return mapper.fromDomain(createAccount.create(account));
+        return mapper.toDTO(createAccount.create(account, principal));
     }
 
     @ResponseStatus(OK)
     @GetMapping
     public List<AccountResponseDTO> findAllAccountsNonArchived(Principal principal) {
-        return mapper.fromDomainList(findAccount.findByAccountsNonArchived(principal.getName()));
+        return findAccount.findByAccountsNonArchived(principal.getName()).stream().map(mapper::toDTO).toList();
     }
 
     @ResponseStatus(OK)
     @GetMapping("/archived")
     public List<AccountResponseDTO> findAllAccountsArchived(Principal principal) {
-        return mapper.fromDomainList(findAccount.findByAccountsArchived(principal.getName()));
+        return findAccount.findByAccountsArchived(principal.getName()).stream().map(mapper::toDTO).toList();
     }
 
     @ResponseStatus(OK)
     @GetMapping("{id}")
     public AccountResponseDTO findById(@PathVariable final Long id, Principal principal) {
-        final var account = mapper.fromDomain(findAccount.byId(id));
+        final var account = mapper.toDTO(findAccount.byId(id));
         log.info("account: {} finded by {}", account.id(), principal.getName());
         return account;
     }
@@ -65,7 +83,7 @@ public class AccountController {
     public AccountResponseDTO update(@RequestBody @Valid final AccountPutRequestDTO accountPutRequestDTO) {
         final var accountFinded = findAccount.byId(accountPutRequestDTO.accountId());
         final var toJson = updateAccount.update(mapper.updateAccountFromDTO(accountPutRequestDTO, accountFinded));
-        return mapper.fromDomain(toJson);
+        return mapper.toDTO(toJson);
     }
 
     @ResponseStatus(OK)
@@ -73,7 +91,7 @@ public class AccountController {
     public AccountResponseDTO updateArchiveAcc(@RequestBody @Valid final AccountPatchArchivedRequestDTO accountDTO) {
         final var accountFinded = findAccount.byId(accountDTO.id());
         final var toJson = updateAccount.update(mapper.updateArchiveAccountFromDTO(accountDTO, accountFinded));
-        return mapper.fromDomain(toJson);
+        return mapper.toDTO(toJson);
     }
 
     @ResponseStatus(NO_CONTENT)
@@ -82,9 +100,9 @@ public class AccountController {
         deleteAccount.deleteAccount(accountId);
     }
 
-    @ResponseStatus(OK)
-    @PatchMapping("/readjustment")
-    public void reajustAmount(@RequestBody @Valid final AccountReajustDTO accountReajustDTO) {
-        reajustAccount.reajust(accountReajustDTO.accountId(), accountReajustDTO.amount(), accountReajustDTO.type());
-    }
+//    @ResponseStatus(OK)
+//    @PatchMapping("/readjustment")
+//    public void reajustAmount(@RequestBody @Valid final AccountReajustDTO accountReajustDTO) {
+//        reajustAccount.reajust(accountReajustDTO.accountId(), accountReajustDTO.amount(), accountReajustDTO.type());
+//    }
 }

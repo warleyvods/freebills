@@ -1,7 +1,7 @@
 package com.freebills.usecases;
 
 import com.freebills.controllers.dtos.responses.DashboardResponseDTO;
-import com.freebills.gateways.entities.Account;
+import com.freebills.gateways.entities.AccountEntity;
 import com.freebills.gateways.entities.Transaction;
 import com.freebills.gateways.entities.UserEntity;
 import com.freebills.gateways.entities.enums.AccountType;
@@ -38,7 +38,7 @@ class DashboardTest {
     @Autowired
     private TransactionRepository transactionRepository;
 
-    private static Account account;
+    private static AccountEntity accountEntity;
 
     @Autowired
     private UserRepository userRepository;
@@ -53,7 +53,7 @@ class DashboardTest {
         t1.setTransactionType(TransactionType.REVENUE);
         t1.setTransactionCategory(TransactionCategory.HOUSE);
         t1.setPaid(true);
-        t1.setAccount(account);
+        t1.setAccount(accountEntity);
 
         Transaction t2 = new Transaction();
         t2.setAmount(new BigDecimal("100"));
@@ -64,7 +64,7 @@ class DashboardTest {
         t2.setTransactionType(TransactionType.REVENUE);
         t2.setTransactionCategory(TransactionCategory.HOUSE);
         t2.setPaid(false);
-        t2.setAccount(account);
+        t2.setAccount(accountEntity);
 
         Transaction t3 = new Transaction();
         t3.setAmount(new BigDecimal("100"));
@@ -75,7 +75,7 @@ class DashboardTest {
         t3.setTransactionType(TransactionType.EXPENSE);
         t3.setTransactionCategory(TransactionCategory.HOUSE);
         t3.setPaid(true);
-        t3.setAccount(account);
+        t3.setAccount(accountEntity);
 
         Transaction t4 = new Transaction();
         t4.setAmount(new BigDecimal("100"));
@@ -86,7 +86,7 @@ class DashboardTest {
         t4.setTransactionType(TransactionType.EXPENSE);
         t4.setTransactionCategory(TransactionCategory.HOUSE);
         t4.setPaid(false);
-        t4.setAccount(account);
+        t4.setAccount(accountEntity);
 
         return List.of(t1, t2, t3, t4);
     }
@@ -95,7 +95,7 @@ class DashboardTest {
     void beforeSetup() {
         UserEntity userEntity = userRepository.findById(1L).orElse(null);
 
-        final var acc01 = new Account();
+        final var acc01 = new AccountEntity();
         acc01.setAmount(new BigDecimal("0"));
         acc01.setDescription("Conta Inter");
         acc01.setAccountType(AccountType.CHECKING_ACCOUNT);
@@ -104,7 +104,7 @@ class DashboardTest {
         acc01.setArchived(false);
         acc01.setDashboard(false);
 
-        account = accountsRepository.save(acc01);
+        accountEntity = accountsRepository.save(acc01);
     }
 
     @AfterEach
@@ -153,7 +153,7 @@ class DashboardTest {
     void testGetTotalValue() {
         UserEntity userEntity = userRepository.findById(1L).orElse(null);
 
-        final var acc01 = new Account();
+        final var acc01 = new AccountEntity();
         acc01.setAmount(new BigDecimal("100"));
         acc01.setDescription("Conta Inter");
         acc01.setAccountType(AccountType.CHECKING_ACCOUNT);
@@ -162,7 +162,7 @@ class DashboardTest {
         acc01.setArchived(false);
         acc01.setDashboard(false);
 
-        final var acc02 = new Account();
+        final var acc02 = new AccountEntity();
         acc02.setAmount(new BigDecimal("200"));
         acc02.setDescription("Conta Inter");
         acc02.setAccountType(AccountType.CHECKING_ACCOUNT);
@@ -183,7 +183,7 @@ class DashboardTest {
     void testGetTotalValueWhenDashboardAreTrue() {
         UserEntity userEntity = userRepository.findById(1L).orElse(null);
 
-        final var acc01 = new Account();
+        final var acc01 = new AccountEntity();
         acc01.setAmount(new BigDecimal("100"));
         acc01.setDescription("Conta Inter");
         acc01.setAccountType(AccountType.CHECKING_ACCOUNT);
@@ -192,7 +192,7 @@ class DashboardTest {
         acc01.setArchived(false);
         acc01.setDashboard(false);
 
-        final var acc02 = new Account();
+        final var acc02 = new AccountEntity();
         acc02.setAmount(new BigDecimal("200"));
         acc02.setDescription("Conta Inter");
         acc02.setAccountType(AccountType.CHECKING_ACCOUNT);
@@ -219,7 +219,7 @@ class DashboardTest {
         t1.setTransactionType(TransactionType.EXPENSE);
         t1.setTransactionCategory(TransactionCategory.HOUSE);
         t1.setPaid(true);
-        t1.setAccount(account);
+        t1.setAccount(accountEntity);
 
         Transaction t2 = new Transaction();
         t2.setAmount(new BigDecimal("100"));
@@ -230,7 +230,7 @@ class DashboardTest {
         t2.setTransactionType(TransactionType.EXPENSE);
         t2.setTransactionCategory(TransactionCategory.HOUSE);
         t2.setPaid(true);
-        t2.setAccount(account);
+        t2.setAccount(accountEntity);
 
         Transaction t3 = new Transaction();
         t3.setAmount(new BigDecimal("200"));
@@ -241,7 +241,7 @@ class DashboardTest {
         t3.setTransactionType(TransactionType.EXPENSE);
         t3.setTransactionCategory(TransactionCategory.EDUCATION);
         t3.setPaid(true);
-        t3.setAccount(account);
+        t3.setAccount(accountEntity);
 
         Transaction t4 = new Transaction();
         t4.setAmount(new BigDecimal("200"));
@@ -252,7 +252,7 @@ class DashboardTest {
         t4.setTransactionType(TransactionType.EXPENSE);
         t4.setTransactionCategory(TransactionCategory.EDUCATION);
         t4.setPaid(true);
-        t4.setAccount(account);
+        t4.setAccount(accountEntity);
 
         Transaction t5 = new Transaction();
         t5.setAmount(new BigDecimal("400"));
@@ -263,7 +263,7 @@ class DashboardTest {
         t5.setTransactionType(TransactionType.EXPENSE);
         t5.setTransactionCategory(TransactionCategory.TRANSPORT);
         t5.setPaid(true);
-        t5.setAccount(account);
+        t5.setAccount(accountEntity);
 
         Transaction t6 = new Transaction();
         t6.setAmount(new BigDecimal("400"));
@@ -274,7 +274,7 @@ class DashboardTest {
         t6.setTransactionType(TransactionType.EXPENSE);
         t6.setTransactionCategory(TransactionCategory.TRANSPORT);
         t6.setPaid(true);
-        t6.setAccount(account);
+        t6.setAccount(accountEntity);
 
         Transaction t7 = new Transaction();
         t7.setAmount(new BigDecimal("800"));
@@ -285,7 +285,7 @@ class DashboardTest {
         t7.setTransactionType(TransactionType.EXPENSE);
         t7.setTransactionCategory(TransactionCategory.ELECTRONIC);
         t7.setPaid(true);
-        t7.setAccount(account);
+        t7.setAccount(accountEntity);
 
         Transaction t8 = new Transaction();
         t8.setAmount(new BigDecimal("800"));
@@ -296,7 +296,7 @@ class DashboardTest {
         t8.setTransactionType(TransactionType.EXPENSE);
         t8.setTransactionCategory(TransactionCategory.ELECTRONIC);
         t8.setPaid(true);
-        t8.setAccount(account);
+        t8.setAccount(accountEntity);
 
         Transaction t9 = new Transaction();
         t9.setAmount(new BigDecimal("1600"));
@@ -307,7 +307,7 @@ class DashboardTest {
         t9.setTransactionType(TransactionType.EXPENSE);
         t9.setTransactionCategory(TransactionCategory.RESTAURANT);
         t9.setPaid(true);
-        t9.setAccount(account);
+        t9.setAccount(accountEntity);
 
         Transaction t10 = new Transaction();
         t10.setAmount(new BigDecimal("1600"));
@@ -318,7 +318,7 @@ class DashboardTest {
         t10.setTransactionType(TransactionType.EXPENSE);
         t10.setTransactionCategory(TransactionCategory.RESTAURANT);
         t10.setPaid(true);
-        t10.setAccount(account);
+        t10.setAccount(accountEntity);
 
         Transaction t11 = new Transaction();
         t11.setAmount(new BigDecimal("1500"));
@@ -329,7 +329,7 @@ class DashboardTest {
         t11.setTransactionType(TransactionType.REVENUE);
         t11.setTransactionCategory(TransactionCategory.SALARY);
         t11.setPaid(true);
-        t11.setAccount(account);
+        t11.setAccount(accountEntity);
 
         Transaction t12 = new Transaction();
         t12.setAmount(new BigDecimal("1500"));
@@ -340,7 +340,7 @@ class DashboardTest {
         t12.setTransactionType(TransactionType.REVENUE);
         t12.setTransactionCategory(TransactionCategory.SALARY);
         t12.setPaid(true);
-        t12.setAccount(account);
+        t12.setAccount(accountEntity);
 
         Transaction t13 = new Transaction();
         t13.setAmount(new BigDecimal("600"));
@@ -351,7 +351,7 @@ class DashboardTest {
         t13.setTransactionType(TransactionType.REVENUE);
         t13.setTransactionCategory(TransactionCategory.AWARD);
         t13.setPaid(true);
-        t13.setAccount(account);
+        t13.setAccount(accountEntity);
 
         Transaction t14 = new Transaction();
         t14.setAmount(new BigDecimal("600"));
@@ -362,7 +362,7 @@ class DashboardTest {
         t14.setTransactionType(TransactionType.REVENUE);
         t14.setTransactionCategory(TransactionCategory.AWARD);
         t14.setPaid(true);
-        t14.setAccount(account);
+        t14.setAccount(accountEntity);
 
         return List.of(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14);
     }
@@ -400,7 +400,7 @@ class DashboardTest {
         t1.setTransactionType(TransactionType.EXPENSE);
         t1.setTransactionCategory(TransactionCategory.HOUSE);
         t1.setPaid(true);
-        t1.setAccount(account);
+        t1.setAccount(accountEntity);
 
         Transaction t2 = new Transaction();
         t2.setAmount(new BigDecimal("1.3"));
@@ -411,7 +411,7 @@ class DashboardTest {
         t2.setTransactionType(TransactionType.EXPENSE);
         t2.setTransactionCategory(TransactionCategory.HOUSE);
         t2.setPaid(true);
-        t2.setAccount(account);
+        t2.setAccount(accountEntity);
 
         List<Transaction> transactions = List.of(t1, t2);
         transactions.forEach(transaction -> createTransaction.execute(transaction));
@@ -452,7 +452,7 @@ class DashboardTest {
         t1.setTransactionType(TransactionType.EXPENSE);
         t1.setTransactionCategory(TransactionCategory.HOUSE);
         t1.setPaid(false);
-        t1.setAccount(account);
+        t1.setAccount(accountEntity);
 
         Transaction t2 = new Transaction();
         t2.setAmount(new BigDecimal("100"));
@@ -463,7 +463,7 @@ class DashboardTest {
         t2.setTransactionType(TransactionType.REVENUE);
         t2.setTransactionCategory(TransactionCategory.HOUSE);
         t2.setPaid(false);
-        t2.setAccount(account);
+        t2.setAccount(accountEntity);
         List<Transaction> transactions = List.of(t1, t2);
 
         transactions.forEach(transaction -> createTransaction.execute(transaction));
@@ -488,7 +488,7 @@ class DashboardTest {
         t1.setTransactionType(TransactionType.EXPENSE);
         t1.setTransactionCategory(TransactionCategory.HOUSE);
         t1.setPaid(true);
-        t1.setAccount(account);
+        t1.setAccount(accountEntity);
 
         Transaction t2 = new Transaction();
         t2.setAmount(new BigDecimal("100"));
@@ -499,7 +499,7 @@ class DashboardTest {
         t2.setTransactionType(TransactionType.REVENUE);
         t2.setTransactionCategory(TransactionCategory.HOUSE);
         t2.setPaid(true);
-        t2.setAccount(account);
+        t2.setAccount(accountEntity);
         List<Transaction> transactions = List.of(t1, t2);
 
         transactions.forEach(transaction -> createTransaction.execute(transaction));

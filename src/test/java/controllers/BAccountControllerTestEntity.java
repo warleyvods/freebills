@@ -4,7 +4,7 @@ import com.freebills.FreebillsApplication;
 import com.freebills.controllers.dtos.requests.AccountPostRequestDTO;
 import com.freebills.controllers.dtos.requests.LoginRequestDTO;
 import com.freebills.controllers.dtos.responses.AccountResponseDTO;
-import com.freebills.gateways.entities.Account;
+import com.freebills.gateways.entities.AccountEntity;
 import com.freebills.gateways.entities.UserEntity;
 import com.freebills.gateways.entities.enums.AccountType;
 import com.freebills.gateways.entities.enums.BankType;
@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Disabled
 @SpringBootTest(classes = FreebillsApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class BAccountControllerTest {
+class BAccountControllerTestEntity {
 
     @Autowired
     private AccountsRepository accountsRepository;
@@ -79,7 +79,7 @@ class BAccountControllerTest {
         ResponseEntity<Object> objectResponseEntity = testRestTemplate.postForEntity("/login", request, Object.class);
         String token = Objects.requireNonNull(objectResponseEntity.getHeaders().get("Set-Cookie")).get(0);
 
-        final var account = new Account();
+        final var account = new AccountEntity();
         account.setAmount(BigDecimal.valueOf(500));
         account.setDescription("Conta Inter");
         account.setAccountType(AccountType.MONEY);
@@ -87,7 +87,7 @@ class BAccountControllerTest {
         account.setBankType(BankType.INTER);
         account.setUser(userEntitySaved);
 
-        final var account1 = new Account();
+        final var account1 = new AccountEntity();
         account1.setAmount(BigDecimal.valueOf(500));
         account1.setDescription("Conta Inter");
         account1.setAccountType(AccountType.MONEY);

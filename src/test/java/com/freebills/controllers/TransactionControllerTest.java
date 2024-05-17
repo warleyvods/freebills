@@ -4,14 +4,14 @@ import com.freebills.controllers.dtos.requests.LoginRequestDTO;
 import com.freebills.controllers.dtos.requests.TransactionPostRequestDTO;
 import com.freebills.controllers.dtos.requests.TransactionPutRequesDTO;
 import com.freebills.controllers.dtos.responses.TransactionResponseDTO;
-import com.freebills.gateways.entities.Account;
+import com.freebills.gateways.AccountGateway;
+import com.freebills.gateways.entities.AccountEntity;
 import com.freebills.gateways.entities.Transaction;
 import com.freebills.gateways.entities.UserEntity;
 import com.freebills.gateways.entities.enums.AccountType;
 import com.freebills.gateways.entities.enums.BankType;
 import com.freebills.gateways.entities.enums.TransactionCategory;
 import com.freebills.gateways.entities.enums.TransactionType;
-import com.freebills.gateways.AccountGateway;
 import com.freebills.repositories.AccountsRepository;
 import com.freebills.repositories.TransactionRepository;
 import com.freebills.repositories.UserRepository;
@@ -22,7 +22,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 
 import java.math.BigDecimal;
@@ -51,14 +55,14 @@ class TransactionControllerTest {
     @Autowired
     private TransactionRepository transactionRepository;
 
-    private static Account account;
+    private static AccountEntity accountEntity;
     private static String token;
 
     @BeforeEach
     void beforeSetup() {
         UserEntity userEntity = userRepository.findById(1L).orElse(null);
 
-        final var acc01 = new Account();
+        final var acc01 = new AccountEntity();
         acc01.setAmount(new BigDecimal("0"));
         acc01.setDescription("Conta Inter");
         acc01.setAccountType(AccountType.CHECKING_ACCOUNT);
@@ -67,7 +71,7 @@ class TransactionControllerTest {
         acc01.setArchived(false);
         acc01.setDashboard(false);
 
-        account = accountsRepository.save(acc01);
+        accountEntity = accountsRepository.save(acc01);
 
         final var request = new HttpEntity<>(new LoginRequestDTO("admin", "baguvix"));
         ResponseEntity<Object> objectResponseEntity = testRestTemplate.postForEntity("/v1/auth/login", request, Object.class);
@@ -90,7 +94,7 @@ class TransactionControllerTest {
         t1.setTransactionType(TransactionType.REVENUE);
         t1.setTransactionCategory(TransactionCategory.HOUSE);
         t1.setPaid(false);
-        t1.setAccount(account);
+        t1.setAccount(accountEntity);
 
         Transaction t2 = new Transaction();
         t2.setAmount(new BigDecimal("100"));
@@ -101,7 +105,7 @@ class TransactionControllerTest {
         t2.setTransactionType(TransactionType.REVENUE);
         t2.setTransactionCategory(TransactionCategory.HOUSE);
         t2.setPaid(false);
-        t2.setAccount(account);
+        t2.setAccount(accountEntity);
 
         Transaction t3 = new Transaction();
         t3.setAmount(new BigDecimal("100"));
@@ -112,7 +116,7 @@ class TransactionControllerTest {
         t3.setTransactionType(TransactionType.REVENUE);
         t3.setTransactionCategory(TransactionCategory.HOUSE);
         t3.setPaid(false);
-        t3.setAccount(account);
+        t3.setAccount(accountEntity);
 
         Transaction t4 = new Transaction();
         t4.setAmount(new BigDecimal("100"));
@@ -123,7 +127,7 @@ class TransactionControllerTest {
         t4.setTransactionType(TransactionType.REVENUE);
         t4.setTransactionCategory(TransactionCategory.HOUSE);
         t4.setPaid(false);
-        t4.setAccount(account);
+        t4.setAccount(accountEntity);
 
         return List.of(t1, t2, t3, t4);
     }
@@ -131,7 +135,7 @@ class TransactionControllerTest {
     @Test
     void shouldSaveOneTransactionRevenue() {
         final var transaction = new TransactionPostRequestDTO(
-                account.getId(),
+                accountEntity.getId(),
                 100.00D,
                 true,
                 "Arroz",
@@ -151,7 +155,7 @@ class TransactionControllerTest {
                 request,
                 TransactionResponseDTO.class);
 
-        final Account acc = accountGateway.findById(account.getId());
+        final var acc = accountGateway.findById(accountEntity.getId());
 
         //Account
         assertEquals(0, new BigDecimal(100).compareTo(acc.getAmount()));
@@ -163,7 +167,7 @@ class TransactionControllerTest {
     @Test
     void shouldSaveOneTransactionRevenueNotPaid() {
         final var transaction = new TransactionPostRequestDTO(
-                account.getId(),
+                accountEntity.getId(),
                 100.00D,
                 false,
                 "Arroz",
@@ -183,7 +187,7 @@ class TransactionControllerTest {
                 request,
                 TransactionResponseDTO.class);
 
-        final Account acc = accountGateway.findById(account.getId());
+        final var acc = accountGateway.findById(accountEntity.getId());
 
         //Account
         assertEquals(0, new BigDecimal(0).compareTo(acc.getAmount()));
@@ -195,7 +199,7 @@ class TransactionControllerTest {
     @Test
     void shouldSaveOneTransactionExpense() {
         final var transaction = new TransactionPostRequestDTO(
-                account.getId(),
+                accountEntity.getId(),
                 100.00D,
                 true,
                 "Arroz",
@@ -215,7 +219,7 @@ class TransactionControllerTest {
                 request,
                 TransactionResponseDTO.class);
 
-        final Account acc = accountGateway.findById(account.getId());
+        final var acc = accountGateway.findById(accountEntity.getId());
 
         //Account
         assertEquals(0, new BigDecimal(-100).compareTo(acc.getAmount()));
@@ -268,7 +272,7 @@ class TransactionControllerTest {
     @DisplayName(value = "Create transaction paid true with 100$ and change to paid false should remove amount from account.")
     void shouldUpdateTransaction() {
         final var transaction = new TransactionPostRequestDTO(
-                account.getId(),
+                accountEntity.getId(),
                 100.00D,
                 true,
                 "Arroz",
@@ -288,13 +292,13 @@ class TransactionControllerTest {
                 request,
                 TransactionResponseDTO.class);
 
-        final Account acc = accountGateway.findById(account.getId());
+        final var acc = accountGateway.findById(accountEntity.getId());
 
         //Account paid true
         assertEquals(0, new BigDecimal(100).compareTo(acc.getAmount()));
 
         final var transactionPut = new TransactionPutRequesDTO(
-               account.getId(),
+               accountEntity.getId(),
                 transactionResponse.getBody().id(),
                 transactionResponse.getBody().amount(),
                 false,
@@ -314,13 +318,9 @@ class TransactionControllerTest {
                 TransactionResponseDTO.class
         );
 
-        final Account acc02 = accountGateway.findById(account.getId());
+        final var acc02 = accountGateway.findById(accountEntity.getId());
 
         //Account paid false
         assertEquals(0, new BigDecimal(0).compareTo(acc02.getAmount()));
-    }
-
-    @Test
-    void deleteById() {
     }
 }

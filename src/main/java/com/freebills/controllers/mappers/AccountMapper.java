@@ -5,7 +5,8 @@ import com.freebills.controllers.dtos.requests.AccountPatchArchivedRequestDTO;
 import com.freebills.controllers.dtos.requests.AccountPostRequestDTO;
 import com.freebills.controllers.dtos.requests.AccountPutRequestDTO;
 import com.freebills.controllers.dtos.responses.AccountResponseDTO;
-import com.freebills.gateways.entities.Account;
+import com.freebills.domain.Account;
+import com.freebills.gateways.entities.AccountEntity;
 import com.freebills.gateways.UserGateway;
 import org.mapstruct.*;
 
@@ -17,14 +18,14 @@ public interface AccountMapper {
     @Mapping(source = "userId", target = "user")
     Account toDomain(AccountPostRequestDTO accountPostRequestDTO);
 
-    AccountResponseDTO fromDomain(Account account);
+    AccountResponseDTO toDTO(Account account);
 
-    List<AccountResponseDTO> fromDomainList(List<Account> accounts);
+    List<Account> fromDomainList(List<AccountEntity> accountEntities);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     Account updateAccountFromDTO(AccountPutRequestDTO accountPutRequestDTO, @MappingTarget Account account);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    Account updateArchiveAccountFromDTO(AccountPatchArchivedRequestDTO accDTO, @MappingTarget Account account);
+    Account updateArchiveAccountFromDTO(AccountPatchArchivedRequestDTO accDTO, @MappingTarget Account accountEntity);
 
 }

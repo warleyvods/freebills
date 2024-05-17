@@ -3,7 +3,16 @@ package com.freebills.gateways.entities;
 
 import com.freebills.gateways.entities.enums.TransactionCategory;
 import com.freebills.gateways.entities.enums.TransactionType;
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -11,11 +20,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Setter
@@ -60,7 +67,7 @@ public class Transaction {
     private List<TransactionLog> transactionLogs;
 
     @ManyToOne
-    private Account account;
+    private AccountEntity account;
 
     public Transaction(BigDecimal amount,
                        LocalDate date,
@@ -68,38 +75,13 @@ public class Transaction {
                        TransactionType transactionType,
                        TransactionCategory transactionCategory,
                        boolean paid,
-                       Account account) {
+                       AccountEntity accountEntity) {
         this.amount = amount;
         this.date = date;
         this.description = description;
         this.transactionType = transactionType;
         this.transactionCategory = transactionCategory;
         this.paid = paid;
-        this.account = account;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Transaction that = (Transaction) o;
-        return paid == that.paid &&
-                Objects.equals(id, that.id) &&
-                amount.compareTo(that.getAmount()) == 0 &&
-                Objects.equals(date, that.date) &&
-                Objects.equals(description, that.description) &&
-                Objects.equals(barCode, that.barCode) &&
-                Objects.equals(bankSlip, that.bankSlip) &&
-                transactionType == that.transactionType &&
-                transactionCategory == that.transactionCategory &&
-                Objects.equals(fromAccount, that.fromAccount) &&
-                Objects.equals(toAccount, that.toAccount) &&
-                Objects.equals(transactionChange, that.transactionChange) &&
-                account.equals(that.account);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, amount, date, description, barCode, bankSlip, transactionType, transactionCategory, paid, account);
+        this.account = accountEntity;
     }
 }

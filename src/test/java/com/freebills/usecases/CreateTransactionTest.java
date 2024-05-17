@@ -1,6 +1,6 @@
 package com.freebills.usecases;
 
-import com.freebills.gateways.entities.Account;
+import com.freebills.gateways.entities.AccountEntity;
 import com.freebills.gateways.entities.Transaction;
 import com.freebills.gateways.entities.UserEntity;
 import com.freebills.gateways.entities.enums.AccountType;
@@ -34,13 +34,13 @@ class CreateTransactionTest {
     @Autowired
     private AccountsRepository accountsRepository;
 
-    private static Account account;
+    private static AccountEntity accountEntity;
 
     @BeforeEach
     void beforeSetup() {
         UserEntity userEntity = userRepository.findById(1L).orElse(null);
 
-        final var acc01 = new Account();
+        final var acc01 = new AccountEntity();
         acc01.setAmount(new BigDecimal("0"));
         acc01.setDescription("Conta Inter");
         acc01.setAccountType(AccountType.CHECKING_ACCOUNT);
@@ -49,7 +49,7 @@ class CreateTransactionTest {
         acc01.setArchived(false);
         acc01.setDashboard(false);
 
-        account = accountsRepository.save(acc01);
+        accountEntity = accountsRepository.save(acc01);
     }
 
     @Test
@@ -63,9 +63,9 @@ class CreateTransactionTest {
         transaction.setTransactionType(TransactionType.REVENUE);
         transaction.setTransactionCategory(TransactionCategory.HOUSE);
         transaction.setPaid(true);
-        transaction.setAccount(account);
+        transaction.setAccount(accountEntity);
 
-        Transaction transactionSaved = createTransaction.execute(transaction);
+        var transactionSaved = createTransaction.execute(transaction);
 
         assertNotNull(transactionSaved);
         assertEquals(transaction.getAmount(), transactionSaved.getAmount());
@@ -74,7 +74,7 @@ class CreateTransactionTest {
         assertEquals(transaction.getTransactionType(), transactionSaved.getTransactionType());
         assertEquals(transaction.getTransactionCategory(), transactionSaved.getTransactionCategory());
         assertEquals(transaction.isPaid(), transactionSaved.isPaid());
-        assertEquals(account, transactionSaved.getAccount());
+        assertEquals(accountEntity, transactionSaved.getAccount());
     }
 
     @Test
@@ -104,7 +104,7 @@ class CreateTransactionTest {
         transaction.setTransactionType(TransactionType.REVENUE);
         transaction.setTransactionCategory(TransactionCategory.HOUSE);
         transaction.setPaid(true);
-        transaction.setAccount(account);
+        transaction.setAccount(accountEntity);
 
         assertThrows(ConstraintViolationException.class, () -> createTransaction.execute(transaction));
     }
@@ -120,7 +120,7 @@ class CreateTransactionTest {
         transaction.setTransactionType(TransactionType.REVENUE);
         transaction.setTransactionCategory(TransactionCategory.HOUSE);
         transaction.setPaid(true);
-        transaction.setAccount(account);
+        transaction.setAccount(accountEntity);
 
         assertThrows(ConstraintViolationException.class, () -> createTransaction.execute(transaction));
     }
@@ -136,7 +136,7 @@ class CreateTransactionTest {
         transaction.setTransactionType(null);
         transaction.setTransactionCategory(TransactionCategory.HOUSE);
         transaction.setPaid(true);
-        transaction.setAccount(account);
+        transaction.setAccount(accountEntity);
 
         assertThrows(ConstraintViolationException.class, () -> createTransaction.execute(transaction));
     }
@@ -152,7 +152,7 @@ class CreateTransactionTest {
         transaction.setTransactionType(TransactionType.REVENUE);
         transaction.setTransactionCategory(null);
         transaction.setPaid(true);
-        transaction.setAccount(account);
+        transaction.setAccount(accountEntity);
 
         assertThrows(ConstraintViolationException.class, () -> createTransaction.execute(transaction));
     }
@@ -173,7 +173,7 @@ class CreateTransactionTest {
         transaction.setTransactionType(TransactionType.REVENUE);
         transaction.setTransactionCategory(TransactionCategory.HOUSE);
         transaction.setPaid(true);
-        transaction.setAccount(account);
+        transaction.setAccount(accountEntity);
 
         assertThrows(ConstraintViolationException.class, () -> createTransaction.execute(transaction));
     }

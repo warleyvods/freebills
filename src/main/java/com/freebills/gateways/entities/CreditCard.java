@@ -24,7 +24,7 @@ public class CreditCard {
     private CardFlag cardFlag;
 
     @ManyToOne
-    private Account account;
+    private AccountEntity account;
     private Integer expirationDay;
     private Integer closingDay;
     private Boolean archived;

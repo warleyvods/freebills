@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static jakarta.persistence.CascadeType.*;
+import static jakarta.persistence.EnumType.*;
 import static jakarta.persistence.FetchType.*;
 import static jakarta.persistence.GenerationType.*;
 
@@ -19,7 +20,7 @@ import static jakarta.persistence.GenerationType.*;
 @Setter
 @Entity
 @EqualsAndHashCode(of = "id", exclude = {"transactions", "cards"})
-public class Account {
+public class AccountEntity {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -28,10 +29,10 @@ public class Account {
     private BigDecimal amount = new BigDecimal(0);
     private String description;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(STRING)
     private AccountType accountType;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(STRING)
     private BankType bankType;
 
     @ManyToOne
