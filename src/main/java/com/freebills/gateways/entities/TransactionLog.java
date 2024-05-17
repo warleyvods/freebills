@@ -30,7 +30,7 @@ public class TransactionLog {
     private TransactionType actualTransactionType;
 
     @ManyToOne
-    private Transaction transaction;
+    private TransactionEntity transaction;
 
     public TransactionLog(BigDecimal inicialAmount,
                           BigDecimal previousAmount,
@@ -38,7 +38,7 @@ public class TransactionLog {
                           Long previousAccount,
                           Long atualAccount,
                           BigDecimal atualAmount,
-                          Transaction transaction,
+                          TransactionEntity transactionEntity,
                           TransactionType previousTransactionType,
                           TransactionType actualTransactionType) {
         this.inicialAmount = inicialAmount;
@@ -47,7 +47,7 @@ public class TransactionLog {
         this.previousAccount = previousAccount;
         this.atualAccount = atualAccount;
         this.atualAmount = atualAmount;
-        this.transaction = transaction;
+        this.transaction = transactionEntity;
         this.previousTransactionType = previousTransactionType;
         this.actualTransactionType = actualTransactionType;
     }

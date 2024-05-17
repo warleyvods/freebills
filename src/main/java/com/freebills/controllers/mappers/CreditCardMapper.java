@@ -12,7 +12,8 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {AccountGateway.class}, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface CreditCardMapper {
 
-    @Mapping(source = "accountId", target = "account")
+    //TODO arrumar depois!
+//    @Mapping(source = "accountId", target = "account")
     CreditCard toDomain(CreditCardPostRequestDTO creditCardPostRequestDTO);
 
     CreditCardResponseDTO fromDomain(CreditCard creditCard);

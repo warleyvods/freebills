@@ -1,6 +1,7 @@
 package com.freebills.usecases;
 
-import com.freebills.gateways.entities.Transaction;
+import com.freebills.domain.Transaction;
+import com.freebills.gateways.entities.TransactionEntity;
 import com.freebills.gateways.entities.enums.TransactionType;
 import com.freebills.gateways.TransactionGateway;
 import com.freebills.gateways.UserGateway;
@@ -18,11 +19,11 @@ public record FindTransaction(TransactionGateway transactionGateway, UserGateway
     }
 
     public Page<Transaction> findAllWithFilters(final String login,
-                                                final Integer month,
-                                                final Integer year,
-                                                final Pageable pageable,
-                                                final String keyword,
-                                                final TransactionType transactionType) {
+                                                      final Integer month,
+                                                      final Integer year,
+                                                      final Pageable pageable,
+                                                      final String keyword,
+                                                      final TransactionType transactionType) {
 
         return transactionGateway.findByUserDateFilter(login, month, year, pageable, keyword, transactionType);
     }

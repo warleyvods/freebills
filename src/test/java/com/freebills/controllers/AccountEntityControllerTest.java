@@ -51,6 +51,7 @@ class AccountEntityControllerTest {
     private TransactionRepository transactionRepository;
 
     private static String token;
+
     private static UserEntity userEntity;
 
     @BeforeEach

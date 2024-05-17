@@ -6,9 +6,9 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-@Builder
 @Getter
 @Setter
+@Builder
 public class ExceptionFilters {
 
     private String title;
