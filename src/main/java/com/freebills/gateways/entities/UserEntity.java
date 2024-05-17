@@ -55,7 +55,7 @@ public class UserEntity extends AbstractEntity {
     private LocalDate createdAt;
 
     @OneToMany(mappedBy = "user", cascade = ALL, fetch = LAZY)
-    private List<Account> accounts;
+    private List<AccountEntity> accountEntities;
 
     private LocalDateTime lastAccess;
 

@@ -1,5 +1,6 @@
 package com.freebills.domain;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,6 +11,7 @@ import static java.time.LocalDateTime.now;
 
 @Getter
 @Setter
+@EqualsAndHashCode
 public class User {
 
     private Long id;

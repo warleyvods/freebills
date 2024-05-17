@@ -4,8 +4,9 @@ import com.freebills.controllers.dtos.responses.DashboardExpenseResponseDTO;
 import com.freebills.controllers.dtos.responses.DashboardResponseDTO;
 import com.freebills.controllers.dtos.responses.DashboardGraphResponseDTO;
 import com.freebills.controllers.dtos.responses.DashboardRevenueResponseDTO;
-import com.freebills.gateways.entities.Account;
-import com.freebills.gateways.entities.Transaction;
+import com.freebills.domain.Account;
+import com.freebills.domain.Transaction;
+import com.freebills.gateways.entities.TransactionEntity;
 import com.freebills.gateways.entities.enums.TransactionCategory;
 import com.freebills.gateways.entities.enums.TransactionType;
 import com.freebills.gateways.AccountGateway;
@@ -33,7 +34,7 @@ public class Dashboard {
         var transactions = getTransactionsByUserDateFilter(login, month, year)
                 .stream()
                 .filter(transaction -> transaction.getTransactionType() == transactionType)
-                .filter(Transaction::isPaid)
+                .filter(Transaction::getPaid)
                 .toList();
 
         var transactionTypesLabels = transactions.stream()
@@ -84,7 +85,7 @@ public class Dashboard {
     private BigDecimal getTotalValue(String login) {
         return accountGateway.findByUserLogin(login)
                 .stream()
-                .filter(Account::isDashboard)
+                .filter(Account::getDashboard)
                 .map(Account::getAmount)
                 .reduce(BigDecimal::add)
                 .orElse(BigDecimal.ZERO);
@@ -94,16 +95,16 @@ public class Dashboard {
         return transactionGateway.findByUserDateFilter(login, month, year, null, null, null).getContent();
     }
 
-    private BigDecimal getTotalAmountByType(List<Transaction> transactions, TransactionType type) {
-        return transactions.stream()
+    private BigDecimal getTotalAmountByType(List<Transaction> transactionEntities, TransactionType type) {
+        return transactionEntities.stream()
                 .filter(t -> t.getTransactionType() == type)
                 .map(Transaction::getAmount)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    private Map<Boolean, BigDecimal> getAmountsByTypeAndPaidStatus(List<Transaction> transactions, TransactionType type) {
-        return transactions.stream()
+    private Map<Boolean, BigDecimal> getAmountsByTypeAndPaidStatus(List<Transaction> transactionEntities, TransactionType type) {
+        return transactionEntities.stream()
                 .filter(transaction -> transaction.getTransactionType() == type)
-                .collect(groupingBy(Transaction::isPaid, reducing(BigDecimal.ZERO, Transaction::getAmount, BigDecimal::add)));
+                .collect(groupingBy(Transaction::getPaid, reducing(BigDecimal.ZERO, Transaction::getAmount, BigDecimal::add)));
     }
 }

@@ -1,7 +1,7 @@
 package com.freebills.usecases;
 
 
-import com.freebills.gateways.entities.Account;
+import com.freebills.domain.Account;
 import com.freebills.gateways.AccountGateway;
 import org.springframework.stereotype.Component;
 
@@ -11,7 +11,7 @@ import java.util.List;
 @Component
 public record FindAccount(AccountGateway accountGateway) {
 
-    public Account byId(final Long id){
+    public Account byId(final Long id) {
         return accountGateway.findById(id);
     }
 
@@ -23,7 +23,7 @@ public record FindAccount(AccountGateway accountGateway) {
                 .toList();
     }
 
-    public List<Account> findByAccountsArchived(final String login){
+    public List<Account> findByAccountsArchived(final String login) {
         return accountGateway.findByUserLogin(login).stream().filter(Account::isArchived).toList();
     }
 }

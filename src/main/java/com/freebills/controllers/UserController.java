@@ -75,10 +75,18 @@ public class UserController {
 
     @ResponseStatus(OK)
     @PatchMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    public void updatePassword(@RequestBody @Valid final UserPutPasswordRequestDTO userPassword) {
+        final var userFinded = findUser.byId(userPassword.id());
+        updateUser.updatePassword(userMapper.updatePasswordFromDTO(userPassword, userFinded));
+    }
+
+    @ResponseStatus(OK)
+    @PatchMapping("/change-password")
     @PreAuthorize("hasRole('USER')")
     public void updatePassword(@RequestBody @Valid final UserPutPasswordRequestDTO userPassword, Principal principal) {
         final var userFinded = findUser.byLogin(principal.getName());
-        updateUser.updatePassword(userMapper.updatePasswordFromDTO(userPassword, userFinded));
+        updateUser.updateUserPassword(userMapper.updatePasswordFromDTO(userPassword, userFinded), userFinded);
     }
 
     @ResponseStatus(OK)

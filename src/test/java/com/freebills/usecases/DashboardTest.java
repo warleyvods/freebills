@@ -1,13 +1,16 @@
 package com.freebills.usecases;
 
 import com.freebills.controllers.dtos.responses.DashboardResponseDTO;
-import com.freebills.gateways.entities.Account;
-import com.freebills.gateways.entities.Transaction;
+import com.freebills.domain.Account;
+import com.freebills.domain.Transaction;
+import com.freebills.gateways.entities.AccountEntity;
 import com.freebills.gateways.entities.UserEntity;
 import com.freebills.gateways.entities.enums.AccountType;
 import com.freebills.gateways.entities.enums.BankType;
 import com.freebills.gateways.entities.enums.TransactionCategory;
 import com.freebills.gateways.entities.enums.TransactionType;
+import com.freebills.gateways.mapper.AccountGatewayMapper;
+import com.freebills.gateways.mapper.TransactionGatewayMapper;
 import com.freebills.repositories.AccountsRepository;
 import com.freebills.repositories.TransactionRepository;
 import com.freebills.repositories.UserRepository;
@@ -38,13 +41,16 @@ class DashboardTest {
     @Autowired
     private TransactionRepository transactionRepository;
 
+    @Autowired
+    private AccountGatewayMapper accountGatewayMapper;
+
     private static Account account;
 
     @Autowired
     private UserRepository userRepository;
 
     private List<Transaction> transactionMockList() {
-        Transaction t1 = new Transaction();
+        var t1 = new Transaction();
         t1.setAmount(new BigDecimal("100"));
         t1.setDate(LocalDate.of(2022, 1, 1));
         t1.setDescription("Arroz");
@@ -55,7 +61,7 @@ class DashboardTest {
         t1.setPaid(true);
         t1.setAccount(account);
 
-        Transaction t2 = new Transaction();
+        var t2 = new Transaction();
         t2.setAmount(new BigDecimal("100"));
         t2.setDate(LocalDate.of(2022, 1, 1));
         t2.setDescription("Arroz");
@@ -66,7 +72,7 @@ class DashboardTest {
         t2.setPaid(false);
         t2.setAccount(account);
 
-        Transaction t3 = new Transaction();
+        var t3 = new Transaction();
         t3.setAmount(new BigDecimal("100"));
         t3.setDate(LocalDate.of(2022, 1, 1));
         t3.setDescription("Arroz");
@@ -77,7 +83,7 @@ class DashboardTest {
         t3.setPaid(true);
         t3.setAccount(account);
 
-        Transaction t4 = new Transaction();
+        var t4 = new Transaction();
         t4.setAmount(new BigDecimal("100"));
         t4.setDate(LocalDate.of(2022, 1, 1));
         t4.setDescription("Arroz");
@@ -95,7 +101,7 @@ class DashboardTest {
     void beforeSetup() {
         UserEntity userEntity = userRepository.findById(1L).orElse(null);
 
-        final var acc01 = new Account();
+        final var acc01 = new AccountEntity();
         acc01.setAmount(new BigDecimal("0"));
         acc01.setDescription("Conta Inter");
         acc01.setAccountType(AccountType.CHECKING_ACCOUNT);
@@ -104,7 +110,7 @@ class DashboardTest {
         acc01.setArchived(false);
         acc01.setDashboard(false);
 
-        account = accountsRepository.save(acc01);
+        account = accountGatewayMapper.toDomain(accountsRepository.save(acc01));
     }
 
     @AfterEach
@@ -153,7 +159,7 @@ class DashboardTest {
     void testGetTotalValue() {
         UserEntity userEntity = userRepository.findById(1L).orElse(null);
 
-        final var acc01 = new Account();
+        final var acc01 = new AccountEntity();
         acc01.setAmount(new BigDecimal("100"));
         acc01.setDescription("Conta Inter");
         acc01.setAccountType(AccountType.CHECKING_ACCOUNT);
@@ -162,7 +168,7 @@ class DashboardTest {
         acc01.setArchived(false);
         acc01.setDashboard(false);
 
-        final var acc02 = new Account();
+        final var acc02 = new AccountEntity();
         acc02.setAmount(new BigDecimal("200"));
         acc02.setDescription("Conta Inter");
         acc02.setAccountType(AccountType.CHECKING_ACCOUNT);
@@ -183,7 +189,7 @@ class DashboardTest {
     void testGetTotalValueWhenDashboardAreTrue() {
         UserEntity userEntity = userRepository.findById(1L).orElse(null);
 
-        final var acc01 = new Account();
+        final var acc01 = new AccountEntity();
         acc01.setAmount(new BigDecimal("100"));
         acc01.setDescription("Conta Inter");
         acc01.setAccountType(AccountType.CHECKING_ACCOUNT);
@@ -192,7 +198,7 @@ class DashboardTest {
         acc01.setArchived(false);
         acc01.setDashboard(false);
 
-        final var acc02 = new Account();
+        final var acc02 = new AccountEntity();
         acc02.setAmount(new BigDecimal("200"));
         acc02.setDescription("Conta Inter");
         acc02.setAccountType(AccountType.CHECKING_ACCOUNT);
@@ -210,7 +216,7 @@ class DashboardTest {
     }
 
     private List<Transaction> getTransactionMockListGraph() {
-        Transaction t1 = new Transaction();
+        var t1 = new Transaction();
         t1.setAmount(new BigDecimal("100"));
         t1.setDate(LocalDate.of(2022, 1, 1));
         t1.setDescription("Arroz");
@@ -221,7 +227,8 @@ class DashboardTest {
         t1.setPaid(true);
         t1.setAccount(account);
 
-        Transaction t2 = new Transaction();
+        var t2 = new Transaction();
+        ;
         t2.setAmount(new BigDecimal("100"));
         t2.setDate(LocalDate.of(2022, 1, 1));
         t2.setDescription("Arroz");
@@ -232,7 +239,7 @@ class DashboardTest {
         t2.setPaid(true);
         t2.setAccount(account);
 
-        Transaction t3 = new Transaction();
+        var t3 = new Transaction();
         t3.setAmount(new BigDecimal("200"));
         t3.setDate(LocalDate.of(2022, 1, 1));
         t3.setDescription("Arroz");
@@ -243,7 +250,7 @@ class DashboardTest {
         t3.setPaid(true);
         t3.setAccount(account);
 
-        Transaction t4 = new Transaction();
+        var t4 = new Transaction();
         t4.setAmount(new BigDecimal("200"));
         t4.setDate(LocalDate.of(2022, 1, 1));
         t4.setDescription("Arroz");
@@ -254,7 +261,7 @@ class DashboardTest {
         t4.setPaid(true);
         t4.setAccount(account);
 
-        Transaction t5 = new Transaction();
+        var t5 = new Transaction();
         t5.setAmount(new BigDecimal("400"));
         t5.setDate(LocalDate.of(2022, 1, 1));
         t5.setDescription("Arroz");
@@ -265,7 +272,7 @@ class DashboardTest {
         t5.setPaid(true);
         t5.setAccount(account);
 
-        Transaction t6 = new Transaction();
+        var t6 = new Transaction();
         t6.setAmount(new BigDecimal("400"));
         t6.setDate(LocalDate.of(2022, 1, 1));
         t6.setDescription("Arroz");
@@ -276,7 +283,7 @@ class DashboardTest {
         t6.setPaid(true);
         t6.setAccount(account);
 
-        Transaction t7 = new Transaction();
+        var t7 = new Transaction();
         t7.setAmount(new BigDecimal("800"));
         t7.setDate(LocalDate.of(2022, 1, 1));
         t7.setDescription("Arroz");
@@ -287,7 +294,7 @@ class DashboardTest {
         t7.setPaid(true);
         t7.setAccount(account);
 
-        Transaction t8 = new Transaction();
+        var t8 = new Transaction();
         t8.setAmount(new BigDecimal("800"));
         t8.setDate(LocalDate.of(2022, 1, 1));
         t8.setDescription("Arroz");
@@ -298,7 +305,7 @@ class DashboardTest {
         t8.setPaid(true);
         t8.setAccount(account);
 
-        Transaction t9 = new Transaction();
+        var t9 = new Transaction();
         t9.setAmount(new BigDecimal("1600"));
         t9.setDate(LocalDate.of(2022, 1, 1));
         t9.setDescription("Arroz");
@@ -309,7 +316,7 @@ class DashboardTest {
         t9.setPaid(true);
         t9.setAccount(account);
 
-        Transaction t10 = new Transaction();
+        var t10 = new Transaction();
         t10.setAmount(new BigDecimal("1600"));
         t10.setDate(LocalDate.of(2022, 1, 1));
         t10.setDescription("Arroz");
@@ -320,7 +327,7 @@ class DashboardTest {
         t10.setPaid(true);
         t10.setAccount(account);
 
-        Transaction t11 = new Transaction();
+        var t11 = new Transaction();
         t11.setAmount(new BigDecimal("1500"));
         t11.setDate(LocalDate.of(2022, 1, 1));
         t11.setDescription("Arroz");
@@ -331,7 +338,7 @@ class DashboardTest {
         t11.setPaid(true);
         t11.setAccount(account);
 
-        Transaction t12 = new Transaction();
+        var t12 = new Transaction();
         t12.setAmount(new BigDecimal("1500"));
         t12.setDate(LocalDate.of(2022, 1, 1));
         t12.setDescription("Arroz");
@@ -342,7 +349,8 @@ class DashboardTest {
         t12.setPaid(true);
         t12.setAccount(account);
 
-        Transaction t13 = new Transaction();
+        var t13 = new Transaction();
+        ;
         t13.setAmount(new BigDecimal("600"));
         t13.setDate(LocalDate.of(2022, 1, 1));
         t13.setDescription("Arroz");
@@ -353,7 +361,8 @@ class DashboardTest {
         t13.setPaid(true);
         t13.setAccount(account);
 
-        Transaction t14 = new Transaction();
+        var t14 = new Transaction();
+        ;
         t14.setAmount(new BigDecimal("600"));
         t14.setDate(LocalDate.of(2022, 1, 1));
         t14.setDescription("Arroz");
@@ -369,8 +378,8 @@ class DashboardTest {
 
     @Test
     void testGetExpenseDonutsGraph() {
-        List<Transaction> transactions = getTransactionMockListGraph();
-        transactions.forEach(transaction -> createTransaction.execute(transaction));
+        var transactionEntities = getTransactionMockListGraph();
+        transactionEntities.forEach(transaction -> createTransaction.execute(transaction));
 
         final var result = dashboard.getDonutsGraph("admin", 1, 2022, TransactionType.EXPENSE);
 
@@ -391,7 +400,7 @@ class DashboardTest {
 
     @Test
     void testGetExpenseDonutsGraphWithFloatPoint() {
-        Transaction t1 = new Transaction();
+        var t1 = new Transaction();
         t1.setAmount(new BigDecimal("1.1"));
         t1.setDate(LocalDate.of(2022, 1, 1));
         t1.setDescription("Arroz");
@@ -402,7 +411,7 @@ class DashboardTest {
         t1.setPaid(true);
         t1.setAccount(account);
 
-        Transaction t2 = new Transaction();
+        var t2 = new Transaction();
         t2.setAmount(new BigDecimal("1.3"));
         t2.setDate(LocalDate.of(2022, 1, 1));
         t2.setDescription("Arroz");
@@ -413,8 +422,8 @@ class DashboardTest {
         t2.setPaid(true);
         t2.setAccount(account);
 
-        List<Transaction> transactions = List.of(t1, t2);
-        transactions.forEach(transaction -> createTransaction.execute(transaction));
+        var transactionEntities = List.of(t1, t2);
+        transactionEntities.forEach(transaction -> createTransaction.execute(transaction));
 
         final var result = dashboard.getDonutsGraph("admin", 1, 2022, TransactionType.EXPENSE);
 
@@ -427,8 +436,8 @@ class DashboardTest {
 
     @Test
     void testGetRevenueDonutsGraph() {
-        List<Transaction> transactions = getTransactionMockListGraph();
-        transactions.forEach(transaction -> createTransaction.execute(transaction));
+        var transactionEntities = getTransactionMockListGraph();
+        transactionEntities.forEach(transaction -> createTransaction.execute(transaction));
 
         final var result = dashboard.getDonutsGraph("admin", 1, 2022, TransactionType.REVENUE);
 
@@ -443,7 +452,7 @@ class DashboardTest {
 
     @Test
     void shouldReturn2EmptyListsIfNotPaid() {
-        Transaction t1 = new Transaction();
+        var t1 = new Transaction();
         t1.setAmount(new BigDecimal("100"));
         t1.setDate(LocalDate.of(2022, 1, 1));
         t1.setDescription("Arroz");
@@ -454,7 +463,7 @@ class DashboardTest {
         t1.setPaid(false);
         t1.setAccount(account);
 
-        Transaction t2 = new Transaction();
+        var t2 = new Transaction();
         t2.setAmount(new BigDecimal("100"));
         t2.setDate(LocalDate.of(2022, 1, 1));
         t2.setDescription("Arroz");
@@ -464,9 +473,9 @@ class DashboardTest {
         t2.setTransactionCategory(TransactionCategory.HOUSE);
         t2.setPaid(false);
         t2.setAccount(account);
-        List<Transaction> transactions = List.of(t1, t2);
+        var transactionEntities = List.of(t1, t2);
 
-        transactions.forEach(transaction -> createTransaction.execute(transaction));
+        transactionEntities.forEach(transaction -> createTransaction.execute(transaction));
 
         final var result1 = dashboard.getDonutsGraph("admin", 1, 2022, TransactionType.REVENUE);
         assertEquals(0, result1.labels().size());
@@ -479,7 +488,7 @@ class DashboardTest {
 
     @Test
     void shouldReturnEmptyListWithIncorrectData() {
-        Transaction t1 = new Transaction();
+        var t1 = new Transaction();
         t1.setAmount(new BigDecimal("100"));
         t1.setDate(LocalDate.of(2022, 1, 1));
         t1.setDescription("Arroz");
@@ -490,7 +499,7 @@ class DashboardTest {
         t1.setPaid(true);
         t1.setAccount(account);
 
-        Transaction t2 = new Transaction();
+        var t2 = new Transaction();
         t2.setAmount(new BigDecimal("100"));
         t2.setDate(LocalDate.of(2022, 1, 1));
         t2.setDescription("Arroz");
@@ -500,9 +509,9 @@ class DashboardTest {
         t2.setTransactionCategory(TransactionCategory.HOUSE);
         t2.setPaid(true);
         t2.setAccount(account);
-        List<Transaction> transactions = List.of(t1, t2);
+        var transactionEntities = List.of(t1, t2);
 
-        transactions.forEach(transaction -> createTransaction.execute(transaction));
+        transactionEntities.forEach(transaction -> createTransaction.execute(transaction));
 
         final var result1 = dashboard.getDonutsGraph("admin", 2, 2022, TransactionType.REVENUE);
         assertEquals(0, result1.labels().size());

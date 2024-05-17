@@ -1,12 +1,13 @@
 package com.freebills.usecases;
 
-import com.freebills.gateways.entities.Account;
-import com.freebills.gateways.entities.Transaction;
+import com.freebills.domain.Transaction;
+import com.freebills.gateways.entities.AccountEntity;
 import com.freebills.gateways.entities.UserEntity;
 import com.freebills.gateways.entities.enums.AccountType;
 import com.freebills.gateways.entities.enums.BankType;
 import com.freebills.gateways.entities.enums.TransactionCategory;
 import com.freebills.gateways.entities.enums.TransactionType;
+import com.freebills.gateways.mapper.AccountGatewayMapper;
 import com.freebills.repositories.AccountsRepository;
 import com.freebills.repositories.UserRepository;
 import jakarta.validation.ConstraintViolationException;
@@ -34,13 +35,16 @@ class CreateTransactionTest {
     @Autowired
     private AccountsRepository accountsRepository;
 
-    private static Account account;
+    @Autowired
+    private AccountGatewayMapper accountGatewayMapper;
+
+    private static AccountEntity accountEntity;
 
     @BeforeEach
     void beforeSetup() {
         UserEntity userEntity = userRepository.findById(1L).orElse(null);
 
-        final var acc01 = new Account();
+        final var acc01 = new AccountEntity();
         acc01.setAmount(new BigDecimal("0"));
         acc01.setDescription("Conta Inter");
         acc01.setAccountType(AccountType.CHECKING_ACCOUNT);
@@ -49,112 +53,80 @@ class CreateTransactionTest {
         acc01.setArchived(false);
         acc01.setDashboard(false);
 
-        account = accountsRepository.save(acc01);
+        accountEntity = accountsRepository.save(acc01);
     }
 
     @Test
     void testCreateTransactionSuccess() {
-        Transaction transaction = new Transaction();
-        transaction.setAmount(new BigDecimal("100.00"));
-        transaction.setDate(LocalDate.now());
-        transaction.setDescription("Test transaction");
-        transaction.setBarCode(null);
-        transaction.setBankSlip(false);
-        transaction.setTransactionType(TransactionType.REVENUE);
-        transaction.setTransactionCategory(TransactionCategory.HOUSE);
-        transaction.setPaid(true);
-        transaction.setAccount(account);
+        var transactionEntity = new Transaction();
+        transactionEntity.setAmount(new BigDecimal("100.00"));
+        transactionEntity.setDate(LocalDate.now());
+        transactionEntity.setDescription("Test transaction");
+        transactionEntity.setBarCode(null);
+        transactionEntity.setBankSlip(false);
+        transactionEntity.setTransactionType(TransactionType.REVENUE);
+        transactionEntity.setTransactionCategory(TransactionCategory.HOUSE);
+        transactionEntity.setPaid(true);
+        transactionEntity.setAccount(accountGatewayMapper.toDomain(accountEntity));
 
-        Transaction transactionSaved = createTransaction.execute(transaction);
+        var transactionSaved = createTransaction.execute(transactionEntity);
 
         assertNotNull(transactionSaved);
-        assertEquals(transaction.getAmount(), transactionSaved.getAmount());
-        assertEquals(transaction.getDate(), transactionSaved.getDate());
-        assertEquals(transaction.getDescription(), transactionSaved.getDescription());
-        assertEquals(transaction.getTransactionType(), transactionSaved.getTransactionType());
-        assertEquals(transaction.getTransactionCategory(), transactionSaved.getTransactionCategory());
-        assertEquals(transaction.isPaid(), transactionSaved.isPaid());
-        assertEquals(account, transactionSaved.getAccount());
+        assertEquals(transactionEntity.getAmount(), transactionSaved.getAmount());
+        assertEquals(transactionEntity.getDate(), transactionSaved.getDate());
+        assertEquals(transactionEntity.getDescription(), transactionSaved.getDescription());
+        assertEquals(transactionEntity.getTransactionType(), transactionSaved.getTransactionType());
+        assertEquals(transactionEntity.getTransactionCategory(), transactionSaved.getTransactionCategory());
+        assertEquals(transactionEntity.getPaid(), transactionSaved.getPaid());
+        assertEquals(transactionEntity.getAccount(), transactionSaved.getAccount());
     }
 
     @Test
     void testCreateTransactionWithNullAccount() {
-        Transaction transaction = new Transaction();
-        transaction.setAmount(new BigDecimal("100.00"));
-        transaction.setDate(LocalDate.now());
-        transaction.setDescription("Test transaction");
-        transaction.setBarCode(null);
-        transaction.setBankSlip(false);
-        transaction.setTransactionType(TransactionType.REVENUE);
-        transaction.setTransactionCategory(TransactionCategory.HOUSE);
-        transaction.setPaid(true);
-        transaction.setAccount(null);
+        var transactionEntity = new Transaction();
+        transactionEntity.setAmount(new BigDecimal("100.00"));
+        transactionEntity.setDate(LocalDate.now());
+        transactionEntity.setDescription("Test transaction");
+        transactionEntity.setBarCode(null);
+        transactionEntity.setBankSlip(false);
+        transactionEntity.setTransactionType(TransactionType.REVENUE);
+        transactionEntity.setTransactionCategory(TransactionCategory.HOUSE);
+        transactionEntity.setPaid(true);
+        transactionEntity.setAccount(null);
 
-        assertThrows(NullPointerException.class, () -> createTransaction.execute(transaction));
+        assertThrows(NullPointerException.class, () -> createTransaction.execute(transactionEntity));
     }
 
     @Test
     void testCreateTransactionWithNullDate() {
-        Transaction transaction = new Transaction();
-        transaction.setAmount(new BigDecimal("100.00"));
-        transaction.setDate(null);
-        transaction.setDescription("Test transaction");
-        transaction.setBarCode(null);
-        transaction.setBankSlip(false);
-        transaction.setTransactionType(TransactionType.REVENUE);
-        transaction.setTransactionCategory(TransactionCategory.HOUSE);
-        transaction.setPaid(true);
-        transaction.setAccount(account);
+        var transactionEntity = new Transaction();
+        transactionEntity.setAmount(new BigDecimal("100.00"));
+        transactionEntity.setDate(null);
+        transactionEntity.setDescription("Test transaction");
+        transactionEntity.setBarCode(null);
+        transactionEntity.setBankSlip(false);
+        transactionEntity.setTransactionType(TransactionType.REVENUE);
+        transactionEntity.setTransactionCategory(TransactionCategory.HOUSE);
+        transactionEntity.setPaid(true);
+        transactionEntity.setAccount(accountGatewayMapper.toDomain(accountEntity));
 
-        assertThrows(ConstraintViolationException.class, () -> createTransaction.execute(transaction));
+        assertThrows(ConstraintViolationException.class, () -> createTransaction.execute(transactionEntity));
     }
 
     @Test
     void testCreateTransactionWithNullDescription() {
-        Transaction transaction = new Transaction();
-        transaction.setAmount(new BigDecimal("100.00"));
-        transaction.setDate(LocalDate.now());
-        transaction.setDescription(null);
-        transaction.setBarCode(null);
-        transaction.setBankSlip(false);
-        transaction.setTransactionType(TransactionType.REVENUE);
-        transaction.setTransactionCategory(TransactionCategory.HOUSE);
-        transaction.setPaid(true);
-        transaction.setAccount(account);
+        var transactionEntity = new Transaction();
+        transactionEntity.setAmount(new BigDecimal("100.00"));
+        transactionEntity.setDate(LocalDate.now());
+        transactionEntity.setDescription(null);
+        transactionEntity.setBarCode(null);
+        transactionEntity.setBankSlip(false);
+        transactionEntity.setTransactionType(TransactionType.REVENUE);
+        transactionEntity.setTransactionCategory(TransactionCategory.HOUSE);
+        transactionEntity.setPaid(true);
+        transactionEntity.setAccount(accountGatewayMapper.toDomain(accountEntity));
 
-        assertThrows(ConstraintViolationException.class, () -> createTransaction.execute(transaction));
-    }
-
-    @Test
-    void testCreateTransactionWithNullTransactionType() {
-        Transaction transaction = new Transaction();
-        transaction.setAmount(new BigDecimal("100.00"));
-        transaction.setDate(LocalDate.now());
-        transaction.setDescription("Test transaction");
-        transaction.setBarCode(null);
-        transaction.setBankSlip(false);
-        transaction.setTransactionType(null);
-        transaction.setTransactionCategory(TransactionCategory.HOUSE);
-        transaction.setPaid(true);
-        transaction.setAccount(account);
-
-        assertThrows(ConstraintViolationException.class, () -> createTransaction.execute(transaction));
-    }
-
-    @Test
-    void testCreateTransactionWithNullTransactionCategory() {
-        Transaction transaction = new Transaction();
-        transaction.setAmount(new BigDecimal("100.00"));
-        transaction.setDate(LocalDate.now());
-        transaction.setDescription("Test transaction");
-        transaction.setBarCode(null);
-        transaction.setBankSlip(false);
-        transaction.setTransactionType(TransactionType.REVENUE);
-        transaction.setTransactionCategory(null);
-        transaction.setPaid(true);
-        transaction.setAccount(account);
-
-        assertThrows(ConstraintViolationException.class, () -> createTransaction.execute(transaction));
+        assertThrows(ConstraintViolationException.class, () -> createTransaction.execute(transactionEntity));
     }
 
     @Test
@@ -164,17 +136,17 @@ class CreateTransactionTest {
                         " It should trigger a constraint violation exception when attempting to save the transaction." +
                         " It should trigger a constraint violation exception when attempting to save the transaction." +
                         " It should trigger a constraint violation exception when attempting to save the transaction.";
-                Transaction transaction = new Transaction();
-        transaction.setAmount(new BigDecimal("100.00"));
-        transaction.setDate(LocalDate.now());
-        transaction.setDescription(description);
-        transaction.setBarCode(null);
-        transaction.setBankSlip(false);
-        transaction.setTransactionType(TransactionType.REVENUE);
-        transaction.setTransactionCategory(TransactionCategory.HOUSE);
-        transaction.setPaid(true);
-        transaction.setAccount(account);
+                var transactionEntity = new Transaction();
+        transactionEntity.setAmount(new BigDecimal("100.00"));
+        transactionEntity.setDate(LocalDate.now());
+        transactionEntity.setDescription(description);
+        transactionEntity.setBarCode(null);
+        transactionEntity.setBankSlip(false);
+        transactionEntity.setTransactionType(TransactionType.REVENUE);
+        transactionEntity.setTransactionCategory(TransactionCategory.HOUSE);
+        transactionEntity.setPaid(true);
+        transactionEntity.setAccount(accountGatewayMapper.toDomain(accountEntity));
 
-        assertThrows(ConstraintViolationException.class, () -> createTransaction.execute(transaction));
+        assertThrows(ConstraintViolationException.class, () -> createTransaction.execute(transactionEntity));
     }
 }

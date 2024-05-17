@@ -2,7 +2,7 @@ package com.freebills.controllers;
 
 
 import com.freebills.controllers.dtos.requests.TransactionPostRequestDTO;
-import com.freebills.controllers.dtos.requests.TransactionPutRequesDTO;
+import com.freebills.controllers.dtos.requests.TransactionPutRequestDTO;
 import com.freebills.controllers.dtos.responses.TransactionResponseDTO;
 import com.freebills.controllers.mappers.TransactionMapper;
 import com.freebills.gateways.entities.enums.TransactionType;
@@ -14,11 +14,22 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
 
-import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
+import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,7 +44,7 @@ public class TransactionController {
 
     @ResponseStatus(CREATED)
     @PostMapping
-    public TransactionResponseDTO save(@RequestBody @Valid final TransactionPostRequestDTO transactionPostRequestDto, Principal principal) {
+    public TransactionResponseDTO save(@RequestBody @Valid final TransactionPostRequestDTO transactionPostRequestDto) {
         final var transaction = transactionMapper.toDomain(transactionPostRequestDto);
         return transactionMapper.fromDomain(createTransaction.execute(transaction));
     }
@@ -48,9 +59,7 @@ public class TransactionController {
             @RequestParam(required = false) final String transactionType,
             final Pageable pageable) {
 
-        return findTransaction.findAllWithFilters(
-                        principal.getName(), month, year, pageable, keyword,
-                        transactionType != null ? TransactionType.valueOf(transactionType) : null)
+        return findTransaction.findAllWithFilters(principal.getName(), month, year, pageable, keyword, transactionType != null ? TransactionType.valueOf(transactionType) : null)
                 .map(transactionMapper::fromDomain);
     }
 
@@ -62,9 +71,9 @@ public class TransactionController {
 
     @ResponseStatus(OK)
     @PutMapping
-    public TransactionResponseDTO update(@RequestBody @Valid final TransactionPutRequesDTO transactionPutRequesDTO) {
-        final var transactionFinded = findTransaction.findById(transactionPutRequesDTO.id());
-        final var update = updateTransaction.execute(transactionMapper.updateTransactionFromDto(transactionPutRequesDTO, transactionFinded));
+    public TransactionResponseDTO update(@RequestBody @Valid final TransactionPutRequestDTO transactionPutRequestDTO) {
+        final var transactionFinded = findTransaction.findById(transactionPutRequestDTO.id());
+        final var update = updateTransaction.execute(transactionMapper.updateTransactionFromDto(transactionPutRequestDTO, transactionFinded));
         return transactionMapper.fromDomain(update);
     }
 

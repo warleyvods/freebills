@@ -1,9 +1,8 @@
 package com.freebills.usecases;
 
-import com.freebills.gateways.entities.Account;
-import com.freebills.gateways.entities.Transaction;
-import com.freebills.gateways.entities.enums.TransactionType;
 import com.freebills.gateways.TransactionGateway;
+import com.freebills.gateways.entities.TransactionEntity;
+import com.freebills.gateways.entities.enums.TransactionType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -23,21 +22,21 @@ public record DeleteTransaction(
     }
 
     private void deleteValidation(Long id) {
-        final Transaction byId = findTransaction.findById(id);
+        final var byId = findTransaction.findById(id);
 
-        if (byId.isPaid()) {
+        if (byId.getPaid()) {
             if (byId.getTransactionType() == TransactionType.REVENUE) {
                 final Long id1 = byId.getAccount().getId();
-                final Account account = findAccount.byId(id1);
-                account.setAmount(account.getAmount().subtract(byId.getAmount()));
-                updateAccount.update(account);
+                final var accountEntity = findAccount.byId(id1);
+                accountEntity.setAmount(accountEntity.getAmount().subtract(byId.getAmount()));
+                updateAccount.update(accountEntity);
             }
 
             if (byId.getTransactionType() == TransactionType.EXPENSE) {
                 final Long id1 = byId.getAccount().getId();
-                final Account account = findAccount.byId(id1);
-                account.setAmount(account.getAmount().add(byId.getAmount()));
-                updateAccount.update(account);
+                final var accountEntity = findAccount.byId(id1);
+                accountEntity.setAmount(accountEntity.getAmount().add(byId.getAmount()));
+                updateAccount.update(accountEntity);
             }
         }
     }

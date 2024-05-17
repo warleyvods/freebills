@@ -1,6 +1,6 @@
 package com.freebills.repositories;
 
-import com.freebills.gateways.entities.Transaction;
+import com.freebills.gateways.entities.TransactionEntity;
 import com.freebills.gateways.entities.enums.TransactionType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,17 +11,19 @@ import org.springframework.stereotype.Repository;
 
 
 @Repository
-public interface TransactionRepository extends JpaRepository<Transaction, Long> {
+public interface TransactionRepository extends JpaRepository<TransactionEntity, Long> {
 
-    @Query(" SELECT t1 FROM Transaction t1 " +
-            " INNER JOIN t1.account ac " +
-            " INNER JOIN ac.user u " +
-            " WHERE u.login = :login " +
-            " AND (:month IS NULL OR MONTH(t1.date) = :month)" +
-            " AND (:year IS NULL OR YEAR(t1.date) = :year) " +
-            " AND (:keyword IS NULL OR t1.description ilike concat('%', :keyword, '%')) " +
-            " AND (:transactionType IS NULL OR t1.transactionType = :transactionType) ")
-    Page<Transaction> findByTransactionFilterByDate(
+    @Query("""
+            SELECT t1 FROM TransactionEntity t1
+            INNER JOIN t1.account ac
+            INNER JOIN ac.user u
+            WHERE u.login = :login
+            AND (:month IS NULL OR MONTH(t1.date) = :month)
+            AND (:year IS NULL OR YEAR(t1.date) = :year)
+            AND (:keyword IS NULL OR t1.description ilike concat('%', :keyword, '%'))
+            AND (:transactionType IS NULL OR t1.transactionType = :transactionType)
+            """)
+    Page<TransactionEntity> findByTransactionFilterByDate(
             @Param(value = "login") final String login,
             @Param(value = "month") final Integer month,
             @Param(value = "year") final Integer year,

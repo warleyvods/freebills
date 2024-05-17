@@ -67,6 +67,7 @@ public class WebSecurityConfig {
                         "/*/h2-console/**",
                         "/swagger-ui/**",
                         "/v3/api-docs/**",
+                        "/actuator/**",
                         "/error"
                 ).permitAll()
                 .anyRequest().authenticated();
