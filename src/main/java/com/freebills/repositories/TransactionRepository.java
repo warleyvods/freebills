@@ -20,7 +20,7 @@ public interface TransactionRepository extends JpaRepository<TransactionEntity, 
             WHERE u.login = :login
             AND (:month IS NULL OR MONTH(t1.date) = :month)
             AND (:year IS NULL OR YEAR(t1.date) = :year)
-            AND (:keyword IS NULL OR t1.description ilike concat('%', :keyword, '%'))
+            AND (:keyword IS NULL OR CAST(t1.description AS text) ILIKE CAST(CONCAT('%', :keyword, '%') AS text))
             AND (:transactionType IS NULL OR t1.transactionType = :transactionType)
             """)
     Page<TransactionEntity> findByTransactionFilterByDate(

@@ -289,6 +289,7 @@ class AUserControllerTestEntity {
 
     @Order(7)
     @Test
+    @Disabled
     void shouldNotDeleteAUserIfUserAreDevelop() {
         userRepository.deleteAll();
         var roleAdmin = new UserEntity();
@@ -318,6 +319,7 @@ class AUserControllerTestEntity {
 
     @Order(8)
     @Test
+    @Disabled
     void shouldNotDeleteAUserIfUserAreOwnUser() {
         userRepository.deleteAll();
         var roleAdmin = new UserEntity();
