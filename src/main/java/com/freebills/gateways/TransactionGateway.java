@@ -20,22 +20,19 @@ public class TransactionGateway {
     private final TransactionGatewayMapper transactionGatewayMapper;
 
     public Transaction save(final Transaction transaction) {
-        final TransactionEntity entity = transactionGatewayMapper.toEntity(transaction);
-        final TransactionEntity save = transactionRepository.save(entity);
-         return transactionGatewayMapper.toDomain(save);
+        return transactionGatewayMapper.toDomain(transactionRepository.save(transactionGatewayMapper.toEntity(transaction)));
     }
 
-    public Page<Transaction> findByUserDateFilter(final String login,
-                                                  final Integer month,
-                                                  final Integer year,
-                                                  final Pageable pageable,
-                                                  final String keyword,
-                                                  final TransactionType transactionType) {
-        if (login == null) {
-            throw new LoginInvalidException("Login invalid!");
-        }
+    public Page<Transaction> findTransactionsWithFilters(final String login,
+                                                         final Integer month,
+                                                         final Integer year,
+                                                         final Pageable pageable,
+                                                         final String keyword,
+                                                         final TransactionType transactionType) {
+        assertLoginIsValid(login);
 
-        return transactionRepository.findByTransactionFilterByDate(login, month, year, keyword, transactionType, pageable).map(transactionGatewayMapper::toDomain);
+        var transactionsPage = transactionRepository.findByTransactionFilterByDate(login, month, year, keyword, transactionType, pageable);
+        return transactionsPage.map(transactionGatewayMapper::toDomain);
     }
 
     public Transaction findById(Long id) {
@@ -50,5 +47,9 @@ public class TransactionGateway {
 
     public void delete(final Long id) {
         transactionRepository.deleteById(id);
+    }
+
+    private void assertLoginIsValid(final String login) {
+        if (login == null) throw new LoginInvalidException("Login invalid!");
     }
 }

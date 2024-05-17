@@ -1,4 +1,4 @@
-FROM warleyvods/java17-with-newrelic
+FROM openjdk:21
 
 EXPOSE 9000
 WORKDIR /app

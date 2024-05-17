@@ -39,8 +39,7 @@ public record UserGateway(UserRepository userRepository, UserGatewayMapper userG
     }
 
     public User update(final User user) {
-        final UserEntity entity = userRepository.save(userGatewayMapper.toEntity(user));
-        return userGatewayMapper.toDomain(entity);
+        return userGatewayMapper.toDomain(userRepository.save(userGatewayMapper.toEntity(user)));
     }
 
     public void deleteById(final Long id) {

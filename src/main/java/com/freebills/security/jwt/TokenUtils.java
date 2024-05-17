@@ -37,7 +37,8 @@ public class TokenUtils {
     private int jwtExpirationMs;
 
     public String getTokenFromCookie(HttpServletRequest request) {
-        return WebUtils.getCookie(request, COOKIE) != null ? WebUtils.getCookie(request, COOKIE).getValue() : null;
+        var cookie = WebUtils.getCookie(request, COOKIE);
+        return cookie != null ? cookie.getValue() : null;
     }
 
     public String getUserName(String token) {

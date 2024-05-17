@@ -8,7 +8,6 @@ import com.freebills.gateways.UserGateway;
 import com.freebills.repositories.ForgetPasswordRepository;
 import com.mailjet.client.errors.MailjetException;
 import com.mailjet.client.errors.MailjetSocketTimeoutException;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.stereotype.Component;
 
 
@@ -25,9 +24,9 @@ public record ForgotPassword(UserGateway userGateway, ForgetPasswordRepository f
         final var user = userGateway.findByEmail(email);
         if (user.isPresent()) {
             forgetPasswordRepository.findByEmail(user.get().getEmail()).ifPresent(password -> forgetPasswordRepository.deleteById(password.getId()));
-            final String hash = DigestUtils.md5Hex(LocalDateTime.now().toString()).toUpperCase();
-            final var forgetPasswordSaved = forgetPasswordRepository.save(new ForgetPassword(hash, user.get().getEmail()));
-            sendEmail(forgetPasswordSaved);
+//            final String hash = DigestUtils.md5Hex(LocalDateTime.now().toString()).toUpperCase();
+//            final var forgetPasswordSaved = forgetPasswordRepository.save(new ForgetPassword(hash, user.get().getEmail()));
+//            sendEmail(forgetPasswordSaved);
         }
     }
 

@@ -4,9 +4,9 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.HttpHeaders;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
 

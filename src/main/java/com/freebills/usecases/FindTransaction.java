@@ -24,6 +24,6 @@ public record FindTransaction(TransactionGateway transactionGateway, UserGateway
                                                       final String keyword,
                                                       final TransactionType transactionType) {
 
-        return transactionGateway.findByUserDateFilter(login, month, year, pageable, keyword, transactionType);
+        return transactionGateway.findTransactionsWithFilters(login, month, year, pageable, keyword, transactionType);
     }
 }

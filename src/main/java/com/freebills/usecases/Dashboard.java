@@ -6,7 +6,6 @@ import com.freebills.controllers.dtos.responses.DashboardGraphResponseDTO;
 import com.freebills.controllers.dtos.responses.DashboardRevenueResponseDTO;
 import com.freebills.domain.Account;
 import com.freebills.domain.Transaction;
-import com.freebills.gateways.entities.TransactionEntity;
 import com.freebills.gateways.entities.enums.TransactionCategory;
 import com.freebills.gateways.entities.enums.TransactionType;
 import com.freebills.gateways.AccountGateway;
@@ -92,7 +91,7 @@ public class Dashboard {
     }
 
     private List<Transaction> getTransactionsByUserDateFilter(String login, Integer month, Integer year) {
-        return transactionGateway.findByUserDateFilter(login, month, year, null, null, null).getContent();
+        return transactionGateway.findTransactionsWithFilters(login, month, year, null, null, null).getContent();
     }
 
     private BigDecimal getTotalAmountByType(List<Transaction> transactionEntities, TransactionType type) {
