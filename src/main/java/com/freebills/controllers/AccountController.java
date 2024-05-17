@@ -4,16 +4,14 @@ package com.freebills.controllers;
 import com.freebills.controllers.dtos.requests.AccountPatchArchivedRequestDTO;
 import com.freebills.controllers.dtos.requests.AccountPostRequestDTO;
 import com.freebills.controllers.dtos.requests.AccountPutRequestDTO;
+import com.freebills.controllers.dtos.requests.AccountReajustDTO;
 import com.freebills.controllers.dtos.responses.AccountResponseDTO;
 import com.freebills.controllers.mappers.AccountMapper;
-import com.freebills.domain.User;
 import com.freebills.usecases.CreateAccount;
 import com.freebills.usecases.DeleteAccount;
 import com.freebills.usecases.FindAccount;
-import com.freebills.usecases.FindUser;
 import com.freebills.usecases.ReajustAccount;
 import com.freebills.usecases.UpdateAccount;
-import com.freebills.usecases.VerifyPrincipal;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -100,10 +98,9 @@ public class AccountController {
         deleteAccount.deleteAccount(accountId);
     }
 
-    //TODO refatorar este método!
-//    @ResponseStatus(OK)
-//    @PatchMapping("/readjustment")
-//    public void reajustAmount(@RequestBody @Valid final AccountReajustDTO accountReajustDTO) {
-//        reajustAccount.reajust(accountReajustDTO.accountId(), accountReajustDTO.amount(), accountReajustDTO.type());
-//    }
+    @ResponseStatus(OK)
+    @PatchMapping("/readjustment")
+    public void reajustAmount(@RequestBody @Valid final AccountReajustDTO accountReajustDTO) {
+        reajustAccount.reajust(accountReajustDTO.accountId(), accountReajustDTO.amount(), accountReajustDTO.type());
+    }
 }

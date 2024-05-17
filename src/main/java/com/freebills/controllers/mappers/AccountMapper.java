@@ -26,6 +26,6 @@ public interface AccountMapper {
     Account updateAccountFromDTO(AccountPutRequestDTO accountPutRequestDTO, @MappingTarget Account account);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    Account updateArchiveAccountFromDTO(AccountPatchArchivedRequestDTO accDTO, @MappingTarget Account accountEntity);
+    Account updateArchiveAccountFromDTO(AccountPatchArchivedRequestDTO accDTO, @MappingTarget Account account);
 
 }

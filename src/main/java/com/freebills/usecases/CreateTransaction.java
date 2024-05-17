@@ -1,8 +1,9 @@
 package com.freebills.usecases;
 
-import com.freebills.gateways.entities.Transaction;
-import com.freebills.gateways.entities.TransactionLog;
+import com.freebills.domain.Transaction;
 import com.freebills.gateways.TransactionGateway;
+import com.freebills.gateways.entities.TransactionLog;
+import com.freebills.gateways.mapper.TransactionGatewayMapper;
 import com.freebills.repositories.TransactionLogRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,27 +18,30 @@ public class CreateTransaction {
     private final TransactionGateway transactionGateway;
     private final TransactionValidation transactionValidation;
     private final TransactionLogRepository transactionLogRepository;
+    private final TransactionGatewayMapper transactionGatewayMapper;
 
     public Transaction execute(final Transaction transaction) {
         if (transaction.getPreviousAmount() == null) {
             transaction.setPreviousAmount(transaction.getAmount());
         }
 
-        final Transaction transactionSaved = transactionGateway.save(transaction);
+        final var transactionEntitySaved = transactionGateway.save(transaction);
+
         transactionLogRepository.save(new TransactionLog(
-                        transactionSaved.getAmount(),
+                        transactionEntitySaved.getAmount(),
                         null,
-                        transactionSaved.getAccount().getId(),
+                        transactionEntitySaved.getAccount().getId(),
                         null,
-                        transactionSaved.getAccount().getId(),
-                        transactionSaved.getAmount(),
-                        transactionSaved,
+                        transactionEntitySaved.getAccount().getId(),
+                        transactionEntitySaved.getAmount(),
+                transactionGatewayMapper.toEntity(transactionEntitySaved),
                 null,
-                transactionSaved.getTransactionType()
+                transactionEntitySaved.getTransactionType()
                 )
         );
-        log.info("[createTransaction:{}] Creating new transaction", transactionSaved.getId());
-        transactionValidation.transactionCreationValidation(transactionSaved);
-        return transactionSaved;
+
+        log.info("[createTransaction:{}] Creating new transaction", transactionEntitySaved.getId());
+        transactionValidation.transactionCreationValidation(transactionEntitySaved);
+        return transactionEntitySaved;
     }
 }

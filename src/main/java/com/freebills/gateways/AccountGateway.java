@@ -25,17 +25,12 @@ public class AccountGateway {
         return accountsRepository.findByUser_Login(login).stream().map(accountGatewayMapper::toDomain).toList();
     }
 
-    //FIXME vou deixar provisorio, aqui tem um bug corrigir depois!
-    public AccountEntity findByIdX(final Long id) {
-        return accountsRepository.findById(id).orElseThrow(() -> new AccountNotFoundException("Account not found!"));
-    }
-
     public Account findById(final Long id) {
         return accountGatewayMapper.toDomain(accountsRepository.findById(id).orElseThrow(() -> new AccountNotFoundException("Account not found!")));
     }
 
     public Account update(final Account account) {
-        return accountGatewayMapper.toDomain(accountGatewayMapper.toEntity(account));
+        return accountGatewayMapper.toDomain(accountsRepository.save(accountGatewayMapper.toEntity(account)));
     }
 
     public void deleteById(final Long id) {

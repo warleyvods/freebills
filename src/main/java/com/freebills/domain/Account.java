@@ -2,6 +2,7 @@ package com.freebills.domain;
 
 import com.freebills.gateways.entities.enums.AccountType;
 import com.freebills.gateways.entities.enums.BankType;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,6 +10,7 @@ import java.math.BigDecimal;
 
 @Getter
 @Setter
+@EqualsAndHashCode
 public class Account {
 
     private Long id;

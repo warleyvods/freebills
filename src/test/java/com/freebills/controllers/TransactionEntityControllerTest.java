@@ -2,11 +2,11 @@ package com.freebills.controllers;
 
 import com.freebills.controllers.dtos.requests.LoginRequestDTO;
 import com.freebills.controllers.dtos.requests.TransactionPostRequestDTO;
-import com.freebills.controllers.dtos.requests.TransactionPutRequesDTO;
+import com.freebills.controllers.dtos.requests.TransactionPutRequestDTO;
 import com.freebills.controllers.dtos.responses.TransactionResponseDTO;
 import com.freebills.gateways.AccountGateway;
 import com.freebills.gateways.entities.AccountEntity;
-import com.freebills.gateways.entities.Transaction;
+import com.freebills.gateways.entities.TransactionEntity;
 import com.freebills.gateways.entities.UserEntity;
 import com.freebills.gateways.entities.enums.AccountType;
 import com.freebills.gateways.entities.enums.BankType;
@@ -38,7 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class TransactionControllerTest {
+class TransactionEntityControllerTest {
 
     @Autowired
     private TestRestTemplate testRestTemplate;
@@ -84,8 +84,8 @@ class TransactionControllerTest {
         accountsRepository.deleteAll();
     }
 
-    private List<Transaction> transactionMockList() {
-        Transaction t1 = new Transaction();
+    private List<TransactionEntity> transactionMockList() {
+        TransactionEntity t1 = new TransactionEntity();
         t1.setAmount(new BigDecimal("100"));
         t1.setDate(LocalDate.of(2022, 1, 1));
         t1.setDescription("Arroz");
@@ -96,7 +96,7 @@ class TransactionControllerTest {
         t1.setPaid(false);
         t1.setAccount(accountEntity);
 
-        Transaction t2 = new Transaction();
+        TransactionEntity t2 = new TransactionEntity();
         t2.setAmount(new BigDecimal("100"));
         t2.setDate(LocalDate.of(2022, 1, 1));
         t2.setDescription("Arroz");
@@ -107,7 +107,7 @@ class TransactionControllerTest {
         t2.setPaid(false);
         t2.setAccount(accountEntity);
 
-        Transaction t3 = new Transaction();
+        TransactionEntity t3 = new TransactionEntity();
         t3.setAmount(new BigDecimal("100"));
         t3.setDate(LocalDate.of(2022, 1, 1));
         t3.setDescription("Arroz");
@@ -118,7 +118,7 @@ class TransactionControllerTest {
         t3.setPaid(false);
         t3.setAccount(accountEntity);
 
-        Transaction t4 = new Transaction();
+        TransactionEntity t4 = new TransactionEntity();
         t4.setAmount(new BigDecimal("100"));
         t4.setDate(LocalDate.of(2022, 1, 1));
         t4.setDescription("Arroz");
@@ -230,12 +230,12 @@ class TransactionControllerTest {
 
     @Test
     void shouldFindTransactionById() {
-        final List<Transaction> transactions = transactionRepository.saveAll(transactionMockList());
+        final List<TransactionEntity> transactionEntities = transactionRepository.saveAll(transactionMockList());
         final var headers = new HttpHeaders();
         headers.set("Cookie", token);
         final var request = new HttpEntity<>(null, headers);
 
-        final var transactionResponse = testRestTemplate.exchange("/v1/transactions/" + transactions.get(0).getId(),
+        final var transactionResponse = testRestTemplate.exchange("/v1/transactions/" + transactionEntities.get(0).getId(),
                 HttpMethod.GET,
                 request,
                 TransactionResponseDTO.class);
@@ -297,7 +297,7 @@ class TransactionControllerTest {
         //Account paid true
         assertEquals(0, new BigDecimal(100).compareTo(acc.getAmount()));
 
-        final var transactionPut = new TransactionPutRequesDTO(
+        final var transactionPut = new TransactionPutRequestDTO(
                accountEntity.getId(),
                 transactionResponse.getBody().id(),
                 transactionResponse.getBody().amount(),

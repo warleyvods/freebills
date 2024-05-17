@@ -1,7 +1,7 @@
 package com.freebills.usecases;
 
+import com.freebills.domain.Transaction;
 import com.freebills.gateways.AccountGateway;
-import com.freebills.gateways.entities.Transaction;
 import com.freebills.gateways.entities.enums.TransactionCategory;
 import com.freebills.gateways.entities.enums.TransactionType;
 import com.freebills.repositories.TransactionLogRepository;
@@ -20,13 +20,13 @@ public class TransactionValidation {
     public void transactionCreationValidation(Transaction transaction) {
         if (transaction.getTransactionCategory() != TransactionCategory.REAJUST) {
 
-            if (transaction.isPaid() && transaction.getTransactionType() == TransactionType.EXPENSE) {
+            if (transaction.getPaid() && transaction.getTransactionType() == TransactionType.EXPENSE) {
                 final var account = accountGateway.findById(transaction.getAccount().getId());
                 account.setAmount(account.getAmount().subtract(transaction.getAmount()));
                 accountGateway.save(account);
             }
 
-            if (transaction.isPaid() && transaction.getTransactionType() == TransactionType.REVENUE) {
+            if (transaction.getPaid() && transaction.getTransactionType() == TransactionType.REVENUE) {
                 final var account = accountGateway.findById(transaction.getAccount().getId());
                 account.setAmount(account.getAmount().add(transaction.getAmount()));
                 accountGateway.save(account);
@@ -37,8 +37,8 @@ public class TransactionValidation {
     public void transactionUpdateValidation(Transaction transaction) {
         if (transaction.getTransactionCategory() != TransactionCategory.REAJUST) {
 
-            if (transaction.isPaid() && transaction.getTransactionType() == TransactionType.EXPENSE) {
-                if (transaction.getFromAccount() != null && transaction.isTransactionChange()) {
+            if (transaction.getPaid() && transaction.getTransactionType() == TransactionType.EXPENSE) {
+                if (transaction.getFromAccount() != null && transaction.getTransactionChange()) {
                     final var acc = accountGateway.findById(transaction.getFromAccount());
                     acc.setAmount(acc.getAmount().add(transaction.getAmount()));
                     accountGateway.save(acc);
@@ -71,8 +71,8 @@ public class TransactionValidation {
                 accountGateway.save(account);
             }
 
-            if (!transaction.isPaid() && transaction.getTransactionType() == TransactionType.EXPENSE) {
-                if (transaction.getFromAccount() != null && transaction.isTransactionChange()) {
+            if (!transaction.getPaid() && transaction.getTransactionType() == TransactionType.EXPENSE) {
+                if (transaction.getFromAccount() != null && transaction.getTransactionChange()) {
                     return;
                 }
 
@@ -89,8 +89,8 @@ public class TransactionValidation {
                 accountGateway.save(account);
             }
 
-            if (transaction.isPaid() && transaction.getTransactionType() == TransactionType.REVENUE) {
-                if (transaction.getFromAccount() != null && transaction.isTransactionChange()) {
+            if (transaction.getPaid() && transaction.getTransactionType() == TransactionType.REVENUE) {
+                if (transaction.getFromAccount() != null && transaction.getTransactionChange()) {
                     final var acc = accountGateway.findById(transaction.getFromAccount());
                     acc.setAmount(acc.getAmount().subtract(transaction.getAmount()));
                     accountGateway.save(acc);
@@ -127,8 +127,8 @@ public class TransactionValidation {
                 accountGateway.save(account);
             }
 
-            if (!transaction.isPaid() && transaction.getTransactionType() == TransactionType.REVENUE) {
-                if (transaction.getFromAccount() != null && transaction.isTransactionChange()) {
+            if (!transaction.getPaid() && transaction.getTransactionType() == TransactionType.REVENUE) {
+                if (transaction.getFromAccount() != null && transaction.getTransactionChange()) {
                     return;
                 }
 

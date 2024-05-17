@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 
-public record TransactionPutRequesDTO(
+public record TransactionPutRequestDTO(
         @NotNull
         Long accountId,
 
