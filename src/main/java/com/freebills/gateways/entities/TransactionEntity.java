@@ -31,7 +31,7 @@ import static jakarta.persistence.FetchType.LAZY;
 @Getter
 @Entity
 @NoArgsConstructor
-@Table(name = "transaction")
+@Table(name = "transactions")
 public class TransactionEntity {
 
     @Id
@@ -67,9 +67,6 @@ public class TransactionEntity {
     private boolean transactionChange;
 
     private BigDecimal previousAmount;
-
-    @OneToMany(mappedBy = "transaction", cascade = ALL, fetch = EAGER)
-    private List<TransactionLog> transactionLogs;
 
     @ManyToOne
     private AccountEntity account;

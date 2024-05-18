@@ -73,7 +73,7 @@ public class TransactionController {
     @PutMapping
     public TransactionResponseDTO update(@RequestBody @Valid final TransactionPutRequestDTO transactionPutRequestDTO) {
         final var transactionFinded = findTransaction.findById(transactionPutRequestDTO.id());
-        final var update = updateTransaction.execute(transactionMapper.updateTransactionFromDto(transactionPutRequestDTO, transactionFinded));
+        final var update = updateTransaction.execute(transactionMapper.updateTransaction(transactionPutRequestDTO, transactionFinded));
         return transactionMapper.fromDomain(update);
     }
 

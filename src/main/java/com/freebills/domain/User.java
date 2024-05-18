@@ -21,8 +21,9 @@ public class User {
     private String password;
     private Boolean admin;
     private Boolean active;
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
     private LocalDateTime lastAccess;
+    private LocalDateTime updatedAt;
 
     private String lastLogin;
 

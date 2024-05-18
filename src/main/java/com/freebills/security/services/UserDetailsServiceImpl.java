@@ -25,6 +25,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         final var authorityListAdmin = AuthorityUtils.createAuthorityList("ROLE_USER", "ROLE_ADMIN");
         final var authorityListUser = AuthorityUtils.createAuthorityList("ROLE_USER");
 
-        return UserDetailsImpl.build(user, user.isAdmin() ? authorityListAdmin : authorityListUser);
+        return UserDetailsImpl.build(user, user.getAdmin() ? authorityListAdmin : authorityListUser);
     }
 }

@@ -1,6 +1,5 @@
 package com.freebills.domain;
 
-import com.freebills.gateways.entities.TransactionLog;
 import com.freebills.gateways.entities.enums.TransactionCategory;
 import com.freebills.gateways.entities.enums.TransactionType;
 import lombok.EqualsAndHashCode;
@@ -31,7 +30,6 @@ public class Transaction {
     private Long toAccount;
     private Boolean transactionChange;
     private BigDecimal previousAmount;
-    private List<TransactionLog> transactionLogs;
     private Account account;
 
     public Transaction(final BigDecimal amount,

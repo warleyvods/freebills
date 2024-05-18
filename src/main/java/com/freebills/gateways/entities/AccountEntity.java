@@ -24,7 +24,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Getter
 @Setter
 @Entity
-@Table(name = "account")
+@Table(name = "accounts")
 public class AccountEntity {
 
     @Id
@@ -47,11 +47,8 @@ public class AccountEntity {
     @OneToMany(mappedBy = "account", cascade = ALL, fetch = LAZY)
     private List<TransactionEntity> transactionEntities = new ArrayList<>();
 
-    @OneToMany(mappedBy = "account", cascade = ALL, fetch = LAZY)
-    private List<CreditCard> cards = new ArrayList<>();
+    private Boolean archived;
 
-    private boolean archived;
-
-    private boolean dashboard;
+    private Boolean dashboard;
 
 }
