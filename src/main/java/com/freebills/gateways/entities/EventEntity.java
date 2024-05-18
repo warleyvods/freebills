@@ -40,8 +40,14 @@ public class EventEntity {
     private BigDecimal transactionAmount;
     private BigDecimal oldTransactionAmount;
     private BigDecimal newTransactionAmount;
+
+    @Enumerated(STRING)
     private TransactionType transactionType;
+
+    @Enumerated(STRING)
     private TransactionType oldTransactionType;
+
+    @Enumerated(STRING)
     private TransactionType newTransactionType;
 
     @CreatedDate

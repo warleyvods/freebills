@@ -20,5 +20,8 @@ public class Event {
     private TransactionType transactionType;
     private TransactionType oldTransactionType;
     private TransactionType newTransactionType;
+    private Boolean paid;
+    private Boolean oldPaid;
+    private Boolean newPaid;
 
 }

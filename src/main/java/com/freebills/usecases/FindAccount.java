@@ -17,14 +17,14 @@ public class FindAccount {
     private final AccountGateway accountGateway;
     private final AccountBalanceCalculator accountBalanceCalculator;
 
-    public List<Account> findByAccountsNonArchived(final String login) {
-        List<Account> nonArchivedAccounts = filterAndCalculateBalance(accountGateway.findByUserLogin(login), false);
-        return sortAccountsByDescription(nonArchivedAccounts);
-    }
-
     public Account byId(final Long id) {
         Account account = accountGateway.findById(id);
         return calculateBalanceForSingleAccount(account);
+    }
+
+    public List<Account> findByAccountsNonArchived(final String login) {
+        List<Account> nonArchivedAccounts = filterAndCalculateBalance(accountGateway.findByUserLogin(login), false);
+        return sortAccountsByDescription(nonArchivedAccounts);
     }
 
     public List<Account> findByAccountsArchived(final String login) {
