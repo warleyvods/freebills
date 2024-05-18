@@ -15,20 +15,10 @@ public class UpdateTransaction {
     private final ApplicationEventPublisher eventPublisher;
 
     public Transaction execute(final Transaction transaction) {
-        Transaction oldTransaction = transactionGateway.findById(transaction.getId());
-
+        final var oldTransaction = transactionGateway.findById(transaction.getId());
         final var savedTransaction = transactionGateway.update(transaction);
 
-        eventPublisher.publishEvent(new TransactionUpdatedEvent(
-                this,
-                savedTransaction.getAccount().getId(),
-                savedTransaction.getAmount(),
-                oldTransaction.getAmount(),
-                savedTransaction.getAmount(),
-                savedTransaction.getTransactionType(),
-                oldTransaction.getTransactionType(),
-                savedTransaction.getTransactionType()
-        ));
+        eventPublisher.publishEvent(new TransactionUpdatedEvent(this, savedTransaction.getAccount().getId(), savedTransaction, oldTransaction));
         return savedTransaction;
     }
 }

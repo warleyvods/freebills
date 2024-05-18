@@ -25,8 +25,7 @@ public class TransactionEventListener {
             Event newEvent = new Event();
             newEvent.setAggregateId(event.getAccountId());
             newEvent.setEventType(EventType.TRANSACTION_CREATED);
-            newEvent.setTransactionAmount(event.getTransactionAmount());
-            newEvent.setTransactionType(event.getTransactionType());
+            newEvent.setTransactionData(event.getTransaction());
             eventGateway.save(newEvent);
         } catch (Exception e) {
             log.error("Error handling TransactionCreatedEvent", e);
@@ -41,10 +40,8 @@ public class TransactionEventListener {
             Event newEvent = new Event();
             newEvent.setAggregateId(event.getAccountId());
             newEvent.setEventType(EventType.TRANSACTION_UPDATED);
-            newEvent.setOldTransactionAmount(event.getOldTransactionAmount());
-            newEvent.setNewTransactionAmount(event.getNewTransactionAmount());
-            newEvent.setOldTransactionType(event.getOldTransactionType());
-            newEvent.setNewTransactionType(event.getNewTransactionType());
+            newEvent.setTransactionData(event.getTransaction());
+            newEvent.setOldTransactionData(event.getOldTransaction());
             eventGateway.save(newEvent);
         } catch (Exception e) {
             log.error("Error handling TransactionUpdatedEvent", e);
@@ -59,8 +56,7 @@ public class TransactionEventListener {
             Event newEvent = new Event();
             newEvent.setAggregateId(event.getAccountId());
             newEvent.setEventType(EventType.TRANSACTION_DELETED);
-            newEvent.setTransactionAmount(event.getTransactionAmount());
-            newEvent.setTransactionType(event.getTransactionType());
+            newEvent.setTransactionData(event.getTransaction());
             eventGateway.save(newEvent);
         } catch (Exception e) {
             log.error("Error handling TransactionDeletedEvent", e);

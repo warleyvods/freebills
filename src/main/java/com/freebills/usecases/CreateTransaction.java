@@ -3,7 +3,6 @@ package com.freebills.usecases;
 import com.freebills.domain.Transaction;
 import com.freebills.events.transaction.TransactionCreatedEvent;
 import com.freebills.gateways.TransactionGateway;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
@@ -19,10 +18,7 @@ public class CreateTransaction {
     public Transaction execute(final Transaction transaction) {
         final var savedTransaction = transactionGateway.save(transaction);
 
-        eventPublisher.publishEvent(new TransactionCreatedEvent(this,
-                savedTransaction.getAccount().getId(),
-                savedTransaction.getAmount(),
-                savedTransaction.getTransactionType()));
+        eventPublisher.publishEvent(new TransactionCreatedEvent(this, savedTransaction.getAccount().getId(), savedTransaction));
         return savedTransaction;
     }
 }

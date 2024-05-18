@@ -11,23 +11,56 @@ public class TransactionUpdatedStrategy implements BalanceUpdateStrategy {
 
     @Override
     public BigDecimal updateBalance(BigDecimal currentBalance, final Event event) {
-        BigDecimal oldTransactionAmount = event.getOldTransactionAmount();
-        BigDecimal newTransactionAmount = event.getNewTransactionAmount();
-        TransactionType oldTransactionType = event.getOldTransactionType();
-        TransactionType newTransactionType = event.getNewTransactionType();
+        // Dados da transação antiga
+        BigDecimal oldTransactionAmount = event.getOldTransactionData().getAmount();
+        TransactionType oldTransactionType = event.getOldTransactionData().getTransactionType();
+        boolean oldTransactionPaid = event.getOldTransactionData().getPaid();
+        Long oldAccountId = event.getOldTransactionData().getAccount().getId();
 
-        // Revert the old transaction
-        if (oldTransactionType == TransactionType.REVENUE) {
-            currentBalance = currentBalance.subtract(oldTransactionAmount);
-        } else if (oldTransactionType == TransactionType.EXPENSE) {
-            currentBalance = currentBalance.add(oldTransactionAmount);
-        }
+        // Dados da nova transação
+        BigDecimal newTransactionAmount = event.getTransactionData().getAmount();
+        TransactionType newTransactionType = event.getTransactionData().getTransactionType();
+        boolean newTransactionPaid = event.getTransactionData().getPaid();
+        Long newAccountId = event.getTransactionData().getAccount().getId();
 
-        // Apply the new transaction
-        if (newTransactionType == TransactionType.REVENUE) {
-            currentBalance = currentBalance.add(newTransactionAmount);
-        } else if (newTransactionType == TransactionType.EXPENSE) {
-            currentBalance = currentBalance.subtract(newTransactionAmount);
+        // Se a transação mudou de conta
+        if (!oldAccountId.equals(newAccountId)) {
+            // Reverter a transação da conta antiga
+            if (oldTransactionPaid) {
+                if (oldTransactionType == TransactionType.REVENUE) {
+                    currentBalance = currentBalance.subtract(oldTransactionAmount);
+                } else if (oldTransactionType == TransactionType.EXPENSE) {
+                    currentBalance = currentBalance.add(oldTransactionAmount);
+                }
+            }
+
+            // Aplicar a nova transação na nova conta
+            if (newTransactionPaid) {
+                if (newTransactionType == TransactionType.REVENUE) {
+                    currentBalance = currentBalance.add(newTransactionAmount);
+                } else if (newTransactionType == TransactionType.EXPENSE) {
+                    currentBalance = currentBalance.subtract(newTransactionAmount);
+                }
+            }
+        } else {
+            // Se a transação não mudou de conta
+            // Reverter a transação antiga se ela foi paga
+            if (oldTransactionPaid) {
+                if (oldTransactionType == TransactionType.REVENUE) {
+                    currentBalance = currentBalance.subtract(oldTransactionAmount);
+                } else if (oldTransactionType == TransactionType.EXPENSE) {
+                    currentBalance = currentBalance.add(oldTransactionAmount);
+                }
+            }
+
+            // Aplicar a nova transação se ela foi paga
+            if (newTransactionPaid) {
+                if (newTransactionType == TransactionType.REVENUE) {
+                    currentBalance = currentBalance.add(newTransactionAmount);
+                } else if (newTransactionType == TransactionType.EXPENSE) {
+                    currentBalance = currentBalance.subtract(newTransactionAmount);
+                }
+            }
         }
 
         return currentBalance;

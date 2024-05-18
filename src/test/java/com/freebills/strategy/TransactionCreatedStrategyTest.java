@@ -1,6 +1,7 @@
 package com.freebills.strategy;
 
 import com.freebills.domain.Event;
+import com.freebills.domain.Transaction;
 import com.freebills.gateways.entities.enums.EventType;
 import com.freebills.gateways.entities.enums.TransactionType;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,12 +22,17 @@ class TransactionCreatedStrategyTest {
 
     @Test
     void testUpdateBalanceWithRevenueTransaction() {
+        final Transaction transaction = new Transaction();
+        transaction.setPaid(true);
+
         BigDecimal currentBalance = BigDecimal.valueOf(1000);
 
         Event event = new Event();
+        event.setTransactionData(transaction);
+
         event.setEventType(EventType.TRANSACTION_CREATED);
-        event.setTransactionType(TransactionType.REVENUE);
-        event.setTransactionAmount(BigDecimal.valueOf(200));
+        event.getTransactionData().setTransactionType(TransactionType.REVENUE);
+        event.getTransactionData().setAmount(BigDecimal.valueOf(200));
 
         BigDecimal updatedBalance = transactionCreatedStrategy.updateBalance(currentBalance, event);
 
@@ -35,11 +41,17 @@ class TransactionCreatedStrategyTest {
 
     @Test
     void testUpdateBalanceWithExpenseTransaction() {
+        final Transaction transaction = new Transaction();
+        transaction.setPaid(true);
+
         BigDecimal currentBalance = BigDecimal.valueOf(1000);
+
         Event event = new Event();
+        event.setTransactionData(transaction);
+
         event.setEventType(EventType.TRANSACTION_CREATED);
-        event.setTransactionType(TransactionType.EXPENSE);
-        event.setTransactionAmount(BigDecimal.valueOf(200));
+        event.getTransactionData().setTransactionType(TransactionType.EXPENSE);
+        event.getTransactionData().setAmount(BigDecimal.valueOf(200));
 
         BigDecimal updatedBalance = transactionCreatedStrategy.updateBalance(currentBalance, event);
 
@@ -48,11 +60,17 @@ class TransactionCreatedStrategyTest {
 
     @Test
     void testUpdateBalanceWithNonCreatedEvent() {
+        final Transaction transaction = new Transaction();
+        transaction.setPaid(true);
+
         BigDecimal currentBalance = BigDecimal.valueOf(1000);
+
         Event event = new Event();
+        event.setTransactionData(transaction);
+
         event.setEventType(EventType.TRANSACTION_UPDATED);
-        event.setTransactionType(TransactionType.REVENUE);
-        event.setTransactionAmount(BigDecimal.valueOf(200));
+        event.getTransactionData().setTransactionType(TransactionType.REVENUE);
+        event.getTransactionData().setAmount(BigDecimal.valueOf(200));
 
         BigDecimal updatedBalance = transactionCreatedStrategy.updateBalance(currentBalance, event);
 

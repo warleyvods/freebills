@@ -16,18 +16,18 @@ public class EventGateway {
     private final EventGatewayMapper eventGatewayMapper;
 
     public Event save(final Event event) {
-        return eventGatewayMapper.toDomain(eventRepository.save(eventGatewayMapper.toEntity(event)));
+        return eventGatewayMapper.toDomainWithJson(eventRepository.save(eventGatewayMapper.toEntityWithJson(event)));
     }
 
     public List<Event> getAllEvents() {
         return eventRepository.findAll().stream()
-                .map(eventGatewayMapper::toDomain)
+                .map(eventGatewayMapper::toDomainWithJson)
                 .toList();
     }
 
     public List<Event> getEventsByAggregateId(final Long aggregateId) {
         return eventRepository.findByAggregateId(aggregateId).stream()
-                .map(eventGatewayMapper::toDomain)
+                .map(eventGatewayMapper::toDomainWithJson)
                 .toList();
     }
 }

@@ -1,5 +1,7 @@
 package com.freebills.usecases;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.freebills.events.transaction.TransactionDeletedEvent;
 import com.freebills.gateways.TransactionGateway;
 import lombok.RequiredArgsConstructor;
@@ -13,10 +15,11 @@ public class DeleteTransaction {
     private final TransactionGateway transactionGateway;
     private final ApplicationEventPublisher eventPublisher;
 
-    public void delete(final Long id) {
+    public void delete(final Long id)  {
         final var transaction = transactionGateway.findById(id);
 
         transactionGateway.delete(id);
-        eventPublisher.publishEvent(new TransactionDeletedEvent(this, transaction.getAccount().getId(), transaction.getAmount(), transaction.getTransactionType()));
+
+        eventPublisher.publishEvent(new TransactionDeletedEvent(this, transaction.getAccount().getId(), transaction));
     }
 }

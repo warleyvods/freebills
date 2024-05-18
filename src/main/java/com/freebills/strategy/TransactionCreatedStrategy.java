@@ -7,18 +7,18 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 
-import static java.lang.Boolean.*;
+import static java.lang.Boolean.TRUE;
 
 @Component
 public class TransactionCreatedStrategy implements BalanceUpdateStrategy {
 
     @Override
     public BigDecimal updateBalance(BigDecimal currentBalance, Event event) {
-        if (event.getEventType() == EventType.TRANSACTION_CREATED && TRUE.equals(event.getPaid())) {
-            if (event.getTransactionType() == TransactionType.EXPENSE) {
-                return currentBalance.subtract(event.getTransactionAmount());
-            } else if (event.getTransactionType() == TransactionType.REVENUE) {
-                return currentBalance.add(event.getTransactionAmount());
+        if (event.getEventType() == EventType.TRANSACTION_CREATED && TRUE.equals(event.getTransactionData().getPaid())) {
+            if (event.getTransactionData().getTransactionType() == TransactionType.EXPENSE) {
+                return currentBalance.subtract(event.getTransactionData().getAmount());
+            } else if (event.getTransactionData().getTransactionType() == TransactionType.REVENUE) {
+                return currentBalance.add(event.getTransactionData().getAmount());
             }
         }
 

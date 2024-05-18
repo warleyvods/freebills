@@ -1,7 +1,12 @@
 package com.freebills.usecases;
 
+import java.time.LocalDate;
+
+import com.freebills.gateways.entities.enums.TransactionCategory;
+
 import com.freebills.domain.Account;
 import com.freebills.domain.Event;
+import com.freebills.domain.Transaction;
 import com.freebills.gateways.EventGateway;
 import com.freebills.gateways.entities.enums.EventType;
 import com.freebills.gateways.entities.enums.TransactionType;
@@ -36,24 +41,34 @@ class AccountBalanceCalculatorTest {
         eventRepository.deleteAll();
     }
 
+    private Transaction createTransaction(BigDecimal value, TransactionType transactionType) {
+        Transaction transaction = new Transaction();
+        transaction.setAmount(value);
+        transaction.setDate(LocalDate.now());
+        transaction.setDescription("TESTE");
+        transaction.setBankSlip(false);
+        transaction.setTransactionType(transactionType);
+        transaction.setTransactionCategory(TransactionCategory.HOUSE);
+        transaction.setPaid(true);
+
+        return transaction;
+    }
+
     private List<Event> mockedEvents1() {
         Event event1 = new Event();
         event1.setAggregateId(1L);
         event1.setEventType(EventType.TRANSACTION_CREATED);
-        event1.setTransactionAmount(BigDecimal.valueOf(100));
-        event1.setTransactionType(TransactionType.REVENUE);
+        event1.setTransactionData(createTransaction(BigDecimal.valueOf(100), TransactionType.REVENUE));
 
         Event event2 = new Event();
         event2.setAggregateId(1L);
         event2.setEventType(EventType.TRANSACTION_CREATED);
-        event2.setTransactionAmount(BigDecimal.valueOf(100));
-        event2.setTransactionType(TransactionType.REVENUE);
+        event2.setTransactionData(createTransaction(BigDecimal.valueOf(100), TransactionType.REVENUE));
 
         Event event3 = new Event();
         event3.setAggregateId(1L);
         event3.setEventType(EventType.TRANSACTION_CREATED);
-        event3.setTransactionAmount(BigDecimal.valueOf(100));
-        event3.setTransactionType(TransactionType.REVENUE);
+        event3.setTransactionData(createTransaction(BigDecimal.valueOf(100), TransactionType.REVENUE));
 
         return List.of(event1, event2, event3);
     }
@@ -62,30 +77,27 @@ class AccountBalanceCalculatorTest {
         Event event1 = new Event();
         event1.setAggregateId(1L);
         event1.setEventType(EventType.TRANSACTION_CREATED);
-        event1.setTransactionAmount(BigDecimal.valueOf(100));
-        event1.setTransactionType(TransactionType.REVENUE);
+        event1.setTransactionData(createTransaction(BigDecimal.valueOf(100), TransactionType.REVENUE));
 
         Event event2 = new Event();
         event2.setAggregateId(1L);
         event2.setEventType(EventType.TRANSACTION_DELETED);
-        event2.setTransactionAmount(BigDecimal.valueOf(100));
-        event2.setTransactionType(TransactionType.REVENUE);
+        event2.setTransactionData(createTransaction(BigDecimal.valueOf(100), TransactionType.REVENUE));
 
         Event event3 = new Event();
         event3.setAggregateId(1L);
         event3.setEventType(EventType.TRANSACTION_CREATED);
-        event3.setTransactionAmount(BigDecimal.valueOf(100));
-        event3.setTransactionType(TransactionType.REVENUE);
+        event3.setTransactionData(createTransaction(BigDecimal.valueOf(100), TransactionType.REVENUE));
 
         return List.of(event1, event2, event3);
     }
 
-    private Event createEvent(Long agragateId, EventType eventType, BigDecimal value, TransactionType transactionType) {
+    private Event createEvent(Long aggregateId, EventType eventType, BigDecimal value, TransactionType transactionType) {
         Event event = new Event();
-        event.setAggregateId(agragateId);
+        event.setAggregateId(aggregateId);
         event.setEventType(eventType);
-        event.setTransactionAmount(value);
-        event.setTransactionType(transactionType);
+        event.setTransactionData(createTransaction(value, transactionType));
+
         return event;
     }
 
@@ -93,12 +105,9 @@ class AccountBalanceCalculatorTest {
         Event event = new Event();
         event.setAggregateId(aggregateId);
         event.setEventType(EventType.TRANSACTION_UPDATED);
-        event.setOldTransactionType(oldTransactionType);
-        event.setNewTransactionType(newTransactionType);
 
-        event.setOldTransactionAmount(oldAmount);
-        event.setNewTransactionAmount(newAmount);
-
+        event.setOldTransactionData(createTransaction(oldAmount, oldTransactionType));
+        event.setTransactionData(createTransaction(newAmount, newTransactionType));
         return event;
     }
 
@@ -112,7 +121,7 @@ class AccountBalanceCalculatorTest {
 
         BigDecimal balance = accountBalanceCalculator.calculateBalanceForAccount(account);
 
-        assertEquals(new BigDecimal("300.00"), balance);
+        assertEquals(new BigDecimal("300"), balance);
     }
 
     @Test
@@ -132,7 +141,7 @@ class AccountBalanceCalculatorTest {
 
         BigDecimal balance = accountBalanceCalculator.calculateBalanceForAccount(account);
 
-        assertEquals(new BigDecimal("500.00"), balance);
+        assertEquals(new BigDecimal("500"), balance);
     }
 
     @Test
@@ -151,7 +160,7 @@ class AccountBalanceCalculatorTest {
 
         BigDecimal balance = accountBalanceCalculator.calculateBalanceForAccount(account);
 
-        assertEquals(new BigDecimal("200.00"), balance);
+        assertEquals(new BigDecimal("200"), balance);
     }
 
     @Test
@@ -168,7 +177,7 @@ class AccountBalanceCalculatorTest {
 
         BigDecimal balance = accountBalanceCalculator.calculateBalanceForAccount(account);
 
-        assertEquals(new BigDecimal("0.00"), balance);
+        assertEquals(new BigDecimal("0"), balance);
     }
 
     @Test
@@ -189,7 +198,7 @@ class AccountBalanceCalculatorTest {
 
         BigDecimal balance = accountBalanceCalculator.calculateBalanceForAccount(account);
 
-        assertEquals(new BigDecimal("0.00"), balance);
+        assertEquals(new BigDecimal("0"), balance);
     }
 
     @Test
@@ -207,7 +216,7 @@ class AccountBalanceCalculatorTest {
 
         BigDecimal balance = accountBalanceCalculator.calculateBalanceForAccount(account);
 
-        assertEquals(new BigDecimal("100.00"), balance);
+        assertEquals(new BigDecimal("100"), balance);
     }
 
     @Test
@@ -223,7 +232,7 @@ class AccountBalanceCalculatorTest {
 
         BigDecimal balance = accountBalanceCalculator.calculateBalanceForAccount(account);
 
-        assertEquals(new BigDecimal("-100.00"), balance);
+        assertEquals(new BigDecimal("-100"), balance);
     }
 
     @Test
@@ -239,7 +248,7 @@ class AccountBalanceCalculatorTest {
 
         BigDecimal balance = accountBalanceCalculator.calculateBalanceForAccount(account);
 
-        assertEquals(new BigDecimal("100.00"), balance);
+        assertEquals(new BigDecimal("100"), balance);
     }
 
     @Test
@@ -275,7 +284,7 @@ class AccountBalanceCalculatorTest {
 
         BigDecimal balance = accountBalanceCalculator.calculateBalanceForAccount(account);
 
-        assertEquals(new BigDecimal("0.00"), balance);
+        assertEquals(new BigDecimal("0"), balance);
     }
 
     @Test
@@ -296,7 +305,7 @@ class AccountBalanceCalculatorTest {
 
         BigDecimal balance = accountBalanceCalculator.calculateBalanceForAccount(account);
 
-        assertEquals(new BigDecimal("300.00"), balance);
+        assertEquals(new BigDecimal("300"), balance);
     }
 
     @Test
@@ -318,6 +327,6 @@ class AccountBalanceCalculatorTest {
 
         BigDecimal balance = accountBalanceCalculator.calculateBalanceForAccount(account);
 
-        assertEquals(new BigDecimal("-300.00"), balance);
+        assertEquals(new BigDecimal("-300"), balance);
     }
 }

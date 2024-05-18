@@ -9,7 +9,6 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
 
 @Getter
 @Setter
@@ -26,10 +25,6 @@ public class Transaction {
     private TransactionType transactionType;
     private TransactionCategory transactionCategory;
     private Boolean paid;
-    private Long fromAccount;
-    private Long toAccount;
-    private Boolean transactionChange;
-    private BigDecimal previousAmount;
     private Account account;
 
     public Transaction(final BigDecimal amount,

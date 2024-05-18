@@ -1,41 +1,27 @@
 package com.freebills.events;
 
-import com.freebills.gateways.entities.enums.TransactionType;
+import com.freebills.domain.Transaction;
 import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
-
-import java.math.BigDecimal;
 
 @Getter
 public abstract class BaseTransactionEvent extends ApplicationEvent {
 
     private final Long accountId;
-    private final BigDecimal transactionAmount;
-    private final BigDecimal oldTransactionAmount;
-    private final BigDecimal newTransactionAmount;
-    private final TransactionType transactionType;
-    private final TransactionType oldTransactionType;
-    private final TransactionType newTransactionType;
+    private final Transaction transaction;
+    private final Transaction oldTransaction;
 
     protected BaseTransactionEvent(Object source,
                                    Long accountId,
-                                   BigDecimal transactionAmount,
-                                   BigDecimal oldTransactionAmount,
-                                   BigDecimal newTransactionAmount,
-                                   TransactionType transactionType,
-                                   TransactionType oldTransactionType,
-                                   TransactionType newTransactionType) {
+                                   Transaction transaction,
+                                   Transaction oldTransaction) {
         super(source);
         this.accountId = accountId;
-        this.transactionAmount = transactionAmount;
-        this.oldTransactionAmount = oldTransactionAmount;
-        this.newTransactionAmount = newTransactionAmount;
-        this.transactionType = transactionType;
-        this.oldTransactionType = oldTransactionType;
-        this.newTransactionType = newTransactionType;
+        this.transaction = transaction;
+        this.oldTransaction = oldTransaction;
     }
 
-    protected BaseTransactionEvent(Object source, Long accountId, BigDecimal transactionAmount, TransactionType transactionType) {
-        this(source, accountId, transactionAmount, null, null, transactionType, null, null);
+    protected BaseTransactionEvent(Object source, Long accountId, Transaction transaction) {
+        this(source, accountId, transaction, null);
     }
 }
