@@ -8,7 +8,7 @@ ENV SCOPE="prod"
 ENV PASSWORD=""
 ENV USER=""
 
-COPY build/libs/fbills.jar /app/fbills.jar
+COPY build/libs/*.jar /app/fbills.jar
 CMD mkdir /app/files
 
 ENTRYPOINT ["java", "-jar", "fbills.jar"]
