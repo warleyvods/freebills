@@ -3,7 +3,6 @@ package com.freebills.usecases;
 import com.freebills.domain.Account;
 import com.freebills.domain.Transaction;
 import com.freebills.events.transaction.TransactionCreatedEvent;
-import com.freebills.gateways.entities.AccountEntity;
 import com.freebills.gateways.AccountGateway;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

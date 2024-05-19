@@ -18,11 +18,11 @@ public record FindTransaction(TransactionGateway transactionGateway, UserGateway
     }
 
     public Page<Transaction> findAllWithFilters(final String login,
-                                                      final Integer month,
-                                                      final Integer year,
-                                                      final Pageable pageable,
-                                                      final String keyword,
-                                                      final TransactionType transactionType) {
+                                                final Integer month,
+                                                final Integer year,
+                                                final Pageable pageable,
+                                                final String keyword,
+                                                final TransactionType transactionType) {
 
         return transactionGateway.findTransactionsWithFilters(login, month, year, pageable, keyword, transactionType);
     }

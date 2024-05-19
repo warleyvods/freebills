@@ -1,4 +1,4 @@
-package com.freebills.strategy;
+package com.freebills.usecases.strategy;
 
 import com.freebills.domain.Event;
 import com.freebills.gateways.entities.enums.EventType;
@@ -13,7 +13,7 @@ import static java.lang.Boolean.TRUE;
 public class TransactionDeletedStrategy implements BalanceUpdateStrategy {
 
     @Override
-    public BigDecimal updateBalance(BigDecimal currentBalance, Event event) {
+    public BigDecimal updateBalance(final BigDecimal currentBalance, final Event event) {
         if (event.getEventType() == EventType.TRANSACTION_DELETED && TRUE.equals(event.getTransactionData().getPaid())) {
             if (event.getTransactionData().getTransactionType() == TransactionType.EXPENSE) {
                 return currentBalance.add(event.getTransactionData().getAmount());

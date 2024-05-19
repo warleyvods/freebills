@@ -1,4 +1,4 @@
-package com.freebills.strategy;
+package com.freebills.usecases.strategy;
 
 import com.freebills.domain.Event;
 import org.springframework.stereotype.Component;

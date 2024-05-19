@@ -31,20 +31,20 @@ public class FindAccount {
         return filterAndCalculateBalance(accountGateway.findByUserLogin(login), true);
     }
 
-    private List<Account> filterAndCalculateBalance(List<Account> accounts, boolean archived) {
+    private List<Account> filterAndCalculateBalance(final List<Account> accounts, final Boolean archived) {
         return accounts.stream()
                 .filter(account -> account.isArchived() == archived)
                 .peek(this::calculateBalanceForSingleAccount)
                 .toList();
     }
 
-    private Account calculateBalanceForSingleAccount(Account account) {
+    private Account calculateBalanceForSingleAccount(final Account account) {
         BigDecimal balance = accountBalanceCalculator.calculateBalanceForAccount(account);
         account.setAmount(balance);
         return account;
     }
 
-    private List<Account> sortAccountsByDescription(List<Account> accounts) {
+    private List<Account> sortAccountsByDescription(final List<Account> accounts) {
         return accounts.stream()
                 .sorted(Comparator.comparing(Account::getDescription))
                 .toList();

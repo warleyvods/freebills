@@ -3,22 +3,13 @@ package com.freebills.strategy;
 import com.freebills.domain.Account;
 import com.freebills.domain.Event;
 import com.freebills.domain.Transaction;
-import com.freebills.gateways.entities.enums.EventType;
 import com.freebills.gateways.entities.enums.TransactionType;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
-import java.math.BigDecimal;
-
-import static com.freebills.gateways.entities.enums.TransactionType.*;
-import static org.junit.jupiter.api.Assertions.*;
-
+import com.freebills.usecases.strategy.TransactionUpdatedStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
+
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

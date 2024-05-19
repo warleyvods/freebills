@@ -4,6 +4,7 @@ import com.freebills.domain.Event;
 import com.freebills.domain.Transaction;
 import com.freebills.gateways.entities.enums.EventType;
 import com.freebills.gateways.entities.enums.TransactionType;
+import com.freebills.usecases.strategy.TransactionCreatedStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
