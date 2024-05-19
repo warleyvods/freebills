@@ -5,6 +5,7 @@ import com.freebills.controllers.dtos.requests.TransactionPostRequestDTO;
 import com.freebills.controllers.dtos.requests.TransactionPutRequestDTO;
 import com.freebills.controllers.dtos.responses.TransactionResponseDTO;
 import com.freebills.controllers.mappers.TransactionMapper;
+import com.freebills.domain.Transaction;
 import com.freebills.gateways.entities.enums.TransactionType;
 import com.freebills.usecases.CreateTransaction;
 import com.freebills.usecases.DeleteTransaction;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
+import java.util.List;
 
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
@@ -67,6 +69,18 @@ public class TransactionController {
     @GetMapping("{id}")
     public TransactionResponseDTO findTransactionById(@PathVariable final Long id) {
         return transactionMapper.fromDomain(findTransaction.findById(id));
+    }
+
+    //TODO temporario
+    @PostMapping("/import")
+    public String importTransaction(@RequestBody List<TransactionPostRequestDTO> transactions) {
+        final List<Transaction> collect = transactions.stream().map(transactionMapper::toDomain).toList();
+
+        for (Transaction transaction : collect) {
+            createTransaction.execute(transaction);
+        }
+
+        return "feito!";
     }
 
     @ResponseStatus(OK)

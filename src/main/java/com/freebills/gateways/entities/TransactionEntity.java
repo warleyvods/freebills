@@ -3,6 +3,7 @@ package com.freebills.gateways.entities;
 
 import com.freebills.gateways.entities.enums.TransactionCategory;
 import com.freebills.gateways.entities.enums.TransactionType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.Enumerated;
@@ -17,17 +18,18 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import static jakarta.persistence.EnumType.STRING;
 
 @Setter
 @Getter
 @Entity
-@NoArgsConstructor
 @Table(name = "transactions")
 @EntityListeners(AuditingEntityListener.class)
 public class TransactionEntity {
@@ -60,5 +62,9 @@ public class TransactionEntity {
 
     @ManyToOne
     private AccountEntity account;
+
+    @CreatedDate
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdAt;
 
 }
