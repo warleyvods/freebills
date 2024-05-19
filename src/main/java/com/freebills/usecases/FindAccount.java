@@ -33,7 +33,7 @@ public class FindAccount {
 
     private List<Account> filterAndCalculateBalance(final List<Account> accounts, final Boolean archived) {
         return accounts.stream()
-                .filter(account -> account.isArchived() == archived)
+                .filter(account -> account.isArchived().equals(archived))
                 .peek(this::calculateBalanceForSingleAccount)
                 .toList();
     }
