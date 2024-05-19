@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 
 import static java.lang.Boolean.TRUE;
 
-@Component
+@Component(value = "TRANSACTION_DELETED")
 public class TransactionDeletedStrategy implements BalanceUpdateStrategy {
 
     @Override

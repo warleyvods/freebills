@@ -9,8 +9,8 @@ import java.math.BigDecimal;
 
 import static java.lang.Boolean.TRUE;
 
-@Component
-public class TransactionCreatedStrategy implements BalanceUpdateStrategy {
+@Component(value = "TRANSACTION_CREATED")
+public class TransactionCreatedStrategy implements BalanceUpdateStrategy  {
 
     @Override
     public BigDecimal updateBalance(BigDecimal currentBalance, Event event) {

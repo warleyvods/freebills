@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 
-@Component
+@Component(value = "TRANSACTION_UPDATED")
 public class TransactionUpdatedStrategy implements BalanceUpdateStrategy {
 
     @Override

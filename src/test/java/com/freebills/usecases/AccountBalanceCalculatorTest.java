@@ -1,14 +1,11 @@
 package com.freebills.usecases;
 
-import java.time.LocalDate;
-
-import com.freebills.gateways.entities.enums.TransactionCategory;
-
 import com.freebills.domain.Account;
 import com.freebills.domain.Event;
 import com.freebills.domain.Transaction;
 import com.freebills.gateways.EventGateway;
 import com.freebills.gateways.entities.enums.EventType;
+import com.freebills.gateways.entities.enums.TransactionCategory;
 import com.freebills.gateways.entities.enums.TransactionType;
 import com.freebills.repositories.EventRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -77,24 +75,6 @@ class AccountBalanceCalculatorTest {
         return List.of(event1, event2, event3);
     }
 
-    private List<Event> mockedEvents2() {
-        Event event1 = new Event();
-        event1.setAggregateId(1L);
-        event1.setEventType(EventType.TRANSACTION_CREATED);
-        event1.setTransactionData(createTransaction(BigDecimal.valueOf(100), TransactionType.REVENUE));
-
-        Event event2 = new Event();
-        event2.setAggregateId(1L);
-        event2.setEventType(EventType.TRANSACTION_DELETED);
-        event2.setTransactionData(createTransaction(BigDecimal.valueOf(100), TransactionType.REVENUE));
-
-        Event event3 = new Event();
-        event3.setAggregateId(1L);
-        event3.setEventType(EventType.TRANSACTION_CREATED);
-        event3.setTransactionData(createTransaction(BigDecimal.valueOf(100), TransactionType.REVENUE));
-
-        return List.of(event1, event2, event3);
-    }
 
     private Event createEvent(Long aggregateId, EventType eventType, BigDecimal value, TransactionType transactionType) {
         Event event = new Event();
@@ -105,9 +85,9 @@ class AccountBalanceCalculatorTest {
         return event;
     }
 
-    private Event updateEvent(Long aggregateId, BigDecimal oldAmount, BigDecimal newAmount, TransactionType oldTransactionType, TransactionType newTransactionType) {
+    private Event updateEvent(BigDecimal oldAmount, BigDecimal newAmount, TransactionType oldTransactionType, TransactionType newTransactionType) {
         Event event = new Event();
-        event.setAggregateId(aggregateId);
+        event.setAggregateId(1L);
         event.setEventType(EventType.TRANSACTION_UPDATED);
 
         event.setOldTransactionData(createTransaction(oldAmount, oldTransactionType));
@@ -322,9 +302,9 @@ class AccountBalanceCalculatorTest {
                 createEvent(1L, EventType.TRANSACTION_CREATED, BigDecimal.valueOf(100), TransactionType.REVENUE),
                 createEvent(1L, EventType.TRANSACTION_CREATED, BigDecimal.valueOf(100), TransactionType.REVENUE),
 
-                updateEvent(1L, BigDecimal.valueOf(100), BigDecimal.valueOf(100), TransactionType.REVENUE, TransactionType.EXPENSE),
-                updateEvent(1L, BigDecimal.valueOf(100), BigDecimal.valueOf(100), TransactionType.REVENUE, TransactionType.EXPENSE),
-                updateEvent(1L, BigDecimal.valueOf(100), BigDecimal.valueOf(100), TransactionType.REVENUE, TransactionType.EXPENSE)
+                updateEvent(BigDecimal.valueOf(100), BigDecimal.valueOf(100), TransactionType.REVENUE, TransactionType.EXPENSE),
+                updateEvent(BigDecimal.valueOf(100), BigDecimal.valueOf(100), TransactionType.REVENUE, TransactionType.EXPENSE),
+                updateEvent(BigDecimal.valueOf(100), BigDecimal.valueOf(100), TransactionType.REVENUE, TransactionType.EXPENSE)
         );
 
         events.forEach(e -> eventGateway.save(e));
