@@ -25,6 +25,13 @@ jobs:
       - name: Create JaCoCo Report
         run: ./gradlew jacocotestReport
 
+      - name: Test build docker
+        id: docker_build
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: false
+
       - name: SonarQube Scan
         uses: sonarsource/sonarqube-scan-action@v2.0.1
         env:
