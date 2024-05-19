@@ -28,6 +28,7 @@ public class Dashboard {
 
     private final AccountGateway accountGateway;
     private final TransactionGateway transactionGateway;
+    private final AccountBalanceCalculator accountBalanceCalculator;
 
     public DashboardGraphResponseDTO getDonutsGraph(String login, Integer month, Integer year, TransactionType transactionType) {
         var transactions = getTransactionsByUserDateFilter(login, month, year)
@@ -85,7 +86,7 @@ public class Dashboard {
         return accountGateway.findByUserLogin(login)
                 .stream()
                 .filter(Account::getDashboard)
-                .map(Account::getAmount)
+                .map(this::calculateBalanceForSingleAccount)
                 .reduce(BigDecimal::add)
                 .orElse(BigDecimal.ZERO);
     }
@@ -105,5 +106,9 @@ public class Dashboard {
         return transactionEntities.stream()
                 .filter(transaction -> transaction.getTransactionType() == type)
                 .collect(groupingBy(Transaction::getPaid, reducing(BigDecimal.ZERO, Transaction::getAmount, BigDecimal::add)));
+    }
+
+    private BigDecimal calculateBalanceForSingleAccount(Account account) {
+        return accountBalanceCalculator.calculateBalanceForAccount(account);
     }
 }

@@ -1,6 +1,5 @@
 package com.freebills.domain;
 
-import com.freebills.gateways.entities.TransactionLog;
 import com.freebills.gateways.entities.enums.TransactionCategory;
 import com.freebills.gateways.entities.enums.TransactionType;
 import lombok.EqualsAndHashCode;
@@ -10,7 +9,6 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
 
 @Getter
 @Setter
@@ -27,12 +25,11 @@ public class Transaction {
     private TransactionType transactionType;
     private TransactionCategory transactionCategory;
     private Boolean paid;
-    private Long fromAccount;
-    private Long toAccount;
-    private Boolean transactionChange;
-    private BigDecimal previousAmount;
-    private List<TransactionLog> transactionLogs;
     private Account account;
+
+    public Transaction(BigDecimal amount) {
+        this.amount = amount;
+    }
 
     public Transaction(final BigDecimal amount,
                        final LocalDate date,

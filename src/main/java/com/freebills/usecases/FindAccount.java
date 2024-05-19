@@ -3,27 +3,50 @@ package com.freebills.usecases;
 
 import com.freebills.domain.Account;
 import com.freebills.gateways.AccountGateway;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.List;
 
 @Component
-public record FindAccount(AccountGateway accountGateway) {
+@RequiredArgsConstructor
+public class FindAccount {
+
+    private final AccountGateway accountGateway;
+    private final AccountBalanceCalculator accountBalanceCalculator;
 
     public Account byId(final Long id) {
-        return accountGateway.findById(id);
+        Account account = accountGateway.findById(id);
+        return calculateBalanceForSingleAccount(account);
     }
 
     public List<Account> findByAccountsNonArchived(final String login) {
-        return accountGateway.findByUserLogin(login)
-                .stream()
-                .filter(acc -> !acc.isArchived())
-                .sorted(Comparator.comparing(Account::getDescription))
-                .toList();
+        List<Account> nonArchivedAccounts = filterAndCalculateBalance(accountGateway.findByUserLogin(login), false);
+        return sortAccountsByDescription(nonArchivedAccounts);
     }
 
     public List<Account> findByAccountsArchived(final String login) {
-        return accountGateway.findByUserLogin(login).stream().filter(Account::isArchived).toList();
+        return filterAndCalculateBalance(accountGateway.findByUserLogin(login), true);
+    }
+
+    private List<Account> filterAndCalculateBalance(final List<Account> accounts, final Boolean archived) {
+        return accounts.stream()
+                .filter(account -> account.isArchived().equals(archived))
+                .peek(this::calculateBalanceForSingleAccount)
+                .toList();
+    }
+
+    private Account calculateBalanceForSingleAccount(final Account account) {
+        BigDecimal balance = accountBalanceCalculator.calculateBalanceForAccount(account);
+        account.setAmount(balance);
+        return account;
+    }
+
+    private List<Account> sortAccountsByDescription(final List<Account> accounts) {
+        return accounts.stream()
+                .sorted(Comparator.comparing(Account::getDescription))
+                .toList();
     }
 }

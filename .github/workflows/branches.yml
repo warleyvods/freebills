@@ -9,10 +9,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Set up JDK 17
+      - name: Set up JDK 21
         uses: actions/setup-java@v2
         with:
-          java-version: 17
+          java-version: 21
           distribution: 'adopt'
           cache: gradle
 
@@ -24,6 +24,13 @@ jobs:
 
       - name: Create JaCoCo Report
         run: ./gradlew jacocotestReport
+
+      - name: Test build docker
+        id: docker_build
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: false
 
       - name: SonarQube Scan
         uses: sonarsource/sonarqube-scan-action@v2.0.1

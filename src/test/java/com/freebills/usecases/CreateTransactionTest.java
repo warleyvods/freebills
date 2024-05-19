@@ -45,7 +45,6 @@ class CreateTransactionTest {
         UserEntity userEntity = userRepository.findById(1L).orElse(null);
 
         final var acc01 = new AccountEntity();
-        acc01.setAmount(new BigDecimal("0"));
         acc01.setDescription("Conta Inter");
         acc01.setAccountType(AccountType.CHECKING_ACCOUNT);
         acc01.setBankType(BankType.INTER);

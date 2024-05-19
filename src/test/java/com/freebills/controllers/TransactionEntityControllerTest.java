@@ -4,17 +4,22 @@ import com.freebills.controllers.dtos.requests.LoginRequestDTO;
 import com.freebills.controllers.dtos.requests.TransactionPostRequestDTO;
 import com.freebills.controllers.dtos.requests.TransactionPutRequestDTO;
 import com.freebills.controllers.dtos.responses.TransactionResponseDTO;
-import com.freebills.gateways.AccountGateway;
+import com.freebills.domain.Event;
+import com.freebills.domain.Transaction;
+import com.freebills.gateways.EventGateway;
 import com.freebills.gateways.entities.AccountEntity;
 import com.freebills.gateways.entities.TransactionEntity;
 import com.freebills.gateways.entities.UserEntity;
 import com.freebills.gateways.entities.enums.AccountType;
 import com.freebills.gateways.entities.enums.BankType;
+import com.freebills.gateways.entities.enums.EventType;
 import com.freebills.gateways.entities.enums.TransactionCategory;
 import com.freebills.gateways.entities.enums.TransactionType;
 import com.freebills.repositories.AccountsRepository;
+import com.freebills.repositories.EventRepository;
 import com.freebills.repositories.TransactionRepository;
 import com.freebills.repositories.UserRepository;
+import com.freebills.usecases.FindAccount;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -44,7 +49,7 @@ class TransactionEntityControllerTest {
     private TestRestTemplate testRestTemplate;
 
     @Autowired
-    private AccountGateway accountGateway;
+    private FindAccount accountGateway;
 
     @Autowired
     private AccountsRepository accountsRepository;
@@ -53,17 +58,24 @@ class TransactionEntityControllerTest {
     private UserRepository userRepository;
 
     @Autowired
+    private EventRepository eventRepository;
+
+    @Autowired
     private TransactionRepository transactionRepository;
 
+    @Autowired
+    private EventGateway eventGateway;
+
     private static AccountEntity accountEntity;
+
     private static String token;
 
     @BeforeEach
     void beforeSetup() {
         UserEntity userEntity = userRepository.findById(1L).orElse(null);
 
+
         final var acc01 = new AccountEntity();
-        acc01.setAmount(new BigDecimal("0"));
         acc01.setDescription("Conta Inter");
         acc01.setAccountType(AccountType.CHECKING_ACCOUNT);
         acc01.setBankType(BankType.INTER);
@@ -72,6 +84,13 @@ class TransactionEntityControllerTest {
         acc01.setDashboard(false);
 
         accountEntity = accountsRepository.save(acc01);
+
+        final Event event = new Event();
+        event.setEventType(EventType.TRANSACTION_CREATED);
+        event.setAggregateId(accountEntity.getId());
+        event.setTransactionData(new Transaction(BigDecimal.valueOf(0)));
+
+        eventGateway.save(event);
 
         final var request = new HttpEntity<>(new LoginRequestDTO("admin", "baguvix"));
         ResponseEntity<Object> objectResponseEntity = testRestTemplate.postForEntity("/v1/auth/login", request, Object.class);
@@ -82,6 +101,7 @@ class TransactionEntityControllerTest {
     void afterSetup() {
         transactionRepository.deleteAll();
         accountsRepository.deleteAll();
+        eventRepository.deleteAll();
     }
 
     private List<TransactionEntity> transactionMockList() {
@@ -155,7 +175,7 @@ class TransactionEntityControllerTest {
                 request,
                 TransactionResponseDTO.class);
 
-        final var acc = accountGateway.findById(accountEntity.getId());
+        final var acc = accountGateway.byId(accountEntity.getId());
 
         //Account
         assertEquals(0, new BigDecimal(100).compareTo(acc.getAmount()));
@@ -187,7 +207,7 @@ class TransactionEntityControllerTest {
                 request,
                 TransactionResponseDTO.class);
 
-        final var acc = accountGateway.findById(accountEntity.getId());
+        final var acc = accountGateway.byId(accountEntity.getId());
 
         //Account
         assertEquals(0, new BigDecimal(0).compareTo(acc.getAmount()));
@@ -219,7 +239,7 @@ class TransactionEntityControllerTest {
                 request,
                 TransactionResponseDTO.class);
 
-        final var acc = accountGateway.findById(accountEntity.getId());
+        final var acc = accountGateway.byId(accountEntity.getId());
 
         //Account
         assertEquals(0, new BigDecimal(-100).compareTo(acc.getAmount()));
@@ -292,7 +312,7 @@ class TransactionEntityControllerTest {
                 request,
                 TransactionResponseDTO.class);
 
-        final var acc = accountGateway.findById(accountEntity.getId());
+        final var acc = accountGateway.byId(accountEntity.getId());
 
         //Account paid true
         assertEquals(0, new BigDecimal(100).compareTo(acc.getAmount()));
@@ -318,7 +338,7 @@ class TransactionEntityControllerTest {
                 TransactionResponseDTO.class
         );
 
-        final var acc02 = accountGateway.findById(accountEntity.getId());
+        final var acc02 = accountGateway.byId(accountEntity.getId());
 
         //Account paid false
         assertEquals(0, new BigDecimal(0).compareTo(acc02.getAmount()));

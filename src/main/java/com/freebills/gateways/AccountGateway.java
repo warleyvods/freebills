@@ -2,7 +2,6 @@ package com.freebills.gateways;
 
 import com.freebills.domain.Account;
 import com.freebills.exceptions.AccountNotFoundException;
-import com.freebills.gateways.entities.AccountEntity;
 import com.freebills.gateways.mapper.AccountGatewayMapper;
 import com.freebills.repositories.AccountsRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +25,7 @@ public class AccountGateway {
     }
 
     public Account findById(final Long id) {
-        return accountGatewayMapper.toDomain(accountsRepository.findById(id).orElseThrow(() -> new AccountNotFoundException("Account not found!")));
+        return accountGatewayMapper.toDomain(accountsRepository.findById(id).orElseThrow(() -> new AccountNotFoundException("Account not found!: " + id)));
     }
 
     public Account update(final Account account) {

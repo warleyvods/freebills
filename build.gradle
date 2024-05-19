@@ -8,7 +8,6 @@ plugins {
 }
 
 group = 'com.freebills'
-version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '21'
 
 configurations {
@@ -17,9 +16,9 @@ configurations {
     }
 }
 
-bootJar {
-    archiveName 'fbills.jar'
-}
+//bootJar {
+//    archiveName 'fbills.jar'
+//}
 
 repositories {
     mavenLocal()
@@ -40,6 +39,8 @@ dependencies {
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
     implementation 'org.mapstruct:mapstruct:1.5.5.Final'
     implementation 'io.jsonwebtoken:jjwt:0.12.5'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.2'
+
     implementation 'com.mailjet:mailjet-client:4.2.0'
 
     compileOnly 'org.projectlombok:lombok'
@@ -67,13 +68,13 @@ tasks.named('test') {
 }
 
 jacoco {
-    toolVersion = "0.8.7"
+    toolVersion = "0.8.12"
 }
 
 jacocoTestReport {
     reports {
-        xml.enabled true
-        html.enabled true
+        xml.required.set(true)
+        html.required.set(true)
 
         xml.destination file("${buildDir}/reports/jacoco.xml")
         html.destination file("${buildDir}/reports/coverage")

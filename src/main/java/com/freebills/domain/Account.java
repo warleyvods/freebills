@@ -1,5 +1,6 @@
 package com.freebills.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.freebills.gateways.entities.enums.AccountType;
 import com.freebills.gateways.entities.enums.BankType;
 import lombok.EqualsAndHashCode;
@@ -20,6 +21,8 @@ public class Account {
     private BankType bankType;
     private Boolean archived;
     private Boolean dashboard;
+
+    @JsonIgnore
     private User user;
 
     public Boolean isArchived() {

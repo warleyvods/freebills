@@ -13,11 +13,11 @@ public class VerifyPrincipal {
 
     private final FindUser findUser;
 
-    public Boolean execute(final Long id, final Principal principal) {
+    public void execute(final Long id, final Principal principal) {
         final User user = findUser.byLogin(principal.getName());
 
         if (user.getId().equals(id)) {
-            return true;
+            return;
         }
 
         throw new PermissionDeniedException("You cannot a user from this account!");

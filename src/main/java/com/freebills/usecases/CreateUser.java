@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 public record CreateUser(UserGateway userGateway) {
 
     public User create(final User user) {
-        log.info("[createUser: {}] Creating new user", user.getLogin());
+        log.info("[create-user: {}] creating new user", user.getLogin());
         return userGateway.save(user);
     }
 }

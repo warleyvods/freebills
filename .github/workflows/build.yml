@@ -32,10 +32,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Set up JDK 17
+      - name: Set up JDK 21
         uses: actions/setup-java@v2
         with:
-          java-version: 17
+          java-version: 21
           distribution: 'adopt'
           cache: gradle
 
@@ -69,17 +69,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Set up JDK 17
+      - name: Set up JDK 21
         uses: actions/setup-java@v2
         with:
-          java-version: 17
+          java-version: 21
           distribution: 'adopt'
           cache: gradle
 
       - name: Build to docker
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: assemble
+          arguments: bootJar
           gradle-home-cache-cleanup: true
 
       - name: Bump version and push tag
@@ -107,14 +107,12 @@ jobs:
           username: ${{secrets.DOCKER_USER}}
           password: ${{secrets.DOCKER_PASSWORD}}
 
-      - name: Build and push
+      - name: Test build docker
         id: docker_build
         uses: docker/build-push-action@v4
         with:
           context: .
-          push: true
-          tags: warleyvods/freebills-api:${{ steps.tagging.outputs.new_version }}
-          platforms: linux/amd64,linux/arm64
+          push: false
 
       - name: Deploy Kubernetes
         uses: steebchen/kubectl@v2.1.1

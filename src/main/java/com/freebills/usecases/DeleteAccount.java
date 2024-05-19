@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 public record DeleteAccount(AccountGateway accountGateway) {
 
     public void deleteAccount(final Long accId) {
-        log.info("[deleteAccount:{}] Deleting a account", accId);
+        log.info("[delete-account:{}] Deleting a account", accId);
         accountGateway.deleteById(accId);
     }
 }

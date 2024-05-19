@@ -29,20 +29,4 @@ public interface TransactionMapper {
     @BeanMapping(nullValuePropertyMappingStrategy = IGNORE)
     Transaction updateTransaction(TransactionPutRequestDTO transactionPutRequestDTO, @MappingTarget Transaction transaction);
 
-    default Transaction updateTransactionFromDto(TransactionPutRequestDTO transactionPutRequestDTO, Transaction transaction) {
-        if (transaction.getAccount() != null && !transaction.getAccount().getId().equals(transactionPutRequestDTO.accountId())) {
-            transaction.setFromAccount(transaction.getAccount().getId());
-            transaction.setToAccount(transactionPutRequestDTO.accountId());
-            transaction.setTransactionChange(true);
-
-            return updateTransaction(transactionPutRequestDTO, transaction);
-        }
-
-        if (transaction.getAmount().compareTo(BigDecimal.valueOf(transactionPutRequestDTO.amount())) != 0 || transaction.getPreviousAmount() == null) {
-            transaction.setPreviousAmount(transaction.getAmount());
-        }
-
-        transaction.setTransactionChange(false);
-        return updateTransaction(transactionPutRequestDTO, transaction);
-    }
 }

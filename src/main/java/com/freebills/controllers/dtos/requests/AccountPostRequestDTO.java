@@ -10,7 +10,7 @@ public record AccountPostRequestDTO(
         Long userId,
 
         @Schema(description = "Amount ")
-        @NotNull
+//        @NotNull
         Double amount,
 
         @Schema(description = "Description of the account")
@@ -23,6 +23,8 @@ public record AccountPostRequestDTO(
 
         @Schema(description = "Where all the information about the account is displayed")
         boolean dashboard,
+
+        boolean archived,
 
         @Schema(description = "Type of the bank")
         @NotBlank

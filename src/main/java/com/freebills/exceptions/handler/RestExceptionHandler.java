@@ -1,5 +1,6 @@
 package com.freebills.exceptions.handler;
 
+import com.freebills.exceptions.AccountNotFoundException;
 import com.freebills.exceptions.PermissionDeniedException;
 import com.freebills.exceptions.TransactionNotFoundException;
 import com.freebills.exceptions.UserNotFoundException;
@@ -51,6 +52,18 @@ public class RestExceptionHandler {
                 .devMsg(ex.getClass().getName())
                 .status(NOT_FOUND.value())
                 .title("User not found!")
+                .build();
+    }
+
+    @ResponseStatus(NOT_FOUND)
+    @ExceptionHandler(AccountNotFoundException.class)
+    public ExceptionFilters handleAccountNotFound(final AccountNotFoundException ex) {
+        return ExceptionFilters.builder()
+                .timestamp(LocalDateTime.now())
+                .details(ex.getMessage())
+                .devMsg(ex.getClass().getName())
+                .status(NOT_FOUND.value())
+                .title("account not found!")
                 .build();
     }
 

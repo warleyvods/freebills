@@ -18,7 +18,7 @@ public record TransactionPostRequestDTO(
         @NotBlank
         String description,
 
-        @JsonFormat(pattern="dd-MM-yyyy")
+//        @JsonFormat(pattern="dd-MM-yyyy")
         @NotNull
         LocalDate date,
 
