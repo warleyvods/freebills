@@ -1,4 +1,4 @@
-package com.freebills.events.listener;
+package com.freebills.events;
 
 import com.freebills.domain.Event;
 import com.freebills.events.account.AccountCreatedEvent;

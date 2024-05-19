@@ -1,7 +1,7 @@
 package com.freebills.events.account;
 
 import com.freebills.domain.Transaction;
-import com.freebills.events.BaseTransactionEvent;
+import com.freebills.events.transaction.BaseTransactionEvent;
 import lombok.Getter;
 
 @Getter

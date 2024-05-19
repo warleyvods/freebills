@@ -1,4 +1,4 @@
-package com.freebills.events;
+package com.freebills.events.transaction;
 
 import com.freebills.domain.Transaction;
 import lombok.Getter;
