@@ -42,6 +42,9 @@ class AccountBalanceCalculatorTest {
     }
 
     private Transaction createTransaction(BigDecimal value, TransactionType transactionType) {
+        Account account = new Account();
+        account.setId(1L);
+
         Transaction transaction = new Transaction();
         transaction.setAmount(value);
         transaction.setDate(LocalDate.now());
@@ -50,6 +53,7 @@ class AccountBalanceCalculatorTest {
         transaction.setTransactionType(transactionType);
         transaction.setTransactionCategory(TransactionCategory.HOUSE);
         transaction.setPaid(true);
+        transaction.setAccount(account);
 
         return transaction;
     }

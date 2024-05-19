@@ -1,6 +1,7 @@
 package com.freebills.events.listener;
 
 import com.freebills.domain.Event;
+import com.freebills.events.account.AccountCreatedEvent;
 import com.freebills.events.transaction.TransactionCreatedEvent;
 import com.freebills.events.transaction.TransactionDeletedEvent;
 import com.freebills.events.transaction.TransactionUpdatedEvent;
@@ -56,6 +57,21 @@ public class TransactionEventListener {
             Event newEvent = new Event();
             newEvent.setAggregateId(event.getAccountId());
             newEvent.setEventType(EventType.TRANSACTION_DELETED);
+            newEvent.setTransactionData(event.getTransaction());
+            eventGateway.save(newEvent);
+        } catch (Exception e) {
+            log.error("Error handling TransactionDeletedEvent", e);
+            throw e;
+        }
+    }
+
+    @EventListener
+    public void handleAccountCreatedEvent(AccountCreatedEvent event) {
+        log.info("Handling AccountCreatedEvent for account id: {}", event.getAccountId());
+        try {
+            Event newEvent = new Event();
+            newEvent.setAggregateId(event.getAccountId());
+            newEvent.setEventType(EventType.TRANSACTION_CREATED);
             newEvent.setTransactionData(event.getTransaction());
             eventGateway.save(newEvent);
         } catch (Exception e) {

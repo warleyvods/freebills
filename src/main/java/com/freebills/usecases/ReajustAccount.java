@@ -23,6 +23,7 @@ public final class ReajustAccount {
     private final UpdateAccount updateAccount;
     private final CreateTransaction createTransaction;
 
+    //TODO arrumar reajuste
     public void reajust(final Long id, final BigDecimal value, final String type) {
         final var accountEntity = findAccount.byId(id);
 

@@ -27,6 +27,10 @@ public class Transaction {
     private Boolean paid;
     private Account account;
 
+    public Transaction(BigDecimal amount) {
+        this.amount = amount;
+    }
+
     public Transaction(final BigDecimal amount,
                        final LocalDate date,
                        final String description,
