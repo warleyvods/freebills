@@ -21,5 +21,4 @@ public record SignupUserRequestDTO(
         String email
 ) {
 
-
 }

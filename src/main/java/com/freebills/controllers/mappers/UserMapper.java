@@ -18,6 +18,8 @@ public interface UserMapper {
     User toDomain(UserPostRequestDTO userPostRequestDTO);
 
     @Mapping(source = "password", target = "password", qualifiedBy = EncodedMapping.class)
+    @Mapping(target = "admin", expression = "java(false)")
+    @Mapping(target = "active", expression = "java(true)")
     User toDomainUser(SignupUserRequestDTO signupUserRequestDTO);
 
     UserResponseDTO fromDomain(User user);
