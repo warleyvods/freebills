@@ -1,6 +1,5 @@
 package com.freebills.controllers.dtos.requests;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -18,7 +17,8 @@ public record TransactionPostRequestDTO(
         @NotBlank
         String description,
 
-//        @JsonFormat(pattern="dd-MM-yyyy")
+        //TODO - fix
+        //@JsonFormat(pattern="dd-MM-yyyy")
         @NotNull
         LocalDate date,
 

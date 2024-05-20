@@ -107,12 +107,14 @@ jobs:
           username: ${{secrets.DOCKER_USER}}
           password: ${{secrets.DOCKER_PASSWORD}}
 
-      - name: Test build docker
+      - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v4
         with:
           context: .
-          push: false
+          push: true
+          tags: warleyvods/freebills-api:${{ steps.tagging.outputs.new_version }}
+          platforms: linux/amd64,linux/arm64
 
       - name: Deploy Kubernetes
         uses: steebchen/kubectl@v2.1.1
