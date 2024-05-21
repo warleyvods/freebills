@@ -30,20 +30,4 @@ public class Transaction {
     public Transaction(BigDecimal amount) {
         this.amount = amount;
     }
-
-    public Transaction(final BigDecimal amount,
-                       final LocalDate date,
-                       final String description,
-                       final TransactionType transactionType,
-                       final TransactionCategory transactionCategory,
-                       final Boolean paid,
-                       final Account account) {
-        this.amount = amount;
-        this.date = date;
-        this.description = description;
-        this.transactionType = transactionType;
-        this.transactionCategory = transactionCategory;
-        this.paid = paid;
-        this.account = account;
-    }
 }

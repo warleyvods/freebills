@@ -101,6 +101,6 @@ public class AccountController {
     @ResponseStatus(OK)
     @PatchMapping("/readjustment")
     public void reajustAmount(@RequestBody @Valid final AccountReajustDTO accountReajustDTO) {
-        reajustAccount.reajust(accountReajustDTO.accountId(), accountReajustDTO.amount(), accountReajustDTO.type());
+        reajustAccount.execute(accountReajustDTO.accountId(), accountReajustDTO.amount(), accountReajustDTO.type());
     }
 }

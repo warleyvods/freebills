@@ -89,6 +89,7 @@ public class TokenUtils {
                 .subject(user.getUsername())
                 .claim("name", user.getUsername())
                 .claim("email", user.getEmail())
+                .claim("roles", user.getAuthorities())
                 .issuedAt(new Date())
                 .expiration(new Date(new Date().getTime() + jwtExpirationMs))
                 .signWith(getSigningKey(jwtSecret))

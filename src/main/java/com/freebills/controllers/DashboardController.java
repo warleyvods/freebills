@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.time.LocalDate;
 
+import static org.springframework.http.HttpStatus.*;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/v1/dashboard")
@@ -21,7 +23,7 @@ public class DashboardController {
 
     private final Dashboard dashboard;
 
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(OK)
     @GetMapping("/expense-graph")
     public DashboardGraphResponseDTO getDashboardExpenseGraph(
             @RequestParam(required = false) final Integer month,
@@ -36,7 +38,7 @@ public class DashboardController {
                 TransactionType.EXPENSE);
     }
 
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(OK)
     @GetMapping("/revenue-graph")
     public DashboardGraphResponseDTO getDashboardRevenueGraph(
             @RequestParam(required = false) final Integer month,
@@ -51,7 +53,7 @@ public class DashboardController {
                 TransactionType.REVENUE);
     }
 
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(OK)
     @GetMapping("/total")
     public DashboardResponseDTO getTotalDashboard(
             @RequestParam(required = false) final Integer month,
@@ -66,7 +68,7 @@ public class DashboardController {
         );
     }
 
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(OK)
     @GetMapping("/revenue")
     public DashboardRevenueResponseDTO getTotalRevenueDashboard(
             @RequestParam(required = false) final Integer month,
@@ -81,7 +83,7 @@ public class DashboardController {
         );
     }
 
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(OK)
     @GetMapping("/expense")
     public DashboardExpenseResponseDTO getTotalExpenseDashboard(
             @RequestParam(required = false) final Integer month,

@@ -1,16 +1,12 @@
 package com.freebills.usecases;
 
-import com.freebills.domain.Transaction;
+import com.freebills.events.transaction.TransactionCreatedEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
-
-import static com.freebills.gateways.entities.enums.TransactionCategory.REAJUST;
-import static com.freebills.gateways.entities.enums.TransactionType.EXPENSE;
-import static com.freebills.gateways.entities.enums.TransactionType.REVENUE;
 
 @Slf4j
 @Component
@@ -22,10 +18,14 @@ public final class ReajustAccount {
     private final FindAccount findAccount;
     private final UpdateAccount updateAccount;
     private final CreateTransaction createTransaction;
+    private final ApplicationEventPublisher eventPublisher;
 
-    //TODO arrumar reajuste
-    public void reajust(final Long id, final BigDecimal value, final String type) {
-        final var accountEntity = findAccount.byId(id);
+    public void execute(final Long id, final BigDecimal value, final String type) {
+        final var account = findAccount.byId(id);
+
+//        eventPublisher.publishEvent(new TransactionCreatedEvent(this, savedTransaction.getAccount().getId(), savedTransaction));
+    }
+}
 
 //        if (type.equals("true")) {
 //            if (value.equals(BigDecimal.ZERO)) {
@@ -53,5 +53,3 @@ public final class ReajustAccount {
 //            accountEntity.setAmount(value);
 //            updateAccount.update(accountEntity);
 //        }
-    }
-}

@@ -22,7 +22,7 @@ public class AccountBalanceCalculator {
         var events = eventGateway.getEventsByAggregateId(account.getId());
 
         var balance = ZERO;
-        for (Event event : events) {
+        for (final Event event : events) {
             BalanceUpdateStrategy strategy = strategyFactory.getStrategy(event.getEventType());
             balance = strategy.updateBalance(balance, event);
         }
