@@ -70,12 +70,17 @@ public class TokenUtils {
     }
 
     public ResponseCookie cleanToken() {
-        return ResponseCookie.from(COOKIE, "")
+        var builder = ResponseCookie.from(COOKIE, "")
                 .path("/")
                 .maxAge(0)
                 .secure(true)
-                .httpOnly(true)
-                .build();
+                .httpOnly(true);
+
+        if (List.of(environment.getActiveProfiles()).contains("prod")) {
+            builder.domain(".wavods.com");
+        }
+
+        return builder.build();
     }
 
     public String generateTokenFromUser(UserDetailsImpl user) {

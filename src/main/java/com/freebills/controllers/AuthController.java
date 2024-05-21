@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static java.lang.Boolean.TRUE;
 import static org.springframework.http.HttpHeaders.SET_COOKIE;
+import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.ResponseEntity.badRequest;
 import static org.springframework.http.ResponseEntity.ok;
 
@@ -41,7 +42,7 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<?> logoutUser() {
+    public ResponseEntity<MessageResponse> logoutUser() {
         ResponseCookie cookie = loginService.logout();
         return ok().header(SET_COOKIE, cookie.toString()).body(new MessageResponse("You've been signed out!"));
     }
@@ -56,7 +57,7 @@ public class AuthController {
             return badRequest().body(new MessageResponse("Error: Email is already in use!"));
         }
 
-        final var userEntity = userMapper.toDomainUser(signUpRequestDTO);
-        return ok(createUser.create(userEntity));
+        createUser.create(userMapper.toDomainUser(signUpRequestDTO));
+        return ResponseEntity.status(CREATED).build();
     }
 }
