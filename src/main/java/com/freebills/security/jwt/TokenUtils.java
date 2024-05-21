@@ -56,7 +56,7 @@ public class TokenUtils {
 
     public ResponseCookie generateToken(UserDetailsImpl user) {
         String jwt = generateTokenFromUser(user);
-        ResponseCookie.ResponseCookieBuilder builder = ResponseCookie.from(COOKIE, jwt)
+        var builder = ResponseCookie.from(COOKIE, jwt)
                 .path("/")
                 .maxAge(216_000)
                 .secure(true)

@@ -14,7 +14,7 @@ public class VerifyPrincipal {
     private final FindUser findUser;
 
     public void execute(final Long id, final Principal principal) {
-        final User user = findUser.byLogin(principal.getName());
+        final User user = findUser.byLoginOrEmail(principal.getName());
 
         if (user.getId().equals(id)) {
             return;

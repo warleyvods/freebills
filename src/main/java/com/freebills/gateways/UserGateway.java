@@ -34,8 +34,8 @@ public record UserGateway(UserRepository userRepository, UserGatewayMapper userG
         return userGatewayMapper.toDomain(userRepository.findByLoginIgnoreCase(login).orElseThrow(UserNotFoundException::new));
     }
 
-    public Optional<User> findByEmail(final String email) {
-        return userRepository.findByEmail(email).map(userGatewayMapper::toDomain);
+    public User findByEmail(final String email) {
+        return userGatewayMapper.toDomain(userRepository.findByEmail(email));
     }
 
     public User update(final User user) {

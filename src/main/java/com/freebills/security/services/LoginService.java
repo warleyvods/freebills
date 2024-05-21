@@ -38,7 +38,7 @@ public class LoginService {
 
     private void addLastAccess(final UserDetailsImpl authentication) {
         final String username = authentication.getUsername();
-        final var user = findUser.byLogin(username);
+        final var user = findUser.byLoginOrEmail(username);
         user.setLastAccess();
         updateUser.update(user);
     }

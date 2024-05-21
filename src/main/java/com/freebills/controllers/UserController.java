@@ -68,7 +68,7 @@ public class UserController {
     @PutMapping
     @PreAuthorize("hasRole('USER')")
     public UserResponseDTO update(@RequestBody @Valid final UserPutRequestDTO userPutRequestDTO, Principal principal) {
-        final var userFinded = findUser.byLogin(principal.getName());
+        final var userFinded = findUser.byLoginOrEmail(principal.getName());
         final var toJson = updateUser.update(userMapper.updateUserFromDTO(userPutRequestDTO, userFinded));
         return userMapper.fromDomain(toJson);
     }
@@ -85,7 +85,7 @@ public class UserController {
     @PatchMapping("/change-password")
     @PreAuthorize("hasRole('USER')")
     public void updatePassword(@RequestBody @Valid final UserPutPasswordRequestDTO userPassword, Principal principal) {
-        final var userFinded = findUser.byLogin(principal.getName());
+        final var userFinded = findUser.byLoginOrEmail(principal.getName());
         updateUser.updateUserPassword(userMapper.updatePasswordFromDTO(userPassword, userFinded), userFinded);
     }
 
@@ -101,7 +101,7 @@ public class UserController {
     @GetMapping("login/{login}")
     @PreAuthorize("hasRole('ADMIN')")
     public UserResponseDTO findByLogin(@PathVariable final String login) {
-        final var user = findUser.byLogin(login);
+        final var user = findUser.byLoginOrEmail(login);
         return userMapper.fromDomain(user);
     }
 

@@ -2,6 +2,7 @@ package com.freebills.security.services;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.freebills.domain.User;
 import com.freebills.gateways.entities.UserEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,8 +24,8 @@ public record UserDetailsImpl(
     @Serial
     private static final long serialVersionUID = 1L;
 
-    public static UserDetailsImpl build(UserEntity userEntity, List<GrantedAuthority> authorityList) {
-        return new UserDetailsImpl(userEntity.getId(), userEntity.getLogin(), userEntity.getEmail(), userEntity.getPassword(), authorityList);
+    public static UserDetailsImpl build(final User user, final List<GrantedAuthority> authorityList) {
+        return new UserDetailsImpl(user.getId(), user.getLogin(), user.getEmail(), user.getPassword(), authorityList);
     }
 
     @Override
