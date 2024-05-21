@@ -71,7 +71,7 @@ public class TransactionEventListener {
         try {
             Event newEvent = new Event();
             newEvent.setAggregateId(event.getAccountId());
-            newEvent.setEventType(EventType.TRANSACTION_CREATED);
+            newEvent.setEventType(EventType.ACCOUNT_CREATED);
             newEvent.setTransactionData(event.getTransaction());
             eventGateway.save(newEvent);
         } catch (Exception e) {

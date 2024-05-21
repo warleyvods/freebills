@@ -2,6 +2,7 @@ package com.freebills.usecases;
 
 import com.freebills.domain.Account;
 import com.freebills.domain.Transaction;
+import com.freebills.events.account.AccountCreatedEvent;
 import com.freebills.events.transaction.TransactionCreatedEvent;
 import com.freebills.gateways.AccountGateway;
 import jakarta.validation.Valid;
@@ -28,7 +29,7 @@ public class CreateAccount {
 
         final Account savedAccount = accountGateway.save(account);
 
-        eventPublisher.publishEvent(new TransactionCreatedEvent(this, savedAccount.getId(), new Transaction(account.getAmount())));
+        eventPublisher.publishEvent(new AccountCreatedEvent(this, savedAccount.getId(), new Transaction(account.getAmount())));
         return account;
     }
 }

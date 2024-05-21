@@ -1,8 +1,9 @@
-package com.freebills.usecases.strategy;
+package com.freebills.usecases.strategy.transaction;
 
 import com.freebills.domain.Event;
 import com.freebills.domain.Transaction;
 import com.freebills.gateways.entities.enums.TransactionType;
+import com.freebills.usecases.strategy.BalanceUpdateStrategy;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;

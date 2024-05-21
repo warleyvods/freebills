@@ -4,7 +4,7 @@ import com.freebills.domain.Account;
 import com.freebills.domain.Event;
 import com.freebills.domain.Transaction;
 import com.freebills.gateways.entities.enums.TransactionType;
-import com.freebills.usecases.strategy.TransactionUpdatedStrategy;
+import com.freebills.usecases.strategy.transaction.TransactionUpdatedStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
