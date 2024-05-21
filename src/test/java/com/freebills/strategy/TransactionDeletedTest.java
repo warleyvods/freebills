@@ -4,21 +4,21 @@ import com.freebills.domain.Event;
 import com.freebills.domain.Transaction;
 import com.freebills.gateways.entities.enums.EventType;
 import com.freebills.gateways.entities.enums.TransactionType;
-import com.freebills.usecases.strategy.transaction.TransactionCreatedStrategy;
+import com.freebills.usecases.strategy.transaction.TransactionDeleted;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
-class TransactionCreatedStrategyTest {
+class TransactionDeletedTest {
 
-    private TransactionCreatedStrategy transactionCreatedStrategy;
+    private TransactionDeleted transactionCreatedStrategy;
 
     @BeforeEach
     public void setUp() {
-        transactionCreatedStrategy = new TransactionCreatedStrategy();
+        transactionCreatedStrategy = new TransactionDeleted();
     }
 
     @Test
@@ -31,13 +31,13 @@ class TransactionCreatedStrategyTest {
         Event event = new Event();
         event.setTransactionData(transaction);
 
-        event.setEventType(EventType.TRANSACTION_CREATED);
+        event.setEventType(EventType.TRANSACTION_DELETED);
         event.getTransactionData().setTransactionType(TransactionType.REVENUE);
         event.getTransactionData().setAmount(BigDecimal.valueOf(200));
 
         BigDecimal updatedBalance = transactionCreatedStrategy.updateBalance(currentBalance, event);
 
-        assertEquals(BigDecimal.valueOf(1200), updatedBalance);
+        assertEquals(BigDecimal.valueOf(800), updatedBalance);
     }
 
     @Test
@@ -49,32 +49,12 @@ class TransactionCreatedStrategyTest {
 
         Event event = new Event();
         event.setTransactionData(transaction);
-
-        event.setEventType(EventType.TRANSACTION_CREATED);
+        event.setEventType(EventType.TRANSACTION_DELETED);
         event.getTransactionData().setTransactionType(TransactionType.EXPENSE);
         event.getTransactionData().setAmount(BigDecimal.valueOf(200));
 
         BigDecimal updatedBalance = transactionCreatedStrategy.updateBalance(currentBalance, event);
 
-        assertEquals(BigDecimal.valueOf(800), updatedBalance);
-    }
-
-    @Test
-    void testUpdateBalanceWithNonCreatedEvent() {
-        final Transaction transaction = new Transaction();
-        transaction.setPaid(true);
-
-        BigDecimal currentBalance = BigDecimal.valueOf(1000);
-
-        Event event = new Event();
-        event.setTransactionData(transaction);
-
-        event.setEventType(EventType.TRANSACTION_UPDATED);
-        event.getTransactionData().setTransactionType(TransactionType.REVENUE);
-        event.getTransactionData().setAmount(BigDecimal.valueOf(200));
-
-        BigDecimal updatedBalance = transactionCreatedStrategy.updateBalance(currentBalance, event);
-
-        assertEquals(currentBalance, updatedBalance);
+        assertEquals(BigDecimal.valueOf(1200), updatedBalance);
     }
 }

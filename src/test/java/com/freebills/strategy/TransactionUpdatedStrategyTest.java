@@ -4,7 +4,7 @@ import com.freebills.domain.Account;
 import com.freebills.domain.Event;
 import com.freebills.domain.Transaction;
 import com.freebills.gateways.entities.enums.TransactionType;
-import com.freebills.usecases.strategy.transaction.TransactionUpdatedStrategy;
+import com.freebills.usecases.strategy.transaction.TransactionUpdated;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,11 +18,11 @@ import static org.mockito.Mockito.when;
 
 class TransactionUpdatedStrategyTest {
 
-    private TransactionUpdatedStrategy transactionUpdatedStrategy;
+    private TransactionUpdated transactionUpdated;
 
     @BeforeEach
     public void setUp() {
-        transactionUpdatedStrategy = new TransactionUpdatedStrategy();
+        transactionUpdated = new TransactionUpdated();
     }
 
     @Test
@@ -32,7 +32,7 @@ class TransactionUpdatedStrategyTest {
         Event event = createEvent(TransactionType.EXPENSE, true, BigDecimal.valueOf(100),
                 TransactionType.EXPENSE, true, BigDecimal.valueOf(200), 1L, 1L);
 
-        BigDecimal updatedBalance = transactionUpdatedStrategy.updateBalance(currentBalance, event);
+        BigDecimal updatedBalance = transactionUpdated.updateBalance(currentBalance, event);
 
         assertEquals(BigDecimal.valueOf(900), updatedBalance);
     }
@@ -51,7 +51,7 @@ class TransactionUpdatedStrategyTest {
                 1L,
                 1L);
 
-        BigDecimal updatedBalance = transactionUpdatedStrategy.updateBalance(currentBalance, event);
+        BigDecimal updatedBalance = transactionUpdated.updateBalance(currentBalance, event);
 
         assertEquals(BigDecimal.valueOf(800), updatedBalance);
     }
@@ -63,7 +63,7 @@ class TransactionUpdatedStrategyTest {
         Event event = createEvent(TransactionType.REVENUE, true, BigDecimal.valueOf(100),
                 TransactionType.REVENUE, true, BigDecimal.valueOf(200), 1L, 1L);
 
-        BigDecimal updatedBalance = transactionUpdatedStrategy.updateBalance(currentBalance, event);
+        BigDecimal updatedBalance = transactionUpdated.updateBalance(currentBalance, event);
 
         assertEquals(BigDecimal.valueOf(1100), updatedBalance);
     }
@@ -75,7 +75,7 @@ class TransactionUpdatedStrategyTest {
         Event event = createEvent(TransactionType.EXPENSE, true, BigDecimal.valueOf(100),
                 TransactionType.REVENUE, true, BigDecimal.valueOf(100), 1L, 1L);
 
-        BigDecimal updatedBalance = transactionUpdatedStrategy.updateBalance(currentBalance, event);
+        BigDecimal updatedBalance = transactionUpdated.updateBalance(currentBalance, event);
 
         assertEquals(BigDecimal.valueOf(1200), updatedBalance);
     }
@@ -87,7 +87,7 @@ class TransactionUpdatedStrategyTest {
         Event event = createEvent(TransactionType.REVENUE, false, BigDecimal.valueOf(100),
                 TransactionType.REVENUE, false, BigDecimal.valueOf(200), 1L, 1L);
 
-        BigDecimal updatedBalance = transactionUpdatedStrategy.updateBalance(currentBalance, event);
+        BigDecimal updatedBalance = transactionUpdated.updateBalance(currentBalance, event);
 
         assertEquals(BigDecimal.valueOf(1000), updatedBalance);
     }
@@ -99,7 +99,7 @@ class TransactionUpdatedStrategyTest {
         Event event = createEvent(TransactionType.REVENUE, true, BigDecimal.valueOf(100),
                 TransactionType.EXPENSE, true, BigDecimal.valueOf(100), 1L, 1L);
 
-        BigDecimal updatedBalance = transactionUpdatedStrategy.updateBalance(currentBalance, event);
+        BigDecimal updatedBalance = transactionUpdated.updateBalance(currentBalance, event);
 
         assertEquals(BigDecimal.valueOf(800), updatedBalance);
     }
@@ -111,7 +111,7 @@ class TransactionUpdatedStrategyTest {
         Event event = createEvent(TransactionType.REVENUE, false, BigDecimal.valueOf(100),
                 TransactionType.REVENUE, true, BigDecimal.valueOf(100), 1L, 1L);
 
-        BigDecimal updatedBalance = transactionUpdatedStrategy.updateBalance(currentBalance, event);
+        BigDecimal updatedBalance = transactionUpdated.updateBalance(currentBalance, event);
 
         assertEquals(BigDecimal.valueOf(1100), updatedBalance);
     }
@@ -123,7 +123,7 @@ class TransactionUpdatedStrategyTest {
         Event event = createEvent(TransactionType.EXPENSE, true, BigDecimal.valueOf(100),
                 TransactionType.EXPENSE, false, BigDecimal.valueOf(100), 1L, 1L);
 
-        BigDecimal updatedBalance = transactionUpdatedStrategy.updateBalance(currentBalance, event);
+        BigDecimal updatedBalance = transactionUpdated.updateBalance(currentBalance, event);
 
         assertEquals(BigDecimal.valueOf(1100), updatedBalance);
     }
@@ -135,7 +135,7 @@ class TransactionUpdatedStrategyTest {
         Event event = createEvent(TransactionType.REVENUE, true, BigDecimal.valueOf(100),
                 TransactionType.REVENUE, true, BigDecimal.valueOf(0), 1L, 1L);
 
-        BigDecimal updatedBalance = transactionUpdatedStrategy.updateBalance(currentBalance, event);
+        BigDecimal updatedBalance = transactionUpdated.updateBalance(currentBalance, event);
 
         assertEquals(BigDecimal.valueOf(900), updatedBalance);
     }
@@ -147,7 +147,7 @@ class TransactionUpdatedStrategyTest {
         Event event = createEvent(TransactionType.REVENUE, true, BigDecimal.valueOf(100),
                 TransactionType.REVENUE, true, BigDecimal.valueOf(200), 1L, 1L);
 
-        BigDecimal updatedBalance = transactionUpdatedStrategy.updateBalance(currentBalance, event);
+        BigDecimal updatedBalance = transactionUpdated.updateBalance(currentBalance, event);
 
         assertEquals(BigDecimal.valueOf(-400), updatedBalance);
     }
@@ -161,7 +161,7 @@ class TransactionUpdatedStrategyTest {
         Event event = createEventWithDate(TransactionType.REVENUE, true, BigDecimal.valueOf(100),
                 TransactionType.REVENUE, true, BigDecimal.valueOf(200), 1L, 1L, LocalDate.now().minusDays(1));
 
-        BigDecimal updatedBalance = transactionUpdatedStrategy.updateBalance(currentBalance, event);
+        BigDecimal updatedBalance = transactionUpdated.updateBalance(currentBalance, event);
 
         assertEquals(BigDecimal.valueOf(1100), updatedBalance);
     }
@@ -173,7 +173,7 @@ class TransactionUpdatedStrategyTest {
         Event event = createEventWithDate(TransactionType.EXPENSE, true, BigDecimal.valueOf(100),
                 TransactionType.EXPENSE, true, BigDecimal.valueOf(200), 1L, 1L, LocalDate.now().minusDays(1));
 
-        BigDecimal updatedBalance = transactionUpdatedStrategy.updateBalance(currentBalance, event);
+        BigDecimal updatedBalance = transactionUpdated.updateBalance(currentBalance, event);
 
         assertEquals(BigDecimal.valueOf(900), updatedBalance);
     }
@@ -185,7 +185,7 @@ class TransactionUpdatedStrategyTest {
         Event event = createEvent(TransactionType.REVENUE, true, BigDecimal.valueOf(100),
                 TransactionType.REVENUE, false, BigDecimal.valueOf(100), 1L, 2L);
 
-        BigDecimal updatedBalance = transactionUpdatedStrategy.updateBalance(currentBalance, event);
+        BigDecimal updatedBalance = transactionUpdated.updateBalance(currentBalance, event);
 
         assertEquals(BigDecimal.valueOf(900), updatedBalance);
     }
@@ -197,7 +197,7 @@ class TransactionUpdatedStrategyTest {
         Event event = createEvent(TransactionType.REVENUE, false, BigDecimal.valueOf(100),
                 TransactionType.REVENUE, true, BigDecimal.valueOf(100), 1L, 2L);
 
-        BigDecimal updatedBalance = transactionUpdatedStrategy.updateBalance(currentBalance, event);
+        BigDecimal updatedBalance = transactionUpdated.updateBalance(currentBalance, event);
 
         assertEquals(BigDecimal.valueOf(1100), updatedBalance);
     }
@@ -209,7 +209,7 @@ class TransactionUpdatedStrategyTest {
         Event event = createEvent(TransactionType.REVENUE, true, BigDecimal.valueOf(100),
                 TransactionType.REVENUE, true, BigDecimal.valueOf(200), 1L, 2L);
 
-        BigDecimal updatedBalance = transactionUpdatedStrategy.updateBalance(currentBalance, event);
+        BigDecimal updatedBalance = transactionUpdated.updateBalance(currentBalance, event);
 
         assertEquals(BigDecimal.valueOf(-400), updatedBalance);
     }
@@ -223,7 +223,7 @@ class TransactionUpdatedStrategyTest {
         Event event = createEvent(TransactionType.REVENUE, true, BigDecimal.valueOf(100),
                 TransactionType.REVENUE, true, BigDecimal.valueOf(50), 1L, 2L);
 
-        BigDecimal updatedBalance = transactionUpdatedStrategy.updateBalance(currentBalance, event);
+        BigDecimal updatedBalance = transactionUpdated.updateBalance(currentBalance, event);
 
         assertEquals(BigDecimal.valueOf(950), updatedBalance);
     }
@@ -235,7 +235,7 @@ class TransactionUpdatedStrategyTest {
         Event event = createEvent(TransactionType.EXPENSE, true, BigDecimal.valueOf(100),
                 TransactionType.EXPENSE, true, BigDecimal.valueOf(50), 1L, 2L);
 
-        BigDecimal updatedBalance = transactionUpdatedStrategy.updateBalance(currentBalance, event);
+        BigDecimal updatedBalance = transactionUpdated.updateBalance(currentBalance, event);
 
         assertEquals(BigDecimal.valueOf(1050), updatedBalance);
     }

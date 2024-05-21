@@ -1,6 +1,7 @@
 package com.freebills.exceptions.handler;
 
 import com.freebills.exceptions.AccountNotFoundException;
+import com.freebills.exceptions.InvalidCredentialsException;
 import com.freebills.exceptions.PermissionDeniedException;
 import com.freebills.exceptions.TransactionNotFoundException;
 import com.freebills.exceptions.UserNotFoundException;
@@ -76,6 +77,18 @@ public class RestExceptionHandler {
                 .devMsg(ex.getClass().getName())
                 .status(NOT_FOUND.value())
                 .title("Invalid date!")
+                .build();
+    }
+
+    @ResponseStatus(UNAUTHORIZED)
+    @ExceptionHandler(InvalidCredentialsException.class)
+    public ExceptionFilters handleInvalidCretentials(final InvalidCredentialsException ex) {
+        return ExceptionFilters.builder()
+                .timestamp(LocalDateTime.now())
+                .details(ex.getMessage())
+                .devMsg(ex.getClass().getName())
+                .status(UNAUTHORIZED.value())
+                .title("Invalid Credentials")
                 .build();
     }
 

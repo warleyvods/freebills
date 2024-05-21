@@ -16,7 +16,7 @@ import static java.math.BigDecimal.ZERO;
 public class AccountBalanceCalculator {
 
     private final EventGateway eventGateway;
-    private final BalanceUpdateStrategyFactory strategyFactory;
+    private final BalanceUpdateFactory strategyFactory;
 
     public BigDecimal calculateBalanceForAccount(final Account account) {
         var events = eventGateway.getEventsByAggregateId(account.getId());

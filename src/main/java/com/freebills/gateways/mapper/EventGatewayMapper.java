@@ -18,7 +18,7 @@ import java.io.IOException;
 public abstract class EventGatewayMapper {
 
     @Autowired
-    private  ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
     @Mapping(target = "transactionData", ignore = true)
     @Mapping(target = "oldTransactionData", ignore = true)

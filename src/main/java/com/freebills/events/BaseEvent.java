@@ -1,27 +1,27 @@
-package com.freebills.events.transaction;
+package com.freebills.events;
 
 import com.freebills.domain.Transaction;
 import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
 
 @Getter
-public abstract class BaseTransactionEvent extends ApplicationEvent {
+public abstract class BaseEvent extends ApplicationEvent {
 
     private final Long accountId;
     private final Transaction transaction;
     private final Transaction oldTransaction;
 
-    protected BaseTransactionEvent(Object source,
-                                   Long accountId,
-                                   Transaction transaction,
-                                   Transaction oldTransaction) {
+    protected BaseEvent(Object source,
+                        Long accountId,
+                        Transaction transaction,
+                        Transaction oldTransaction) {
         super(source);
         this.accountId = accountId;
         this.transaction = transaction;
         this.oldTransaction = oldTransaction;
     }
 
-    protected BaseTransactionEvent(Object source, Long accountId, Transaction transaction) {
+    protected BaseEvent(Object source, Long accountId, Transaction transaction) {
         this(source, accountId, transaction, null);
     }
 }

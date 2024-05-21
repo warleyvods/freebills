@@ -29,7 +29,7 @@ public class TransactionEventListener {
             newEvent.setTransactionData(event.getTransaction());
             eventGateway.save(newEvent);
         } catch (Exception e) {
-            log.error("Error handling TransactionCreatedEvent", e);
+            log.error("Error handling TransactionCreatedEvent: {}", e.getMessage());
             throw e;
         }
     }
@@ -45,7 +45,7 @@ public class TransactionEventListener {
             newEvent.setOldTransactionData(event.getOldTransaction());
             eventGateway.save(newEvent);
         } catch (Exception e) {
-            log.error("Error handling TransactionUpdatedEvent", e);
+            log.error("Error handling TransactionUpdatedEvent: {}", e.getMessage());
             throw e;
         }
     }
@@ -60,7 +60,7 @@ public class TransactionEventListener {
             newEvent.setTransactionData(event.getTransaction());
             eventGateway.save(newEvent);
         } catch (Exception e) {
-            log.error("Error handling TransactionDeletedEvent", e);
+            log.error("Error handling TransactionDeletedEvent: {}", e.getMessage());
             throw e;
         }
     }
@@ -75,7 +75,7 @@ public class TransactionEventListener {
             newEvent.setTransactionData(event.getTransaction());
             eventGateway.save(newEvent);
         } catch (Exception e) {
-            log.error("Error handling TransactionDeletedEvent", e);
+            log.error("Error handling AccountCreatedEvent: {}", e.getMessage());
             throw e;
         }
     }

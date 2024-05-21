@@ -9,7 +9,7 @@ import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
-public class BalanceUpdateStrategyFactory {
+public class BalanceUpdateFactory {
 
     private final Map<String, BalanceUpdateStrategy> strategyMap;
 

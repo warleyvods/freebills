@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 import static java.lang.Boolean.TRUE;
 
 @Component(value = "TRANSACTION_DELETED")
-public class TransactionDeletedStrategy implements BalanceUpdateStrategy {
+public class TransactionDeleted implements BalanceUpdateStrategy {
 
     @Override
     public BigDecimal updateBalance(final BigDecimal currentBalance, final Event event) {

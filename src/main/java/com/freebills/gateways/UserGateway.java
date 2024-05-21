@@ -1,6 +1,7 @@
 package com.freebills.gateways;
 
 import com.freebills.domain.User;
+import com.freebills.exceptions.InvalidCredentialsException;
 import com.freebills.gateways.entities.UserEntity;
 import com.freebills.exceptions.UserNotFoundException;
 import com.freebills.gateways.mapper.UserGatewayMapper;
@@ -11,15 +12,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service
 public record UserGateway(UserRepository userRepository, UserGatewayMapper userGatewayMapper) {
 
     public User save(final User user) {
-        final UserEntity entity = userRepository.save(userGatewayMapper.toEntity(user));
-        return userGatewayMapper.toDomain(entity);
+        return userGatewayMapper.toDomain(userRepository.save(userGatewayMapper.toEntity(user)));
     }
 
     public Page<User> getAll(final Pageable pageable) {
@@ -31,11 +30,11 @@ public record UserGateway(UserRepository userRepository, UserGatewayMapper userG
     }
 
     public User findByLogin(final String login) {
-        return userGatewayMapper.toDomain(userRepository.findByLoginIgnoreCase(login).orElseThrow(UserNotFoundException::new));
+        return userGatewayMapper.toDomain(userRepository.findByLoginIgnoreCase(login).orElseThrow(InvalidCredentialsException::new));
     }
 
     public User findByEmail(final String email) {
-        return userGatewayMapper.toDomain(userRepository.findByEmail(email));
+        return userGatewayMapper.toDomain(userRepository.findByEmailIgnoreCase(email).orElseThrow(InvalidCredentialsException::new));
     }
 
     public User update(final User user) {
@@ -51,10 +50,10 @@ public record UserGateway(UserRepository userRepository, UserGatewayMapper userG
     }
 
     public Boolean existsByLogin(final String login) {
-        return userRepository.existsByLogin(login);
+        return userRepository.existsByLoginIgnoreCase(login);
     }
 
     public Boolean existsByEmail(final String email) {
-        return userRepository.existsByEmail(email);
+        return userRepository.existsByEmailIgnoreCase(email);
     }
 }

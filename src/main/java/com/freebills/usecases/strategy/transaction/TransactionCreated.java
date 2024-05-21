@@ -12,7 +12,7 @@ import static com.freebills.gateways.entities.enums.TransactionType.REVENUE;
 import static java.lang.Boolean.TRUE;
 
 @Component(value = "TRANSACTION_CREATED")
-public class TransactionCreatedStrategy implements BalanceUpdateStrategy {
+public class TransactionCreated implements BalanceUpdateStrategy {
 
     @Override
     public BigDecimal updateBalance(final BigDecimal currentBalance, final Event event) {

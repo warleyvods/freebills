@@ -7,13 +7,9 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 
 import static com.freebills.gateways.entities.enums.EventType.ACCOUNT_CREATED;
-import static com.freebills.gateways.entities.enums.EventType.TRANSACTION_CREATED;
-import static com.freebills.gateways.entities.enums.TransactionType.EXPENSE;
-import static com.freebills.gateways.entities.enums.TransactionType.REVENUE;
-import static java.lang.Boolean.TRUE;
 
 @Component(value = "ACCOUNT_CREATED")
-public class AccountCreatedStrategy implements BalanceUpdateStrategy {
+public class AccountCreated implements BalanceUpdateStrategy {
 
     @Override
     public BigDecimal updateBalance(final BigDecimal currentBalance, final Event event) {
