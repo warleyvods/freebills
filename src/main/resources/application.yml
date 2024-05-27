@@ -31,14 +31,25 @@ spring:
             scope: read:user
             redirect-uri: "{baseUrl}/login/oauth2/code/github"
             client-name: GitHub
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+            scope: profile, email
+            redirect-uri: "{baseUrl}/login/oauth2/code/google"
+            client-name: Google
         provider:
           github:
             authorization-uri: https://github.com/login/oauth/authorize
             token-uri: https://github.com/login/oauth/access_token
             user-info-uri: https://api.github.com/user
             user-name-attribute: id
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/auth
+            token-uri: https://oauth2.googleapis.com/token
+            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
+            user-name-attribute: sub
 
 api:
   app:
-    jwtSecret: ${SECRET:45da2ed9f455817623087c49390b2ab9e4d38421c20f5a282a877f8e6662c67b361a0f7bd810cbca8e471e183c41d9a648b057aed0369b67078c6d73e38d942e}
+    jwtSecret: ${SECRET:45da2ed9f455817623087c49390b2ab9e4d38421c20f5a282a877f8e6662c67b361a0f7bd810cbca8e471e183c41d9a648b057aed0369b67078c6d73e38d}
     jwtExpirationMs: 86400000
