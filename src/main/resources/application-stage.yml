@@ -6,8 +6,8 @@ server:
 
 spring:
   datasource:
-    url: ${DATABASE_CONNECTION_URL}
-    username: ${USER}
+    url: jdbc:postgresql://localhost:5432/freebills
+    username: ${USERNAME}
     password: ${PASSWORD}
     driver-class-name: org.postgresql.Driver
 
@@ -39,3 +39,6 @@ logging:
             sql:
               BasicBinder: TRACE
       SQL: debug
+
+front:
+  url: http://localhost:3000/dashboard

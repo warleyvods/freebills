@@ -1,5 +1,6 @@
 package com.freebills.domain;
 
+import com.freebills.gateways.entities.Source;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,6 +22,7 @@ public class User {
     private String password;
     private Boolean admin;
     private Boolean active;
+    private Source source;
     private LocalDateTime createdAt;
     private LocalDateTime lastAccess;
     private LocalDateTime updatedAt;

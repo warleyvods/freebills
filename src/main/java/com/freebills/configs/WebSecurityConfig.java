@@ -1,8 +1,9 @@
 package com.freebills.configs;
 
 
-import com.freebills.security.jwt.UnauthorizedHandler;
 import com.freebills.security.jwt.AuthFilter;
+import com.freebills.security.jwt.UnauthorizedHandler;
+import com.freebills.security.services.OAuth2SuccessHandler;
 import com.freebills.security.services.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -22,6 +23,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.List;
+
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 @Configuration
@@ -33,6 +36,7 @@ public class WebSecurityConfig {
     private final UserDetailsServiceImpl userDetailsService;
     private final UnauthorizedHandler unauthorizedHandler;
     private final AuthFilter authenticationJwtTokenFilter;
+    private final OAuth2SuccessHandler oAuth2SuccessHandler;
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfiguration) throws Exception {
@@ -54,12 +58,13 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.cors(AbstractHttpConfigurer::disable)
-                .csrf(AbstractHttpConfigurer::disable)
-                .exceptionHandling(ex -> ex.authenticationEntryPoint(unauthorizedHandler))
-                .sessionManagement(sm -> sm.sessionCreationPolicy(STATELESS))
-                .authorizeHttpRequests(authorize ->
-                        authorize.requestMatchers(
+        http.csrf(AbstractHttpConfigurer::disable)
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
+                .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
+                .oauth2Login(oath2 -> oath2.successHandler(oAuth2SuccessHandler))
+                .authorizeHttpRequests(auth ->
+                        auth.requestMatchers(
                                         "/v1/user/public/save/**",
                                         "/v1/auth/**",
                                         "/*/actuator/**",
@@ -67,8 +72,8 @@ public class WebSecurityConfig {
                                         "/swagger-ui/**",
                                         "/v3/api-docs/**",
                                         "/actuator/**",
-                                        "/error"
-                                ).permitAll()
+                                        "/error")
+                                .permitAll()
                                 .anyRequest().authenticated());
 
         http.addFilterBefore(authenticationJwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
@@ -77,8 +82,13 @@ public class WebSecurityConfig {
 
     @Bean
     protected CorsConfigurationSource corsConfigurationSource() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
-        return source;
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of("*"));
+        configuration.addAllowedHeader("*");
+        configuration.addAllowedMethod("*");
+        configuration.setAllowCredentials(true);
+        UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
+        urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", configuration);
+        return urlBasedCorsConfigurationSource;
     }
 }

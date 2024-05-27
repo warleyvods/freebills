@@ -57,7 +57,7 @@ public class AuthController {
             return badRequest().body(new MessageResponse("Error: Email is already in use!"));
         }
 
-        createUser.create(userMapper.toDomainUser(signUpRequestDTO));
+        createUser.execute(userMapper.toDomainUser(signUpRequestDTO));
         return ResponseEntity.status(CREATED).build();
     }
 }
