@@ -53,14 +53,14 @@ public class UserController {
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
     public UserResponseDTO save(@RequestBody @Valid final UserPostRequestDTO userPostRequestDTO) {
-        final var user = createUser.create(userMapper.toDomain(userPostRequestDTO));
+        final var user = createUser.execute(userMapper.toDomain(userPostRequestDTO));
         return userMapper.fromDomain(user);
     }
 
     @ResponseStatus(CREATED)
     @PostMapping("/public/save")
     public UserResponseDTO savePublicUser(@RequestBody @Valid final SignupUserRequestDTO signupUserRequestDTO) {
-        final var user = createUser.create(userMapper.toDomainUser(signupUserRequestDTO));
+        final var user = createUser.execute(userMapper.toDomainUser(signupUserRequestDTO));
         return userMapper.fromDomain(user);
     }
 

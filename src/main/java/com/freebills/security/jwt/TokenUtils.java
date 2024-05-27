@@ -1,5 +1,6 @@
 package com.freebills.security.jwt;
 
+import com.freebills.domain.User;
 import com.freebills.security.services.UserDetailsImpl;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -55,7 +56,23 @@ public class TokenUtils {
     }
 
     public ResponseCookie generateToken(UserDetailsImpl user) {
-        String jwt = generateTokenFromUser(user);
+        String jwt = generateTokenFromUserDetails(user);
+        var builder = ResponseCookie.from(COOKIE, jwt)
+                .path("/")
+                .maxAge(216_000)
+                .secure(true)
+                .httpOnly(true);
+
+        if (List.of(environment.getActiveProfiles()).contains("prod")) {
+            builder.domain(".wavods.com");
+        }
+
+        return builder.build();
+    }
+
+    public ResponseCookie generateToken(User user) {
+        String jwt = generateTokenFromUserDetails(user);
+
         var builder = ResponseCookie.from(COOKIE, jwt)
                 .path("/")
                 .maxAge(216_000)
@@ -83,13 +100,25 @@ public class TokenUtils {
         return builder.build();
     }
 
-    public String generateTokenFromUser(UserDetailsImpl user) {
+    public String generateTokenFromUserDetails(UserDetailsImpl user) {
         return Jwts.builder()
                 .claim("id", user.getId())
                 .subject(user.getUsername())
                 .claim("name", user.getUsername())
                 .claim("email", user.getEmail())
                 .claim("roles", user.getAuthorities())
+                .issuedAt(new Date())
+                .expiration(new Date(new Date().getTime() + jwtExpirationMs))
+                .signWith(getSigningKey(jwtSecret))
+                .compact();
+    }
+
+    public String generateTokenFromUserDetails(User user) {
+        return Jwts.builder()
+                .claim("id", user.getId())
+                .subject(user.getLogin())
+                .claim("name", user.getName())
+                .claim("email", user.getEmail())
                 .issuedAt(new Date())
                 .expiration(new Date(new Date().getTime() + jwtExpirationMs))
                 .signWith(getSigningKey(jwtSecret))

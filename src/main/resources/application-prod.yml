@@ -11,8 +11,6 @@ spring:
     password: ${PASSWORD}
     driver-class-name: org.postgresql.Driver
 
-
-
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
@@ -29,3 +27,6 @@ spring:
 springdoc:
   api-docs:
     enabled: false
+
+front:
+  url: https://freebills.wavods.com/dashboard
