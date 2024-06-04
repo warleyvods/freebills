@@ -5,10 +5,10 @@ import com.freebills.controllers.dtos.requests.TransactionPostRequestDTO;
 import com.freebills.controllers.dtos.requests.TransactionPutRequestDTO;
 import com.freebills.controllers.dtos.responses.TransactionResponseDTO;
 import com.freebills.controllers.mappers.TransactionMapper;
-import com.freebills.domain.Transaction;
 import com.freebills.gateways.entities.enums.TransactionType;
 import com.freebills.usecases.CreateTransaction;
 import com.freebills.usecases.DeleteTransaction;
+import com.freebills.usecases.DuplicateTransaction;
 import com.freebills.usecases.FindTransaction;
 import com.freebills.usecases.UpdateTransaction;
 import jakarta.validation.Valid;
@@ -27,7 +27,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
-import java.util.List;
 
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
@@ -43,6 +42,7 @@ public class TransactionController {
     private final UpdateTransaction updateTransaction;
     private final FindTransaction findTransaction;
     private final DeleteTransaction deleteTransaction;
+    private final DuplicateTransaction duplicateTransaction;
 
     @ResponseStatus(CREATED)
     @PostMapping
@@ -71,24 +71,19 @@ public class TransactionController {
         return transactionMapper.fromDomain(findTransaction.findById(id));
     }
 
-    //TODO temporario
-    @PostMapping("/import")
-    public String importTransaction(@RequestBody List<TransactionPostRequestDTO> transactions) {
-        final List<Transaction> collect = transactions.stream().map(transactionMapper::toDomain).toList();
-
-        for (Transaction transaction : collect) {
-            createTransaction.execute(transaction);
-        }
-
-        return "feito!";
-    }
-
     @ResponseStatus(OK)
     @PutMapping
     public TransactionResponseDTO update(@RequestBody @Valid final TransactionPutRequestDTO transactionPutRequestDTO) {
         final var transactionFinded = findTransaction.findById(transactionPutRequestDTO.id());
         final var update = updateTransaction.execute(transactionMapper.updateTransaction(transactionPutRequestDTO, transactionFinded));
         return transactionMapper.fromDomain(update);
+    }
+
+    @ResponseStatus(OK)
+    @PutMapping(value = "/duplicate")
+    public TransactionResponseDTO duplicate(@RequestParam final Long id) {
+        final var execute = duplicateTransaction.execute(id);
+        return transactionMapper.fromDomain(execute);
     }
 
     @ResponseStatus(NO_CONTENT)

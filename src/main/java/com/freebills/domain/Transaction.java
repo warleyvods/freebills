@@ -2,7 +2,8 @@ package com.freebills.domain;
 
 import com.freebills.gateways.entities.enums.TransactionCategory;
 import com.freebills.gateways.entities.enums.TransactionType;
-import lombok.EqualsAndHashCode;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,8 +13,9 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-@EqualsAndHashCode
+@AllArgsConstructor
 @NoArgsConstructor
+@Builder(toBuilder = true)
 public class Transaction {
 
     private Long id;
