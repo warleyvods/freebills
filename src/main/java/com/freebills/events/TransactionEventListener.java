@@ -8,7 +8,6 @@ import com.freebills.events.transaction.TransactionCreatedEvent;
 import com.freebills.events.transaction.TransactionDeletedEvent;
 import com.freebills.events.transaction.TransactionUpdatedEvent;
 import com.freebills.gateways.EventGateway;
-import com.freebills.gateways.entities.enums.EventType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
@@ -16,7 +15,9 @@ import org.springframework.stereotype.Component;
 
 import static com.freebills.gateways.entities.enums.EventType.ACCOUNT_CREATED;
 import static com.freebills.gateways.entities.enums.EventType.ACCOUNT_DELETED;
+import static com.freebills.gateways.entities.enums.EventType.TRANSACTION_CREATED;
 import static com.freebills.gateways.entities.enums.EventType.TRANSACTION_DELETED;
+import static com.freebills.gateways.entities.enums.EventType.TRANSACTION_UPDATED;
 
 @Slf4j
 @Component
@@ -31,7 +32,7 @@ public class TransactionEventListener {
         try {
             final var newEvent = new Event();
             newEvent.setAggregateId(transactionCreatedEvent.getAccountId());
-            newEvent.setEventType(EventType.TRANSACTION_CREATED);
+            newEvent.setEventType(TRANSACTION_CREATED);
             newEvent.setTransactionData(transactionCreatedEvent.getTransaction());
             eventGateway.save(newEvent);
         } catch (Exception e) {
@@ -46,7 +47,7 @@ public class TransactionEventListener {
         try {
             final var newEvent = new Event();
             newEvent.setAggregateId(transactionUpdatedEvent.getAccountId());
-            newEvent.setEventType(EventType.TRANSACTION_UPDATED);
+            newEvent.setEventType(TRANSACTION_UPDATED);
             newEvent.setTransactionData(transactionUpdatedEvent.getTransaction());
             newEvent.setOldTransactionData(transactionUpdatedEvent.getOldTransaction());
             eventGateway.save(newEvent);
