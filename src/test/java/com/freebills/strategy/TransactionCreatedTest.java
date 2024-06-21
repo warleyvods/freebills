@@ -37,7 +37,7 @@ class TransactionCreatedTest {
 
         BigDecimal updatedBalance = transactionCreated.updateBalance(currentBalance, event);
 
-        assertEquals(BigDecimal.valueOf(12000), updatedBalance); //TODO 1200
+        assertEquals(BigDecimal.valueOf(1200), updatedBalance);
     }
 
     @Test

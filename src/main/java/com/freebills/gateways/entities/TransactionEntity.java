@@ -63,6 +63,9 @@ public class TransactionEntity {
     @ManyToOne
     private AccountEntity account;
 
+    @ManyToOne
+    private CategoryEntity category;
+
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
