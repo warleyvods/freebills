@@ -105,7 +105,6 @@ public class UserController {
         return userMapper.fromDomain(user);
     }
 
-
     @ResponseStatus(NO_CONTENT)
     @DeleteMapping("{id}")
     @PreAuthorize("hasRole('ADMIN')")

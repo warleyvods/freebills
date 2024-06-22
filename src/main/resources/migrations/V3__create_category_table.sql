@@ -1,4 +1,4 @@
-CREATE TABLE category
+CREATE TABLE categories
 (
     id          BIGSERIAL PRIMARY KEY,
     name        VARCHAR(255) NOT NULL,
@@ -7,4 +7,4 @@ CREATE TABLE category
     updated_at  TIMESTAMP(6) NOT NULL
 );
 
-ALTER TABLE transactions ADD COLUMN category_id BIGSERIAL CONSTRAINT fk_category_id REFERENCES category(id)
+ALTER TABLE transactions ADD COLUMN category_id BIGSERIAL CONSTRAINT fk_category_id REFERENCES categories(id)

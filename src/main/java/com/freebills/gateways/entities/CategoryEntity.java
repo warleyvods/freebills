@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
@@ -22,7 +23,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Entity
 @Getter
 @Setter
-@Table(name = "category")
+@Table(name = "categories")
 @EntityListeners(AuditingEntityListener.class)
 public class CategoryEntity {
 
@@ -36,6 +37,9 @@ public class CategoryEntity {
 
     @OneToMany(mappedBy = "category")
     private List<TransactionEntity> transactions = new ArrayList<>();
+
+    @ManyToOne
+    private UserEntity user;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)

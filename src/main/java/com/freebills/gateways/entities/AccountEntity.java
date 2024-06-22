@@ -48,12 +48,12 @@ public class AccountEntity {
     @ManyToOne
     private UserEntity user;
 
-    @OneToMany(mappedBy = "account", cascade = ALL, fetch = LAZY)
-    private List<TransactionEntity> transactions = new ArrayList<>();
-
     private Boolean archived = false;
 
     private Boolean dashboard;
+
+    @OneToMany(mappedBy = "account", cascade = ALL, fetch = LAZY)
+    private List<TransactionEntity> transactions = new ArrayList<>();
 
     @CreatedDate
     @Column(nullable = false, updatable = false)

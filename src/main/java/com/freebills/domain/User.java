@@ -5,8 +5,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static java.time.LocalDateTime.now;
 
