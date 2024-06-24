@@ -74,7 +74,7 @@ public class WebSecurityConfig {
                                         "/actuator/**",
                                         "/error")
                                 .permitAll()
-                                .anyRequest().permitAll()); //TODO LEMBRAR DE TIRAR ISSO.
+                                .anyRequest().authenticated());
 
         http.addFilterBefore(authenticationJwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();

@@ -6,6 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -29,10 +30,12 @@ class DuplicateTransactionTest {
     void shouldDuplicateTransaction() {
         Transaction transaction = Transaction.builder()
                 .date(LocalDate.of(2020, 1, 10))
+                .amount(new BigDecimal(0))
                 .build();
 
         Transaction expected = Transaction.builder()
                 .date(LocalDate.of(2020, 2, 10))
+                .amount(new BigDecimal(0))
                 .build();
 
         when(findTransaction.findById(any(Long.class))).thenReturn(transaction);

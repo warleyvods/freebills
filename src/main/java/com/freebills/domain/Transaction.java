@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
@@ -16,10 +18,10 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
+@RequiredArgsConstructor
 public class Transaction {
 
     private Long id;
-    private BigDecimal amount;
     private LocalDate date;
     private String description;
     private String barCode;
@@ -28,8 +30,9 @@ public class Transaction {
     private TransactionCategory transactionCategory;
     private Boolean paid;
     private Account account;
+    private Category category;
 
-    public Transaction(BigDecimal amount) {
-        this.amount = amount;
-    }
+    @NonNull
+    private BigDecimal amount;
+
 }

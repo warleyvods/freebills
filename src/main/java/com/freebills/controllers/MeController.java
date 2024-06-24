@@ -30,11 +30,4 @@ public class MeController {
     public UserResponseDTO findById(Principal principal) {
         return userMapper.fromDomain(userGateway.findByLogin(principal.getName()));
     }
-
-
-    @ResponseStatus(OK)
-    @GetMapping("/any")
-    public String findById() {
-        return "Ola estou aqui!!!";
-    }
 }

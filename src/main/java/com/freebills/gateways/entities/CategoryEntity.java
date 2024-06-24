@@ -1,10 +1,11 @@
 package com.freebills.gateways.entities;
 
-import com.freebills.gateways.entities.enums.AccountType;
-import com.freebills.gateways.entities.enums.BankType;
+import com.freebills.gateways.entities.enums.TransactionType;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -14,49 +15,46 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static jakarta.persistence.CascadeType.ALL;
-import static jakarta.persistence.EnumType.STRING;
-import static jakarta.persistence.FetchType.LAZY;
+import static jakarta.persistence.EnumType.*;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
+@Entity
 @Getter
 @Setter
-@Entity
-@Table(name = "accounts")
+@Table(name = "categories")
 @EntityListeners(AuditingEntityListener.class)
-public class AccountEntity {
+public class CategoryEntity {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    private String description;
+    private String name;
+
+    private String color;
 
     @Enumerated(STRING)
-    private AccountType accountType;
+    private TransactionType categoryType;
 
-    @Enumerated(STRING)
-    private BankType bankType;
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TransactionEntity> transactions = new ArrayList<>();
 
     @ManyToOne
     private UserEntity user;
 
-    private Boolean archived = false;
-
-    private Boolean dashboard;
-
-    @OneToMany(mappedBy = "account", cascade = ALL, fetch = LAZY)
-    private List<TransactionEntity> transactions = new ArrayList<>();
-
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    @Column(nullable = false)
+    private LocalDateTime updatedAt;
 
 }

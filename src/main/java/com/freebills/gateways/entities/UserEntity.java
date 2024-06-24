@@ -1,12 +1,9 @@
 package com.freebills.gateways.entities;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
-import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -23,7 +20,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static jakarta.persistence.EnumType.*;
+import static jakarta.persistence.CascadeType.ALL;
+import static jakarta.persistence.EnumType.STRING;
+import static jakarta.persistence.FetchType.LAZY;
 
 @Getter
 @Setter
@@ -61,18 +60,21 @@ public class UserEntity {
     @Enumerated(STRING)
     private Source source;
 
-    @CreatedDate
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    @OneToMany(mappedBy = "user", cascade = ALL, fetch = LAZY)
+    private List<AccountEntity> accounts;
+
+    @OneToMany(mappedBy = "user", cascade = ALL, fetch = LAZY)
+    private List<CategoryEntity> categories;
 
     @LastModifiedDate
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<AccountEntity> accounts;
+    @CreatedDate
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdAt;
 
     @LastModifiedDate
     private LocalDateTime lastAccess;
-}
 
+}
