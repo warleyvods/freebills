@@ -12,5 +12,6 @@ public record TransactionResponseDTO(
         String transactionCategory,
         String barCode,
         boolean bankSlip,
-        Long accountId
+        Long accountId,
+        Long categoryId
 ) { }

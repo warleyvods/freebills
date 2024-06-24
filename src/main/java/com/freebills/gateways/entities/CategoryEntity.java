@@ -1,8 +1,11 @@
 package com.freebills.gateways.entities;
 
+import com.freebills.gateways.entities.enums.TransactionType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
@@ -18,6 +21,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static jakarta.persistence.EnumType.*;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
@@ -34,6 +38,9 @@ public class CategoryEntity {
     private String name;
 
     private String color;
+
+    @Enumerated(STRING)
+    private TransactionType categoryType;
 
     @OneToMany(mappedBy = "category")
     private List<TransactionEntity> transactions = new ArrayList<>();

@@ -28,6 +28,7 @@ public class Transaction {
     private TransactionCategory transactionCategory;
     private Boolean paid;
     private Account account;
+    private Category category;
 
     public Transaction(BigDecimal amount) {
         this.amount = amount;

@@ -25,8 +25,10 @@ public record TransactionPostRequestDTO(
         @NotBlank
         String transactionType,
 
-        @NotBlank
         String transactionCategory,
+
+        @NotNull
+        Long categoryId,
 
         String barCode,
 

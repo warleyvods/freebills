@@ -3,9 +3,13 @@ package com.freebills.gateways;
 import com.freebills.domain.Category;
 import com.freebills.exceptions.CategoryNotFoundException;
 import com.freebills.gateways.entities.CategoryEntity;
+import com.freebills.gateways.entities.enums.TransactionType;
 import com.freebills.gateways.mapper.CategoryGatewayMapper;
 import com.freebills.repositories.CategoryRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -22,16 +26,18 @@ public class CategoryGateway {
         return categoryGatewayMapper.toDomain(categoryRepository.save(categoryGatewayMapper.toEntity(category)));
     }
 
-    public List<Category> findAll(final String username) {
-        return categoryRepository.findAllCategoryByUser(username)
-                .stream()
-                .sorted(Comparator.comparing(CategoryEntity::getId))
-                .map(categoryGatewayMapper::toDomain)
-                .toList();
+    public Page<Category> findAll(final String username, final String keyword, final String categoryType, final Pageable pageable) {
+        return categoryRepository.findAllCategoryByUser(username, keyword, categoryType, pageable)
+                .map(categoryGatewayMapper::toDomain);
     }
 
     public Category findById(final Long id, final String username) {
         return categoryGatewayMapper.toDomain(categoryRepository.findByIdWithUser(id, username)
+                .orElseThrow(() -> new CategoryNotFoundException("Category id: " + id + " not found!")));
+    }
+
+    public Category findById(final Long id) {
+        return categoryGatewayMapper.toDomain(categoryRepository.findById(id)
                 .orElseThrow(() -> new CategoryNotFoundException("Category id: " + id + " not found!")));
     }
 
