@@ -9,4 +9,4 @@ CREATE TABLE categories
     user_id       BIGSERIAL CONSTRAINT fk_user_category_id REFERENCES users (id)
 );
 
-ALTER TABLE transactions ADD COLUMN category_id BIGSERIAL CONSTRAINT fk_category_id REFERENCES categories (id)
+ALTER TABLE transactions ADD COLUMN category_id BIGSERIAL CONSTRAINT fk_category_transaction_id REFERENCES categories (id)
