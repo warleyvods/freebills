@@ -1,6 +1,7 @@
 package com.freebills.gateways.entities;
 
 import com.freebills.gateways.entities.enums.TransactionType;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -42,7 +43,7 @@ public class CategoryEntity {
     @Enumerated(STRING)
     private TransactionType categoryType;
 
-    @OneToMany(mappedBy = "category")
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TransactionEntity> transactions = new ArrayList<>();
 
     @ManyToOne

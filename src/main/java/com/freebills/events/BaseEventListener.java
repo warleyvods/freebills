@@ -22,7 +22,7 @@ import static com.freebills.gateways.entities.enums.EventType.TRANSACTION_UPDATE
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class TransactionEventListener {
+public class BaseEventListener {
 
     private final EventGateway eventGateway;
 

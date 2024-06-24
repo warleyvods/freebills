@@ -29,8 +29,10 @@ public record TransactionPutRequestDTO(
         @NotBlank
         String transactionType,
 
-        @NotBlank
         String transactionCategory,
+
+        @NotNull
+        Long categoryId,
 
         boolean bankSlip,
 
