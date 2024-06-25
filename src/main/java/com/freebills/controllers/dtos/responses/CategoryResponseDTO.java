@@ -5,6 +5,7 @@ public record CategoryResponseDTO(
         String name,
         String color,
         String categoryType,
+        Boolean archived,
         String createdAt,
         String updatedAt
 ) {

@@ -20,8 +20,12 @@ public class FindCategory {
         return categoryGateway.findById(id, username);
     }
 
-    public Page<Category> findAll(final String username, final String keyword, final String categoryType, final Pageable pageable) {
-        return categoryGateway.findAll(username, keyword, categoryType, pageable);
+    public Page<Category> findAll(final String username,
+                                  final String keyword,
+                                  final String categoryType,
+                                  final Boolean active,
+                                  final Pageable pageable) {
+        return categoryGateway.findAll(username, keyword, categoryType, active, pageable);
     }
 
     public Category findById(final Long id) {

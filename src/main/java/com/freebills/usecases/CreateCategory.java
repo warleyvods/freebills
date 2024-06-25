@@ -30,7 +30,7 @@ public class CreateCategory {
 
     @EventListener
     public void handleCreateCategoriesDefault(final User user) {
-        final var categories = findCategory.findAll(user.getLogin(), null, null, null);
+        final var categories = findCategory.findAll(user.getLogin(), null, null, null, null);
 
         if (categories.isEmpty()) {
             defaultCategories(user).forEach(this::execute);

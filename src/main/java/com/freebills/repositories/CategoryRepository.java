@@ -17,12 +17,14 @@ public interface CategoryRepository extends JpaRepository<CategoryEntity, Long> 
                    INNER JOIN users u
                    ON c.user_id = u.id
                    WHERE u.login = :username
+                   AND (:active IS NULL OR c.archived = :active)
                    AND (:keyword IS NULL OR CAST(c.name AS text) ILIKE CAST(CONCAT('%', :keyword, '%') AS text))
                    AND (:categoryType IS NULL OR c.category_type = :categoryType)
             """, nativeQuery = true)
     Page<CategoryEntity> findAllCategoryByUser(final String username,
                                                final String keyword,
                                                final String categoryType,
+                                               final Boolean active,
                                                final Pageable pageable);
 
     @Query(value = """

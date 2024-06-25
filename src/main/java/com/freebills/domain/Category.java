@@ -32,9 +32,13 @@ public class Category {
     private TransactionType categoryType;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private Boolean archived;
 
     @NonNull
     @JsonIgnore
     private User user;
 
+    public Boolean isArchived() {
+        return archived;
+    }
 }

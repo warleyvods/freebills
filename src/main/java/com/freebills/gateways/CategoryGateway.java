@@ -26,8 +26,12 @@ public class CategoryGateway {
         return categoryGatewayMapper.toDomain(categoryRepository.save(categoryGatewayMapper.toEntity(category)));
     }
 
-    public Page<Category> findAll(final String username, final String keyword, final String categoryType, final Pageable pageable) {
-        return categoryRepository.findAllCategoryByUser(username, keyword, categoryType, pageable)
+    public Page<Category> findAll(final String username,
+                                  final String keyword,
+                                  final String categoryType,
+                                  final Boolean status,
+                                  final Pageable pageable) {
+        return categoryRepository.findAllCategoryByUser(username, keyword, categoryType, status, pageable)
                 .map(categoryGatewayMapper::toDomain);
     }
 

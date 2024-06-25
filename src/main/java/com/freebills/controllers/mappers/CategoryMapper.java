@@ -6,6 +6,7 @@ import com.freebills.controllers.dtos.responses.CategoryResponseDTO;
 import com.freebills.domain.Category;
 import com.freebills.usecases.FindTransaction;
 import com.freebills.usecases.FindUser;
+import org.mapstruct.AfterMapping;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -18,6 +19,7 @@ import static org.mapstruct.ReportingPolicy.IGNORE;
 public interface CategoryMapper {
 
     @Mapping(source = "username", target = "user")
+    @Mapping(target = "archived", constant = "false")
     Category toDomain(CategoryPostRequestDTO category, String username);
 
     CategoryResponseDTO toDTO(Category category);
@@ -25,4 +27,9 @@ public interface CategoryMapper {
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     Category update(CategoryPutRequestDTO categoryPutRequestDTO, @MappingTarget Category category);
 
+    @AfterMapping
+    default Category toggleArchived(@MappingTarget Category category) {
+        category.setArchived(!category.isArchived());
+        return category;
+    }
 }

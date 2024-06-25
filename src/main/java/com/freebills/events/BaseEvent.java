@@ -11,10 +11,10 @@ public abstract class BaseEvent extends ApplicationEvent {
     private final Transaction transaction;
     private final Transaction oldTransaction;
 
-    protected BaseEvent(Object source,
-                        Long accountId,
-                        Transaction transaction,
-                        Transaction oldTransaction) {
+    protected BaseEvent(final Object source,
+                        final Long accountId,
+                        final Transaction transaction,
+                        final Transaction oldTransaction) {
         super(source);
         this.accountId = accountId;
         this.transaction = transaction;

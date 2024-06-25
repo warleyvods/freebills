@@ -17,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -55,9 +56,17 @@ public class CategoryController {
     @GetMapping
     public Page<CategoryResponseDTO> findAll(@RequestParam(required = false) final String keyword,
                                              @RequestParam(required = false) final String categoryType,
+                                             @RequestParam(required = false) final Boolean archived,
                                              final Principal principal,
                                              final Pageable pageable) {
-        return findCategory.findAll(principal.getName(), keyword, categoryType, pageable).map(mapper::toDTO);
+        return findCategory.findAll(principal.getName(), keyword, categoryType, archived, pageable).map(mapper::toDTO);
+    }
+
+    @ResponseStatus(OK)
+    @PatchMapping("{id}")
+    public CategoryResponseDTO toggleArchiveCategory(@PathVariable final Long id, Principal principal) {
+        final Category category = findCategory.findById(id, principal.getName());
+        return mapper.toDTO(updateCategory.execute(mapper.toggleArchived(category)));
     }
 
     @ResponseStatus(OK)
