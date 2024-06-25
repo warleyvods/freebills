@@ -4,6 +4,8 @@ import com.freebills.gateways.entities.enums.EventType;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 public class Event {
@@ -13,5 +15,6 @@ public class Event {
     private EventType eventType;
     private Transaction transactionData;
     private Transaction oldTransactionData;
+    private LocalDateTime createdAt;
 
 }

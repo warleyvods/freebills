@@ -29,6 +29,7 @@ public interface TransactionMapper {
     TransactionResponseDTO fromDomain(Transaction transaction);
 
     @Mapping(source = "accountId", target = "account")
+    @Mapping(source = "categoryId", target = "category")
     @BeanMapping(nullValuePropertyMappingStrategy = IGNORE)
     Transaction updateTransaction(TransactionPutRequestDTO transactionPutRequestDTO, @MappingTarget Transaction transaction);
 
