@@ -27,7 +27,6 @@ public interface CategoryMapper {
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     Category update(CategoryPutRequestDTO categoryPutRequestDTO, @MappingTarget Category category);
 
-    @AfterMapping
     default Category toggleArchived(@MappingTarget Category category) {
         category.setArchived(!category.isArchived());
         return category;
