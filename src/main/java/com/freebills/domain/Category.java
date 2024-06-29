@@ -26,19 +26,22 @@ public class Category {
     private String name;
 
     @NonNull
-    private String color;
-
     private String icon;
+
+    @NonNull
+    private String color;
 
     @NonNull
     private TransactionType categoryType;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private Boolean archived;
 
     @NonNull
     @JsonIgnore
     private User user;
+
+    @NonNull
+    private Boolean archived;
 
     public Boolean isArchived() {
         return archived;
