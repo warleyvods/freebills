@@ -7,6 +7,7 @@ public record CategoryPostRequestDTO(
         String name,
         @NotBlank
         String color,
+        String icon,
         @NotBlank
         String categoryType
 ) {

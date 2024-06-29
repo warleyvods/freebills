@@ -39,6 +39,8 @@ public class CategoryEntity {
 
     private String color;
 
+    private String icon;
+
     @Enumerated(STRING)
     private TransactionType categoryType;
 

@@ -10,6 +10,7 @@ public record CategoryPutRequestDTO(
         String name,
         @NotBlank
         String color,
+        String icon,
         @NotBlank
         String categoryType
 ) {

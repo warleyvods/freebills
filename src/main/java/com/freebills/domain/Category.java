@@ -28,6 +28,8 @@ public class Category {
     @NonNull
     private String color;
 
+    private String icon;
+
     @NonNull
     private TransactionType categoryType;
     private LocalDateTime createdAt;

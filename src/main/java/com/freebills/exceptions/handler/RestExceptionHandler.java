@@ -117,6 +117,18 @@ public class RestExceptionHandler {
                 .build();
     }
 
+    @ResponseStatus(INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(NullPointerException.class)
+    public ExceptionFilters nullPointer(final NullPointerException ex) {
+        return ExceptionFilters.builder()
+                .timestamp(LocalDateTime.now())
+                .details(ex.getMessage())
+                .devMsg(ex.getClass().getName())
+                .status(INTERNAL_SERVER_ERROR.value())
+                .title("Nullpointer")
+                .build();
+    }
+
     @ResponseStatus(BAD_REQUEST)
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ExceptionFilters dataIntegrationViolation(final DataIntegrityViolationException ex) {

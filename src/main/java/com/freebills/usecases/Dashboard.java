@@ -5,6 +5,7 @@ import com.freebills.controllers.dtos.responses.DashboardResponseDTO;
 import com.freebills.controllers.dtos.responses.DashboardGraphResponseDTO;
 import com.freebills.controllers.dtos.responses.DashboardRevenueResponseDTO;
 import com.freebills.domain.Account;
+import com.freebills.domain.Category;
 import com.freebills.domain.Transaction;
 import com.freebills.gateways.entities.enums.TransactionCategory;
 import com.freebills.gateways.entities.enums.TransactionType;
@@ -38,15 +39,15 @@ public class Dashboard {
                 .toList();
 
         var transactionTypesLabels = transactions.stream()
-                .map(Transaction::getTransactionCategory)
-                .map(TransactionCategory::name)
+                .map(Transaction::getCategory)
+                .map(Category::getName)
                 .distinct()
                 .sorted()
                 .toList();
 
         var values = transactions.stream()
                 .collect(Collectors.groupingBy(
-                        transaction -> transaction.getTransactionCategory().name(),
+                        transaction -> transaction.getCategory().getName(),
                         Collectors.reducing(BigDecimal.ZERO, Transaction::getAmount, BigDecimal::add)
                 ))
                 .entrySet().stream()

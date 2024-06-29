@@ -13,8 +13,6 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.ReportingPolicy;
 
-import java.math.BigDecimal;
-
 import static org.mapstruct.NullValuePropertyMappingStrategy.IGNORE;
 
 @Mapper(componentModel = "spring", uses = {AccountGateway.class, FindCategory.class}, unmappedTargetPolicy = ReportingPolicy.IGNORE)
