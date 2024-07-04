@@ -1,53 +1,52 @@
 package com.freebills.gateways.entities;
 
-import com.freebills.gateways.entities.enums.EventType;
-import com.freebills.gateways.entities.enums.TransferType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import static jakarta.persistence.EnumType.STRING;
-
-@Getter
 @Setter
+@Getter
 @Entity
-@Table(name = "events")
+@Table(name = "transfers")
 @EntityListeners(AuditingEntityListener.class)
-public class EventEntity {
+public class TransferEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long aggregateId;
+    private String observation;
+    private String description;
+    private String transferCategory;
 
-    private BigDecimal amount;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "from_account_id", nullable = false)
+    private AccountEntity from;
 
-    @Enumerated(STRING)
-    private EventType eventType;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "to_account_id", nullable = false)
+    private AccountEntity to;
 
-    @Enumerated(STRING)
-    private TransferType transferType;
-
-    @Column(columnDefinition = "TEXT")
-    private String transactionData;
-
-    @Column(columnDefinition = "TEXT")
-    private String oldTransactionData;
+    @LastModifiedDate
+    @Column(nullable = false)
+    private LocalDateTime updatedAt;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
+
 }

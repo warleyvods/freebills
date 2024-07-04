@@ -2,6 +2,7 @@ package com.freebills.usecases;
 
 import com.freebills.exceptions.PermissionDeniedException;
 import com.freebills.gateways.UserGateway;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -10,7 +11,11 @@ import java.util.List;
 
 @Slf4j
 @Component
-public record DeleteUser(UserGateway userGateway, FindUser findUser) {
+@RequiredArgsConstructor
+public class DeleteUser {
+
+    private UserGateway userGateway;
+    private FindUser findUser;
 
     private static final String ADMIN = "admin";
 

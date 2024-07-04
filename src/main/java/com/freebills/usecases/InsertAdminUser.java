@@ -2,13 +2,17 @@ package com.freebills.usecases;
 
 import com.freebills.gateways.entities.UserEntity;
 import com.freebills.repositories.UserRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public record InsertAdminUser(UserRepository userRepository) {
+@RequiredArgsConstructor
+public class InsertAdminUser {
+
+    private final UserRepository userRepository;
 
     private static final String ADMIN = "admin";
 

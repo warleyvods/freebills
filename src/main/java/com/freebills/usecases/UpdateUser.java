@@ -3,12 +3,17 @@ package com.freebills.usecases;
 import com.freebills.domain.User;
 import com.freebills.exceptions.PermissionDeniedException;
 import com.freebills.gateways.UserGateway;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;
 
 @Component
-public record UpdateUser(UserGateway userGateway, FindUser findUser) {
+@RequiredArgsConstructor
+public class UpdateUser {
+
+    private final UserGateway userGateway;
+    private final FindUser findUser;
 
     private static final String ADMIN = "admin";
 

@@ -33,6 +33,7 @@ public class Category {
 
     @NonNull
     private TransactionType categoryType;
+
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
