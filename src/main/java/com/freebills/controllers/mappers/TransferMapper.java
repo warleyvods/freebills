@@ -20,9 +20,13 @@ public interface TransferMapper {
     @Mapping(source = "fromAccountId", target = "from")
     Transfer toDomain(TransferPostRequestDTO request);
 
+    @Mapping(source = "from.id", target = "fromAccountId")
+    @Mapping(source = "to.id", target = "toAccountId")
     TransferResponseDTO toDTO(Transfer transfer);
-//
-//    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-//    TransferResponseDTO update(TransferPutRequestDTO transferPutRequestDTO, @MappingTarget Transfer category);
+
+    @Mapping(source = "toAccountId", target = "to")
+    @Mapping(source = "fromAccountId", target = "from")
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    Transfer toDomain(TransferPutRequestDTO transferPutRequestDTO, @MappingTarget Transfer category);
 
 }

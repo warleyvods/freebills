@@ -5,12 +5,15 @@ import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
 
 @Getter
-public class TransferCreatedEvent extends ApplicationEvent {
+public class TransferUpdatedEvent extends ApplicationEvent {
 
     private final Transfer transfer;
+    private final Transfer oldTransfer;
 
-    public TransferCreatedEvent(Object source, Transfer transfer) {
+    public TransferUpdatedEvent(Object source, Transfer transfer, Transfer oldTransfer) {
         super(source);
         this.transfer = transfer;
+        this.oldTransfer = oldTransfer;
     }
+
 }

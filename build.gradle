@@ -39,6 +39,7 @@ dependencies {
     implementation 'org.mapstruct:mapstruct:1.5.5.Final'
     implementation 'io.jsonwebtoken:jjwt:0.12.5'
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.2'
+    implementation 'io.hypersistence:hypersistence-utils-hibernate-63:3.8.1'
 
     compileOnly 'org.projectlombok:lombok'
 
@@ -52,6 +53,7 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.amqp:spring-rabbit-test'
     testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation 'org.testcontainers:postgresql'
 }
 
 dependencyManagement {

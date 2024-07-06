@@ -2,6 +2,7 @@ package com.freebills.gateways.entities;
 
 import com.freebills.gateways.entities.enums.EventType;
 import com.freebills.gateways.entities.enums.TransferType;
+import com.freebills.gateways.entities.json.TransferJsonData;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -12,13 +13,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import static jakarta.persistence.EnumType.STRING;
+import static org.hibernate.type.SqlTypes.*;
 
 @Getter
 @Setter
@@ -33,8 +35,6 @@ public class EventEntity {
 
     private Long aggregateId;
 
-    private BigDecimal amount;
-
     @Enumerated(STRING)
     private EventType eventType;
 
@@ -47,7 +47,15 @@ public class EventEntity {
     @Column(columnDefinition = "TEXT")
     private String oldTransactionData;
 
+    @JdbcTypeCode(JSON)
+    private TransferJsonData transferJsonData;
+
+    @JdbcTypeCode(JSON)
+    private TransferJsonData oldTransferJsonData;
+
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
+
+    //TODO criar updated_at!!
 }

@@ -23,8 +23,8 @@ public class CreateAccount {
     private final VerifyPrincipal isPrincipal;
     private final ApplicationEventPublisher eventPublisher;
 
-    public Account create(@Valid final Account account, final Principal principal) {
-        isPrincipal.execute(account.getUser().getId(), principal);
+    public Account create(@Valid final Account account, final String username) {
+        isPrincipal.execute(account.getUser().getId(), username);
         log.info("[CreateAccount:{}] Creating new account", account.getUser().getEmail());
 
         final Account savedAccount = accountGateway.save(account);

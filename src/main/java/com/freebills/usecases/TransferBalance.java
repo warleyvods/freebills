@@ -20,7 +20,7 @@ public class TransferBalance {
         final var fromAccount = accountGateway.findById(fromAccountId);
         final var toAccount = accountGateway.findById(toAccountId);
 
-        final var transferCreatedEvent = new TransferCreatedEvent(this, fromAccount.getId(), toAccount.getId(), amount);
+//        final var transferCreatedEvent = new TransferCreatedEvent(this, fromAccount.getId(), toAccount.getId(), amount);
 
     }
 }

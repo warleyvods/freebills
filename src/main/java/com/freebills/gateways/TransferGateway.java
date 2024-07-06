@@ -20,12 +20,12 @@ public class TransferGateway {
         return transferGatewayMapper.toDomain(transferRepository.save(transferGatewayMapper.toEntity(transfer)));
     }
 
-    public Page<Transfer> findAll(final Pageable pageable) {
-        return transferRepository.findAll(pageable).map(transferGatewayMapper::toDomain);
+    public Page<Transfer> findAll(final String username, final Integer year, final Integer month,final Pageable pageable) {
+        return transferRepository.findAllByUsername(username, year, month, pageable).map(transferGatewayMapper::toDomain);
     }
 
-    public Transfer findById(final Long id) {
-        return transferGatewayMapper.toDomain(transferRepository.findById(id)
+    public Transfer findById(final Long id, final String username) {
+        return transferGatewayMapper.toDomain(transferRepository.findByTransferIdAndUser(id, username)
                 .orElseThrow(() -> new TransferNotFoundException("Transfer id: " + id + " not found!")));
     }
 
@@ -33,7 +33,7 @@ public class TransferGateway {
         return transferGatewayMapper.toDomain(transferRepository.save(transferGatewayMapper.toEntity(transfer)));
     }
 
-    public void deleteById(final Long id) {
-        transferRepository.deleteById(id);
+    public void deleteById(final Long id, final String username) {
+        transferRepository.deleteByIdAndUsername(id, username);
     }
 }

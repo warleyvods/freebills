@@ -1,7 +1,7 @@
 package com.freebills.usecases;
 
 import com.freebills.domain.Transfer;
-import com.freebills.events.transfer.TransferCreatedEvent;
+import com.freebills.events.transfer.TransferDeleteEvent;
 import com.freebills.gateways.TransferGateway;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
@@ -9,15 +9,17 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class CreateTransfer {
+public class DeleteTransfer {
 
     private final TransferGateway transferGateway;
     private final ApplicationEventPublisher eventPublisher;
+    private final FindTransfer findTransfer;
 
-    public Transfer execute(Transfer transfer) {
-        final Transfer transferSaved = transferGateway.save(transfer);
+    public void execute(final Long id, final String username) {
+        final Transfer transferFounded = findTransfer.byId(id, username);
 
-        eventPublisher.publishEvent(new TransferCreatedEvent(this, transferSaved));
-        return transferSaved;
+        transferGateway.deleteById(id, username);
+
+        eventPublisher.publishEvent(new TransferDeleteEvent(this, transferFounded));
     }
 }

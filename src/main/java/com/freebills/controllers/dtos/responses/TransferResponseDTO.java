@@ -1,16 +1,18 @@
 package com.freebills.controllers.dtos.responses;
 
-import com.freebills.domain.Account;
-
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public record TransferResponseDTO(
        Long id,
        String observation,
        String description,
+       Double amount,
        String transferCategory,
-       Account from,
-       Account to,
-       LocalDateTime createdAt
+       Long fromAccountId,
+       Long toAccountId,
+       LocalDate date,
+       LocalDateTime createdAt,
+       LocalDateTime updatedAt
 ) {
 }
