@@ -98,20 +98,18 @@ public class TransferEventListener {
             eventToAccount.setEventType(TRANSFER_UPDATED);
             eventToAccount.setAggregateId(event.getTransfer().getTo().getId());
 
-
-            if (event.getOldTransfer().getFrom().getId().equals(event.getTransfer().getTo().getId())) {
-                eventFromAccount.setTransferData(event.getTransfer().withTransferTypeOut());
-                eventFromAccount.setOldTransferData(event.getOldTransfer().withTransferTypeOut());
-
-                eventToAccount.setTransferData(event.getTransfer().withTransferTypeIn());
-                eventToAccount.setOldTransferData(event.getTransfer().withTransferTypeIn());
-            }
-
             eventFromAccount.setTransferData(event.getTransfer().withTransferTypeOut());
             eventFromAccount.setOldTransferData(event.getOldTransfer().withTransferTypeOut());
 
             eventToAccount.setTransferData(event.getTransfer().withTransferTypeIn());
             eventToAccount.setOldTransferData(event.getOldTransfer().withTransferTypeIn());
+
+            if (event.getOldTransfer().getFrom().getId().equals(event.getTransfer().getTo().getId()) &&
+                event.getOldTransfer().getTo().getId().equals(event.getTransfer().getFrom().getId())) {
+
+                eventFromAccount.setOldTransferData(event.getOldTransfer().withTransferTypeIn());
+                eventToAccount.setOldTransferData(event.getOldTransfer().withTransferTypeOut());
+            }
 
             final var eventList = List.of(eventFromAccount, eventToAccount);
 
@@ -122,4 +120,5 @@ public class TransferEventListener {
             throw e;
         }
     }
+
 }
