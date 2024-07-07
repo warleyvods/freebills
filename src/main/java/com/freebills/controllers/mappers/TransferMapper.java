@@ -16,16 +16,16 @@ import static org.mapstruct.ReportingPolicy.IGNORE;
 @Mapper(componentModel = "spring", uses = FindAccount.class, unmappedTargetPolicy = IGNORE)
 public interface TransferMapper {
 
-    @Mapping(source = "toAccountId", target = "to")
-    @Mapping(source = "fromAccountId", target = "from")
+    @Mapping(source = "toAccountId", target = "toAccountId")
+    @Mapping(source = "fromAccountId", target = "fromAccountId")
     Transfer toDomain(TransferPostRequestDTO request);
 
-    @Mapping(source = "from.id", target = "fromAccountId")
-    @Mapping(source = "to.id", target = "toAccountId")
+    @Mapping(source = "fromAccountId.id", target = "fromAccountId")
+    @Mapping(source = "toAccountId.id", target = "toAccountId")
     TransferResponseDTO toDTO(Transfer transfer);
 
-    @Mapping(source = "toAccountId", target = "to")
-    @Mapping(source = "fromAccountId", target = "from")
+    @Mapping(source = "toAccountId", target = "toAccountId")
+    @Mapping(source = "fromAccountId", target = "fromAccountId")
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     Transfer toDomain(TransferPutRequestDTO transferPutRequestDTO, @MappingTarget Transfer category);
 

@@ -56,8 +56,8 @@ public abstract class EventGatewayMapper {
                     event.getTransferData().getObservation(),
                     event.getTransferData().getDescription(),
                     event.getTransferData().getTransferType(),
-                    event.getTransferData().getFrom().getId(),
-                    event.getTransferData().getTo().getId(),
+                    event.getTransferData().getFromAccountId().getId(),
+                    event.getTransferData().getToAccountId().getId(),
                     event.getTransferData().getUpdatedAt(),
                     event.getTransferData().getCreatedAt()
             ));
@@ -70,8 +70,8 @@ public abstract class EventGatewayMapper {
                     event.getOldTransferData().getObservation(),
                     event.getOldTransferData().getDescription(),
                     event.getOldTransferData().getTransferType(),
-                    event.getOldTransferData().getFrom().getId(),
-                    event.getOldTransferData().getTo().getId(),
+                    event.getOldTransferData().getFromAccountId().getId(),
+                    event.getOldTransferData().getToAccountId().getId(),
                     event.getOldTransferData().getUpdatedAt(),
                     event.getOldTransferData().getCreatedAt()
             ));
@@ -119,8 +119,8 @@ public abstract class EventGatewayMapper {
         transfer.setObservation(eventEntity.getTransferJsonData().observation());
         transfer.setDescription(eventEntity.getTransferJsonData().description());
         transfer.setTransferType(eventEntity.getTransferJsonData().transferType());
-        transfer.setFrom(new Account(eventEntity.getTransferJsonData().fromAccountId()));
-        transfer.setTo(new Account(eventEntity.getTransferJsonData().fromAccountId()));
+        transfer.setFromAccountId(new Account(eventEntity.getTransferJsonData().fromAccountId()));
+        transfer.setToAccountId(new Account(eventEntity.getTransferJsonData().fromAccountId()));
         transfer.setUpdatedAt(eventEntity.getTransferJsonData().updatedAt());
         transfer.setCreatedAt(eventEntity.getTransferJsonData().createdAt());
         return transfer;
@@ -133,12 +133,10 @@ public abstract class EventGatewayMapper {
         transfer.setObservation(eventEntity.getOldTransferJsonData().observation());
         transfer.setDescription(eventEntity.getOldTransferJsonData().description());
         transfer.setTransferType(eventEntity.getOldTransferJsonData().transferType());
-        transfer.setFrom(new Account(eventEntity.getOldTransferJsonData().fromAccountId()));
-        transfer.setTo(new Account(eventEntity.getOldTransferJsonData().fromAccountId()));
+        transfer.setFromAccountId(new Account(eventEntity.getOldTransferJsonData().fromAccountId()));
+        transfer.setToAccountId(new Account(eventEntity.getOldTransferJsonData().fromAccountId()));
         transfer.setUpdatedAt(eventEntity.getOldTransferJsonData().updatedAt());
         transfer.setCreatedAt(eventEntity.getOldTransferJsonData().createdAt());
         return transfer;
     }
-
-
 }

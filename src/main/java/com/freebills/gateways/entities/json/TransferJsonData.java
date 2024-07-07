@@ -8,14 +8,15 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-public record TransferJsonData(Long id,
-                               BigDecimal amount,
-                               String observation,
-                               String description,
-                               TransferType transferType,
-                               Long fromAccountId,
-                               Long toAccountId,
-                               LocalDateTime updatedAt,
-                               LocalDateTime createdAt) implements Serializable {
+public record TransferJsonData(
+        Long id,
+        BigDecimal amount,
+        String observation,
+        String description,
+        TransferType transferType,
+        Long fromAccountId,
+        Long toAccountId,
+        LocalDateTime updatedAt,
+        LocalDateTime createdAt) implements Serializable {
 
 }

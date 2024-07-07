@@ -14,8 +14,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DeleteUser {
 
-    private UserGateway userGateway;
-    private FindUser findUser;
+    private final UserGateway userGateway;
+    private final FindUser findUser;
 
     private static final String ADMIN = "admin";
 

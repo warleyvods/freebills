@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.event.TransactionalEventListener;
 
 import java.util.List;
 
@@ -28,19 +27,19 @@ public class TransferEventListener {
     @EventListener
     public void handleTransferCreatedEvent(final TransferCreatedEvent event) {
         log.info("Handling TransferCreatedEvent from account id: {} to account id: {}",
-                event.getTransfer().getFrom().getId(),
-                event.getTransfer().getTo().getId()
+                event.getTransfer().getFromAccountId().getId(),
+                event.getTransfer().getToAccountId().getId()
         );
 
         try {
             final var eventFromAccount = new Event();
             eventFromAccount.setEventType(TRANSFER_CREATED);
-            eventFromAccount.setAggregateId(event.getTransfer().getFrom().getId());
+            eventFromAccount.setAggregateId(event.getTransfer().getFromAccountId().getId());
             eventFromAccount.setTransferData(event.getTransfer().withTransferTypeOut());
 
             final var eventToAccount = new Event();
             eventToAccount.setEventType(TRANSFER_CREATED);
-            eventToAccount.setAggregateId(event.getTransfer().getTo().getId());
+            eventToAccount.setAggregateId(event.getTransfer().getToAccountId().getId());
             eventToAccount.setTransferData(event.getTransfer().withTransferTypeIn());
 
             final var eventList = List.of(eventFromAccount, eventToAccount);
@@ -54,19 +53,19 @@ public class TransferEventListener {
     @EventListener
     public void handleTransferDeleteEvent(final TransferDeleteEvent event) {
         log.info("Handling TransferDeleteEvent from account id: {} to account id: {}",
-                event.getTransfer().getFrom().getId(),
-                event.getTransfer().getTo().getId()
+                event.getTransfer().getFromAccountId().getId(),
+                event.getTransfer().getToAccountId().getId()
         );
 
         try {
             final var eventFromAccount = new Event();
             eventFromAccount.setEventType(TRANSFER_DELETED);
-            eventFromAccount.setAggregateId(event.getTransfer().getFrom().getId());
+            eventFromAccount.setAggregateId(event.getTransfer().getFromAccountId().getId());
             eventFromAccount.setTransferData(event.getTransfer().withTransferTypeIn());
 
             final var eventToAccount = new Event();
             eventToAccount.setEventType(TRANSFER_DELETED);
-            eventToAccount.setAggregateId(event.getTransfer().getTo().getId());
+            eventToAccount.setAggregateId(event.getTransfer().getToAccountId().getId());
             eventToAccount.setTransferData(event.getTransfer().withTransferTypeOut());
 
             final var eventList = List.of(eventFromAccount, eventToAccount);
@@ -82,21 +81,21 @@ public class TransferEventListener {
     @EventListener
     public void handleTransferUpdateEvent(final TransferUpdatedEvent event) {
         log.info("Handling new TransferUpdatedEvent from account id: {} to account id: {}",
-                event.getTransfer().getFrom().getId(),
-                event.getTransfer().getTo().getId());
+                event.getTransfer().getFromAccountId().getId(),
+                event.getTransfer().getToAccountId().getId());
 
         log.info("Handling old TransferUpdatedEvent from account id: {} to account id: {}",
-                event.getOldTransfer().getFrom().getId(),
-                event.getOldTransfer().getTo().getId());
+                event.getOldTransfer().getFromAccountId().getId(),
+                event.getOldTransfer().getToAccountId().getId());
 
         try {
             final var eventFromAccount = new Event();
             eventFromAccount.setEventType(TRANSFER_UPDATED);
-            eventFromAccount.setAggregateId(event.getTransfer().getFrom().getId());
+            eventFromAccount.setAggregateId(event.getTransfer().getFromAccountId().getId());
 
             final var eventToAccount = new Event();
             eventToAccount.setEventType(TRANSFER_UPDATED);
-            eventToAccount.setAggregateId(event.getTransfer().getTo().getId());
+            eventToAccount.setAggregateId(event.getTransfer().getToAccountId().getId());
 
             eventFromAccount.setTransferData(event.getTransfer().withTransferTypeOut());
             eventFromAccount.setOldTransferData(event.getOldTransfer().withTransferTypeOut());
@@ -104,8 +103,8 @@ public class TransferEventListener {
             eventToAccount.setTransferData(event.getTransfer().withTransferTypeIn());
             eventToAccount.setOldTransferData(event.getOldTransfer().withTransferTypeIn());
 
-            if (event.getOldTransfer().getFrom().getId().equals(event.getTransfer().getTo().getId()) &&
-                event.getOldTransfer().getTo().getId().equals(event.getTransfer().getFrom().getId())) {
+            if (event.getOldTransfer().getFromAccountId().getId().equals(event.getTransfer().getToAccountId().getId()) &&
+                event.getOldTransfer().getToAccountId().getId().equals(event.getTransfer().getFromAccountId().getId())) {
 
                 eventFromAccount.setOldTransferData(event.getOldTransfer().withTransferTypeIn());
                 eventToAccount.setOldTransferData(event.getOldTransfer().withTransferTypeOut());

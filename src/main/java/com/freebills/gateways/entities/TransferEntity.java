@@ -34,18 +34,20 @@ public class TransferEntity {
     private String observation;
 
     private BigDecimal amount;
+
     private LocalDate date;
 
     private String description;
+
     private String transferCategory;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "from_account_id", nullable = false)
-    private AccountEntity from;
+    private AccountEntity fromAccountId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "to_account_id", nullable = false)
-    private AccountEntity to;
+    private AccountEntity toAccountId;
 
     @LastModifiedDate
     @Column(nullable = false)

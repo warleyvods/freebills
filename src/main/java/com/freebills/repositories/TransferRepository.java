@@ -28,7 +28,7 @@ public interface TransferRepository extends JpaRepository<TransferEntity, Long> 
     @Query(value = """
                 FROM TransferEntity t
                 JOIN AccountEntity account
-                    ON t.from.id = account.id
+                    ON t.fromAccountId.id = account.id
                 JOIN UserEntity u
                     ON account.user.id = u.id
                 WHERE u.login = :username
@@ -45,7 +45,7 @@ public interface TransferRepository extends JpaRepository<TransferEntity, Long> 
     @Query("""
                 DELETE FROM TransferEntity t
                 WHERE t.id = :id
-                AND t.from.id IN (
+                AND t.fromAccountId.id IN (
                     SELECT a.id FROM AccountEntity a
                     WHERE a.user.login = :username
                 )

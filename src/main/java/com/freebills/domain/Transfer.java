@@ -28,8 +28,8 @@ public class Transfer implements Serializable {
     private String description;
     private LocalDate date;
     private TransferType transferType;
-    private Account from;
-    private Account to;
+    private Account fromAccountId;
+    private Account toAccountId;
     private LocalDateTime updatedAt;
     private LocalDateTime createdAt;
 

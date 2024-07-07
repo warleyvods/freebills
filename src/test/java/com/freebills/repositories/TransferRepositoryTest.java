@@ -5,13 +5,12 @@ import com.freebills.gateways.entities.Source;
 import com.freebills.gateways.entities.TransferEntity;
 import com.freebills.gateways.entities.UserEntity;
 import com.freebills.gateways.entities.enums.BankType;
-import org.junit.jupiter.api.*;
+import com.freebills.utils.TestContainerBase;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.PostgreSQLContainer;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -21,10 +20,10 @@ import java.util.List;
 import static com.freebills.gateways.entities.enums.AccountType.CHECKING_ACCOUNT;
 import static com.freebills.gateways.entities.enums.BankType.CAIXA;
 import static com.freebills.gateways.entities.enums.BankType.INTER;
+import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 
-@ActiveProfiles("tc")
-@SpringBootTest
-class TransferRepositoryTest {
+@TestInstance(PER_CLASS)
+class TransferRepositoryTest extends TestContainerBase {
 
     @Autowired
     private TransferRepository transferRepository;
@@ -34,25 +33,6 @@ class TransferRepositoryTest {
 
     @Autowired
     private AccountsRepository accountsRepository;
-
-    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16-alpine");
-
-    @BeforeAll
-    static void beforeAll() {
-        postgres.start();
-    }
-
-    @AfterAll
-    static void afterAll() {
-        postgres.stop();
-    }
-
-    @DynamicPropertySource
-    static void configureProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", postgres::getJdbcUrl);
-        registry.add("spring.datasource.username", postgres::getUsername);
-        registry.add("spring.datasource.password", postgres::getPassword);
-    }
 
     @BeforeEach
     void setUp() {
@@ -156,8 +136,8 @@ class TransferRepositoryTest {
         transferEntity.setDate(LocalDate.now());
         transferEntity.setDescription(description);
         transferEntity.setTransferCategory("");
-        transferEntity.setFrom(from);
-        transferEntity.setTo(to);
+        transferEntity.setFromAccountId(from);
+        transferEntity.setToAccountId(to);
         transferEntity.setUpdatedAt(LocalDateTime.now());
         transferEntity.setCreatedAt(LocalDateTime.now());
         return transferEntity;

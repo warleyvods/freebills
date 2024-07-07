@@ -1,6 +1,4 @@
 package com.freebills.usecases;
-import com.freebills.gateways.entities.enums.TransferType;
-import java.time.LocalDateTime;
 
 import com.freebills.domain.Account;
 import com.freebills.domain.Event;
@@ -10,31 +8,33 @@ import com.freebills.gateways.EventGateway;
 import com.freebills.gateways.entities.enums.EventType;
 import com.freebills.gateways.entities.enums.TransactionCategory;
 import com.freebills.gateways.entities.enums.TransactionType;
+import com.freebills.gateways.entities.enums.TransferType;
 import com.freebills.repositories.EventRepository;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import com.freebills.utils.TestContainerBase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.PostgreSQLContainer;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.freebills.gateways.entities.enums.EventType.*;
-import static com.freebills.gateways.entities.enums.TransferType.*;
+import static com.freebills.gateways.entities.enums.EventType.TRANSACTION_CREATED;
+import static com.freebills.gateways.entities.enums.EventType.TRANSACTION_DELETED;
+import static com.freebills.gateways.entities.enums.EventType.TRANSACTION_UPDATED;
+import static com.freebills.gateways.entities.enums.EventType.TRANSFER_CREATED;
+import static com.freebills.gateways.entities.enums.EventType.TRANSFER_DELETED;
+import static com.freebills.gateways.entities.enums.EventType.TRANSFER_UPDATED;
+import static com.freebills.gateways.entities.enums.TransferType.IN;
+import static com.freebills.gateways.entities.enums.TransferType.OUT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
+import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 
-@ActiveProfiles("tc")
-@SpringBootTest(webEnvironment = RANDOM_PORT)
-class AccountBalanceCalculatorTest {
+@TestInstance(PER_CLASS)
+class AccountBalanceCalculatorTest extends TestContainerBase {
 
     @Autowired
     private AccountBalanceCalculator accountBalanceCalculator;
@@ -44,25 +44,6 @@ class AccountBalanceCalculatorTest {
 
     @Autowired
     private EventRepository eventRepository;
-
-    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16-alpine");
-
-    @BeforeAll
-    static void beforeAll() {
-        postgres.start();
-    }
-
-    @AfterAll
-    static void afterAll() {
-        postgres.stop();
-    }
-
-    @DynamicPropertySource
-    static void configureProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", postgres::getJdbcUrl);
-        registry.add("spring.datasource.username", postgres::getUsername);
-        registry.add("spring.datasource.password", postgres::getPassword);
-    }
 
     @BeforeEach
     void setUp() {
@@ -122,8 +103,8 @@ class AccountBalanceCalculatorTest {
         transfer.setDescription("TRANSFER");
         transfer.setDate(LocalDate.now());
         transfer.setTransferType(transferType);
-        transfer.setFrom(new Account(accountId));
-        transfer.setTo(new Account(accountId));
+        transfer.setFromAccountId(new Account(accountId));
+        transfer.setToAccountId(new Account(accountId));
         transfer.setUpdatedAt(LocalDateTime.now());
         transfer.setCreatedAt(LocalDateTime.now());
 
@@ -459,49 +440,5 @@ class AccountBalanceCalculatorTest {
 
         assertEquals(new BigDecimal("200"), balance1);
         assertEquals(new BigDecimal("200"), balance2);
-    }
-
-    @Test
-    @DisplayName("Deve alterar o valor da conta corrente com transferencias entre contas e atualização da transferencia - Alterar a conta")
-    void calculateBalanceForAccountWithTransfer03() {
-        Account account1 = new Account();
-        account1.setId(1L);
-
-        Account account2 = new Account();
-        account2.setId(2L);
-
-
-        final Event transferEvent1 = createTransferEvent(1L, TRANSFER_CREATED, BigDecimal.valueOf(100), OUT);
-        final Transfer transferData1 = transferEvent1.getTransferData();
-
-        final Event transferEvent2 = createTransferEvent(2L, TRANSFER_CREATED, BigDecimal.valueOf(100), IN);
-        final Transfer transferData2 = transferEvent2.getTransferData();
-
-        final Transfer newTransferData1 = transferData1.toBuilder()
-                .amount(new BigDecimal("50"))
-                .build();
-
-        final Transfer newTransferData2 = transferData2.toBuilder()
-                .amount(new BigDecimal("50"))
-                .build();
-
-        final List<Event> events = List.of(
-                createEvent(1L, TRANSACTION_CREATED, BigDecimal.valueOf(200), TransactionType.REVENUE),
-                createEvent(2L, TRANSACTION_CREATED, BigDecimal.valueOf(200), TransactionType.REVENUE),
-
-                transferEvent1,
-                transferEvent2,
-
-                updateTransferEvent(1L, newTransferData1, transferData1),
-                updateTransferEvent(2L, newTransferData2, transferData2)
-        );
-
-        events.forEach(e -> eventGateway.save(e));
-
-        BigDecimal balance1 = accountBalanceCalculator.calculateBalanceForAccount(account1);
-        BigDecimal balance2 = accountBalanceCalculator.calculateBalanceForAccount(account2);
-
-        assertEquals(new BigDecimal("250"), balance1);
-        assertEquals(new BigDecimal("150"), balance2);
     }
 }

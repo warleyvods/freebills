@@ -10,11 +10,18 @@ import com.freebills.gateways.entities.enums.TransactionType;
 import com.freebills.gateways.mapper.AccountGatewayMapper;
 import com.freebills.repositories.AccountsRepository;
 import com.freebills.repositories.UserRepository;
+import com.freebills.utils.TestContainerBase;
 import jakarta.validation.ConstraintViolationException;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.testcontainers.containers.PostgreSQLContainer;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -23,9 +30,10 @@ import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.TestInstance.Lifecycle.*;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class CreateTransactionTest {
+@TestInstance(PER_CLASS)
+class CreateTransactionTest extends TestContainerBase {
 
     @Autowired
     private CreateTransaction createTransaction;

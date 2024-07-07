@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class UpdateAccount {
 
-    private AccountGateway accountGateway;
+    private final AccountGateway accountGateway;
 
     public Account update(final Account account) {
         final var update = accountGateway.update(account);

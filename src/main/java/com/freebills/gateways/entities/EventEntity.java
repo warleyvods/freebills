@@ -15,6 +15,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
@@ -38,9 +39,6 @@ public class EventEntity {
     @Enumerated(STRING)
     private EventType eventType;
 
-    @Enumerated(STRING)
-    private TransferType transferType;
-
     @Column(columnDefinition = "TEXT")
     private String transactionData;
 
@@ -57,5 +55,7 @@ public class EventEntity {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    //TODO criar updated_at!!
+    @LastModifiedDate
+    @Column(nullable = false)
+    private LocalDateTime updatedAt;
 }

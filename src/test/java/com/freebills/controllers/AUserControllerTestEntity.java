@@ -1,23 +1,23 @@
-package controllers;
+package com.freebills.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.freebills.FreebillsApplication;
 import com.freebills.controllers.dtos.requests.LoginRequestDTO;
 import com.freebills.controllers.dtos.requests.UserPostRequestDTO;
 import com.freebills.controllers.dtos.responses.UserResponseDTO;
-import com.freebills.gateways.entities.UserEntity;
 import com.freebills.exceptions.handler.ExceptionFilters;
 import com.freebills.gateways.UserGateway;
+import com.freebills.gateways.entities.UserEntity;
 import com.freebills.repositories.UserRepository;
 import com.freebills.utils.PageWrapper;
+import com.freebills.utils.TestContainerBase;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpEntity;
@@ -31,9 +31,10 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 
-@SpringBootTest(classes = FreebillsApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class AUserControllerTestEntity {
+@TestInstance(PER_CLASS)
+class AUserControllerTestEntity extends TestContainerBase {
 
     @Autowired
     private UserRepository userRepository;
