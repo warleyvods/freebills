@@ -2,18 +2,12 @@ package com.freebills.gateways;
 
 import com.freebills.domain.Category;
 import com.freebills.exceptions.CategoryNotFoundException;
-import com.freebills.gateways.entities.CategoryEntity;
-import com.freebills.gateways.entities.enums.TransactionType;
 import com.freebills.gateways.mapper.CategoryGatewayMapper;
 import com.freebills.repositories.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.Comparator;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor

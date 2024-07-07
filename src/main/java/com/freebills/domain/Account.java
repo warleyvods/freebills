@@ -5,6 +5,7 @@ import com.freebills.gateways.entities.enums.AccountType;
 import com.freebills.gateways.entities.enums.BankType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
@@ -12,6 +13,7 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @EqualsAndHashCode
+@NoArgsConstructor
 public class Account {
 
     private Long id;
@@ -24,6 +26,10 @@ public class Account {
 
     @JsonIgnore
     private User user;
+
+    public Account(Long id) {
+        this.id = id;
+    }
 
     public Boolean isArchived() {
         return archived;

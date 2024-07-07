@@ -5,6 +5,7 @@ import com.freebills.exceptions.CategoryNotFoundException;
 import com.freebills.exceptions.InvalidCredentialsException;
 import com.freebills.exceptions.PermissionDeniedException;
 import com.freebills.exceptions.TransactionNotFoundException;
+import com.freebills.exceptions.TransferNotFoundException;
 import com.freebills.exceptions.UserNotFoundException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
@@ -54,6 +55,18 @@ public class RestExceptionHandler {
                 .devMsg(ex.getClass().getName())
                 .status(NOT_FOUND.value())
                 .title("User not found!")
+                .build();
+    }
+
+    @ResponseStatus(NOT_FOUND)
+    @ExceptionHandler(TransferNotFoundException.class)
+    public ExceptionFilters handleTransferNotFound(final TransferNotFoundException ex) {
+        return ExceptionFilters.builder()
+                .timestamp(LocalDateTime.now())
+                .details(ex.getMessage())
+                .devMsg(ex.getClass().getName())
+                .status(NOT_FOUND.value())
+                .title("Transfer not found!")
                 .build();
     }
 

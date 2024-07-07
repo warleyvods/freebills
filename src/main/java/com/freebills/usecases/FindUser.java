@@ -2,6 +2,7 @@ package com.freebills.usecases;
 
 import com.freebills.domain.User;
 import com.freebills.gateways.UserGateway;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
@@ -9,7 +10,10 @@ import org.springframework.stereotype.Component;
 import java.util.regex.Pattern;
 
 @Component
-public record FindUser(UserGateway userGateway) {
+@RequiredArgsConstructor
+public class FindUser {
+
+    private final UserGateway userGateway;
 
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Za-z0-9+_.-]+@(.+)$");
 

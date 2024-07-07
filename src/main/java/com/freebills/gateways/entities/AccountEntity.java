@@ -16,14 +16,12 @@ import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import static jakarta.persistence.CascadeType.ALL;
 import static jakarta.persistence.EnumType.STRING;
-import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Getter
@@ -52,8 +50,14 @@ public class AccountEntity {
 
     private Boolean dashboard;
 
-    @OneToMany(mappedBy = "account", cascade = ALL, fetch = LAZY)
+    @OneToMany(mappedBy = "account", cascade = ALL, orphanRemoval = true)
     private List<TransactionEntity> transactions = new ArrayList<>();
+
+    @OneToMany(mappedBy = "fromAccountId", cascade = ALL, orphanRemoval = true)
+    private List<TransferEntity> outgoingTransfers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "toAccountId", cascade = ALL, orphanRemoval = true)
+    private List<TransferEntity> incomingTransfers = new ArrayList<>();
 
     @CreatedDate
     @Column(nullable = false, updatable = false)

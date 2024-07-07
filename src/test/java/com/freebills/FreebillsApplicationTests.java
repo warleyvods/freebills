@@ -1,13 +1,16 @@
 package com.freebills;
 
+import com.freebills.utils.TestContainerBase;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.core.env.Environment;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.TestInstance.Lifecycle.*;
 
-@SpringBootTest
-class FreebillsApplicationTests {
+@TestInstance(PER_CLASS)
+class FreebillsApplicationTests extends TestContainerBase {
 
     private final Environment environment;
 

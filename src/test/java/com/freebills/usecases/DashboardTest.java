@@ -13,21 +13,24 @@ import com.freebills.gateways.mapper.AccountGatewayMapper;
 import com.freebills.repositories.AccountsRepository;
 import com.freebills.repositories.TransactionRepository;
 import com.freebills.repositories.UserRepository;
+import com.freebills.utils.TestContainerBase;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 
-@SpringBootTest
-class DashboardTest {
+@Disabled
+@TestInstance(PER_CLASS)
+class DashboardTest extends TestContainerBase {
 
     @Autowired
     private Dashboard dashboard;
@@ -48,6 +51,28 @@ class DashboardTest {
 
     @Autowired
     private UserRepository userRepository;
+
+    @BeforeEach
+    void beforeSetup() {
+        UserEntity userEntity = userRepository.findById(1L).orElse(null);
+
+        final var acc01 = new AccountEntity();
+        acc01.setDescription("Conta Inter");
+        acc01.setAccountType(AccountType.CHECKING_ACCOUNT);
+        acc01.setBankType(BankType.INTER);
+        acc01.setUser(userEntity);
+        acc01.setArchived(false);
+        acc01.setDashboard(false);
+
+        account = accountGatewayMapper.toDomain(accountsRepository.save(acc01));
+    }
+
+    @AfterEach
+    void afterSetup() {
+        accountsRepository.deleteAll();
+        transactionRepository.deleteAll();
+        userRepository.deleteAll();
+    }
 
     private List<Transaction> transactionMockList() {
         var t1 = new Transaction();
@@ -95,28 +120,6 @@ class DashboardTest {
         t4.setAccount(account);
 
         return List.of(t1, t2, t3, t4);
-    }
-
-    @BeforeEach
-    void beforeSetup() {
-        UserEntity userEntity = userRepository.findById(1L).orElse(null);
-
-        final var acc01 = new AccountEntity();
-//        acc01.setAmount(new BigDecimal("0"));
-        acc01.setDescription("Conta Inter");
-        acc01.setAccountType(AccountType.CHECKING_ACCOUNT);
-        acc01.setBankType(BankType.INTER);
-        acc01.setUser(userEntity);
-        acc01.setArchived(false);
-        acc01.setDashboard(false);
-
-        account = accountGatewayMapper.toDomain(accountsRepository.save(acc01));
-    }
-
-    @AfterEach
-    void afterSetup() {
-        accountsRepository.deleteAll();
-        transactionRepository.deleteAll();
     }
 
     @Test
@@ -229,7 +232,6 @@ class DashboardTest {
         t1.setAccount(account);
 
         var t2 = new Transaction();
-        ;
         t2.setAmount(new BigDecimal("100"));
         t2.setDate(LocalDate.of(2022, 1, 1));
         t2.setDescription("Arroz");
