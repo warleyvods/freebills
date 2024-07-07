@@ -10,11 +10,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 import static com.freebills.gateways.entities.enums.EventType.TRANSFER_CREATED;
 import static com.freebills.gateways.entities.enums.EventType.TRANSFER_DELETED;
 import static com.freebills.gateways.entities.enums.EventType.TRANSFER_UPDATED;
+import static java.util.List.of;
 
 
 @Slf4j
@@ -42,8 +41,7 @@ public class TransferEventListener {
             eventToAccount.setAggregateId(event.getTransfer().getToAccountId().getId());
             eventToAccount.setTransferData(event.getTransfer().withTransferTypeIn());
 
-            final var eventList = List.of(eventFromAccount, eventToAccount);
-            eventGateway.saveAll(eventList);
+            eventGateway.saveAll(of(eventFromAccount, eventToAccount));
         } catch (Exception e) {
             log.error("Error handling TransferCreatedEvent: {}", e.getMessage());
             throw e;
@@ -68,10 +66,7 @@ public class TransferEventListener {
             eventToAccount.setAggregateId(event.getTransfer().getToAccountId().getId());
             eventToAccount.setTransferData(event.getTransfer().withTransferTypeOut());
 
-            final var eventList = List.of(eventFromAccount, eventToAccount);
-
-            eventList.forEach(eventGateway::save);
-
+            eventGateway.saveAll(of(eventFromAccount, eventToAccount));
         } catch (Exception e) {
             log.error("Error handling TransferDeleteEvent: {}", e.getMessage());
             throw e;
@@ -110,14 +105,10 @@ public class TransferEventListener {
                 eventToAccount.setOldTransferData(event.getOldTransfer().withTransferTypeOut());
             }
 
-            final var eventList = List.of(eventFromAccount, eventToAccount);
-
-            eventGateway.saveAll(eventList);
-
+            eventGateway.saveAll(of(eventFromAccount, eventToAccount));
         } catch (Exception e) {
             log.error("Error handling TransferUpdateEvent: {}", e.getMessage());
             throw e;
         }
     }
-
 }

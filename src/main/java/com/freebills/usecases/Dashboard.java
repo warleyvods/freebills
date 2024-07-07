@@ -1,16 +1,15 @@
 package com.freebills.usecases;
 
 import com.freebills.controllers.dtos.responses.DashboardExpenseResponseDTO;
-import com.freebills.controllers.dtos.responses.DashboardResponseDTO;
 import com.freebills.controllers.dtos.responses.DashboardGraphResponseDTO;
+import com.freebills.controllers.dtos.responses.DashboardResponseDTO;
 import com.freebills.controllers.dtos.responses.DashboardRevenueResponseDTO;
 import com.freebills.domain.Account;
 import com.freebills.domain.Category;
 import com.freebills.domain.Transaction;
-import com.freebills.gateways.entities.enums.TransactionCategory;
-import com.freebills.gateways.entities.enums.TransactionType;
 import com.freebills.gateways.AccountGateway;
 import com.freebills.gateways.TransactionGateway;
+import com.freebills.gateways.entities.enums.TransactionType;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -64,6 +63,7 @@ public class Dashboard {
         final var totalExpense = getTotalAmountByType(transactions, TransactionType.EXPENSE);
         return new DashboardResponseDTO(getTotalValue(login), totalRevenue, totalExpense, BigDecimal.ZERO);
     }
+
 
     public DashboardExpenseResponseDTO getDashboardExpense(String login, Integer month, Integer year) {
         final var transactions = getTransactionsByUserDateFilter(login, month, year);

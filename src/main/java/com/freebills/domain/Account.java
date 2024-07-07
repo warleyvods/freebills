@@ -7,14 +7,17 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Getter
 @Setter
 @EqualsAndHashCode
 @NoArgsConstructor
-public class Account {
+@ToString
+public class Account implements Serializable {
 
     private Long id;
     private BigDecimal amount;

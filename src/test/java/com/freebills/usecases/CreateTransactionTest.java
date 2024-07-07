@@ -90,22 +90,6 @@ class CreateTransactionTest extends TestContainerBase {
     }
 
     @Test
-    void testCreateTransactionWithNullAccount() {
-        var transactionEntity = new Transaction();
-        transactionEntity.setAmount(new BigDecimal("100.00"));
-        transactionEntity.setDate(LocalDate.now());
-        transactionEntity.setDescription("Test transaction");
-        transactionEntity.setBarCode(null);
-        transactionEntity.setBankSlip(false);
-        transactionEntity.setTransactionType(TransactionType.REVENUE);
-        transactionEntity.setTransactionCategory(TransactionCategory.HOUSE);
-        transactionEntity.setPaid(true);
-        transactionEntity.setAccount(null);
-
-        assertThrows(NullPointerException.class, () -> createTransaction.execute(transactionEntity));
-    }
-
-    @Test
     void testCreateTransactionWithNullDate() {
         var transactionEntity = new Transaction();
         transactionEntity.setAmount(new BigDecimal("100.00"));

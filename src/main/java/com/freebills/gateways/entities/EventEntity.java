@@ -1,7 +1,6 @@
 package com.freebills.gateways.entities;
 
 import com.freebills.gateways.entities.enums.EventType;
-import com.freebills.gateways.entities.enums.TransferType;
 import com.freebills.gateways.entities.json.TransferJsonData;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,7 +20,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDateTime;
 
 import static jakarta.persistence.EnumType.STRING;
-import static org.hibernate.type.SqlTypes.*;
+import static org.hibernate.type.SqlTypes.JSON;
 
 @Getter
 @Setter
