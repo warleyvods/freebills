@@ -15,6 +15,10 @@ public class CreateTransfer {
     private final ApplicationEventPublisher eventPublisher;
 
     public Transfer execute(Transfer transfer) {
+        if (transfer.getFromAccountId().equals(transfer.getToAccountId())) {
+            throw new IllegalArgumentException("A conta de origem e destino não podem ser a mesma.");
+        }
+
         final Transfer transferSaved = transferGateway.save(transfer);
 
         eventPublisher.publishEvent(new TransferCreatedEvent(this, transferSaved));

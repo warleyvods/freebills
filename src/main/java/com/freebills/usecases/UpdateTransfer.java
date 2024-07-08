@@ -15,6 +15,10 @@ public class UpdateTransfer {
     private final ApplicationEventPublisher eventPublisher;
 
     public Transfer execute(final Transfer transfer, final String username) {
+        if (transfer.getFromAccountId().equals(transfer.getToAccountId())) {
+            throw new IllegalArgumentException("A conta de origem e destino não podem ser a mesma.");
+        }
+
         final var oldTransfer = transferGateway.findById(transfer.getId(), username);
         final var newTransfer = transferGateway.update(transfer);
 
