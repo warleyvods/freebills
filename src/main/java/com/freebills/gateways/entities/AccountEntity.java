@@ -59,6 +59,9 @@ public class AccountEntity {
     @OneToMany(mappedBy = "toAccountId", cascade = ALL, orphanRemoval = true)
     private List<TransferEntity> incomingTransfers = new ArrayList<>();
 
+    @OneToMany(mappedBy = "account", cascade = ALL, orphanRemoval = true)
+    private List<CreditCardEntity> cards = new ArrayList<>();
+
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;

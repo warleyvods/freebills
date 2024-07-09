@@ -2,6 +2,7 @@ package com.freebills.exceptions.handler;
 
 import com.freebills.exceptions.AccountNotFoundException;
 import com.freebills.exceptions.CategoryNotFoundException;
+import com.freebills.exceptions.CreditCardNotFoundException;
 import com.freebills.exceptions.InvalidCredentialsException;
 import com.freebills.exceptions.PermissionDeniedException;
 import com.freebills.exceptions.TransactionNotFoundException;
@@ -55,6 +56,18 @@ public class RestExceptionHandler {
                 .devMsg(ex.getClass().getName())
                 .status(NOT_FOUND.value())
                 .title("User not found!")
+                .build();
+    }
+
+    @ResponseStatus(NOT_FOUND)
+    @ExceptionHandler(CreditCardNotFoundException.class)
+    public ExceptionFilters handleCreditCardNotFound(final CreditCardNotFoundException ex) {
+        return ExceptionFilters.builder()
+                .timestamp(LocalDateTime.now())
+                .details(ex.getMessage())
+                .devMsg(ex.getClass().getName())
+                .status(NOT_FOUND.value())
+                .title("credit card not found!")
                 .build();
     }
 
