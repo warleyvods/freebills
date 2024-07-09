@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS cards (
+CREATE TABLE IF NOT EXISTS credit_card (
     id                BIGSERIAL   PRIMARY KEY,
     card_limit        NUMERIC(38, 2),
     description       VARCHAR(60),
