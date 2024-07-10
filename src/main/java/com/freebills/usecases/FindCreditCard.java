@@ -20,4 +20,8 @@ public class FindCreditCard {
     public CreditCard byId(final Long id, final String username) {
         return creditCardGateway.findById(id, username);
     }
+
+    public CreditCard byId(final Long id) {
+        return creditCardGateway.findById(id);
+    }
 }

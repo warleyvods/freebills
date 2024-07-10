@@ -29,6 +29,11 @@ public class CreditCardGateway {
                 .orElseThrow(() -> new CreditCardNotFoundException("credit card not found!")));
     }
 
+    public CreditCard findById(final Long id) {
+        return mapper.toDomain(creditCardRepository.findById(id)
+                .orElseThrow(() -> new CreditCardNotFoundException("credit card not found!")));
+    }
+
     public CreditCard update(final CreditCard creditCard) {
         return mapper.toDomain(creditCardRepository.save(mapper.toEntity(creditCard)));
     }

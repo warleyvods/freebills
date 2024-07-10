@@ -14,6 +14,8 @@ public interface CreditCardRepository extends JpaRepository<CreditCardEntity, Lo
 
     Optional<CreditCardEntity> findByIdAndAccount_User_Login(Long id, String username);
 
+    Optional<CreditCardEntity> findById(Long id);
+
     void deleteByIdAndAccount_User_Login(Long id, String username);
 
 }
