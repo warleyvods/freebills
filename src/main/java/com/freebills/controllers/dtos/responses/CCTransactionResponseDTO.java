@@ -11,8 +11,8 @@ public record CCTransactionResponseDTO(
         LocalDate date,
         String description,
         TransactionType transactionType,
-        Long category,
-        Long creditCard,
+        Long categoryId,
+        Long creditCardId,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
 ) {

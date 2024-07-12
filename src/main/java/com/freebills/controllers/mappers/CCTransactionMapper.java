@@ -2,6 +2,7 @@ package com.freebills.controllers.mappers;
 
 import com.freebills.controllers.dtos.requests.CCTransactionPostRequestDTO;
 import com.freebills.controllers.dtos.requests.CCTransactionPutRequestDTO;
+import com.freebills.controllers.dtos.responses.CCTransactionResponseDTO;
 import com.freebills.domain.CCTransaction;
 import com.freebills.usecases.FindCategory;
 import com.freebills.usecases.FindCreditCard;
@@ -19,7 +20,9 @@ public interface CCTransactionMapper {
     @Mapping(source = "creditCardId", target = "creditCard")
     CCTransaction toDomain(CCTransactionPostRequestDTO request);
 
-//    CCTransactionResponseDTO toDTO(CCTransaction ccTransaction);
+    @Mapping(source = "category.id", target = "categoryId")
+    @Mapping(source = "creditCard.id", target = "creditCardId")
+    CCTransactionResponseDTO toDTO(CCTransaction ccTransaction);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     CCTransaction toDomain(CCTransactionPutRequestDTO request, @MappingTarget CCTransaction ccTransaction);
