@@ -1,6 +1,7 @@
 package com.freebills.controllers.dtos.responses;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 public record CreditCardResponseDTO(
         Long id,
@@ -8,6 +9,9 @@ public record CreditCardResponseDTO(
         String description,
         String cardFlag,
         Integer expirationDay,
-        Integer closingDay
+        Integer closingDay,
+        Boolean archived,
+        LocalDateTime createdAt,
+        LocalDateTime updatedAt
 ) {
 }

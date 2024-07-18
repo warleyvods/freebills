@@ -39,13 +39,12 @@ public class Category implements Serializable {
     private LocalDateTime updatedAt;
 
     @NonNull
+    private Boolean archived;
+
+    @NonNull
     @JsonIgnore
     private User user;
 
-    @NonNull
-    private Boolean archived;
-
-    public Boolean isArchived() {
-        return archived;
-    }
 }
+
+

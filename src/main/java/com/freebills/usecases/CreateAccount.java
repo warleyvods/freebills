@@ -3,15 +3,12 @@ package com.freebills.usecases;
 import com.freebills.domain.Account;
 import com.freebills.domain.Transaction;
 import com.freebills.events.account.AccountCreatedEvent;
-import com.freebills.events.transaction.TransactionCreatedEvent;
 import com.freebills.gateways.AccountGateway;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
-
-import java.security.Principal;
 
 
 @Slf4j
@@ -30,6 +27,6 @@ public class CreateAccount {
         final Account savedAccount = accountGateway.save(account);
 
         eventPublisher.publishEvent(new AccountCreatedEvent(this, savedAccount.getId(), new Transaction(account.getAmount())));
-        return account;
+        return savedAccount;
     }
 }
