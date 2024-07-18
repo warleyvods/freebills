@@ -10,6 +10,7 @@ public record CreditCardResponseDTO(
         String cardFlag,
         Integer expirationDay,
         Integer closingDay,
+        Boolean archived,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
 ) {

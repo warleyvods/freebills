@@ -8,6 +8,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,6 +18,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -24,7 +27,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Entity
 @Getter
 @Setter
-@Table(name = "cards")
+@Table(name = "credit_card")
 @EntityListeners(AuditingEntityListener.class)
 public class CreditCardEntity {
 
@@ -44,6 +47,9 @@ public class CreditCardEntity {
 
     @ManyToOne
     private AccountEntity account;
+
+    @OneToMany(mappedBy = "creditCard")
+    private List<CCTransactionEntity> ccTransactionEntities = new ArrayList<>();
 
     @CreatedDate
     @Column(nullable = false, updatable = false)

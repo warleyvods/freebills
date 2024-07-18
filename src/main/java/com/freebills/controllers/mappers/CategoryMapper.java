@@ -28,7 +28,7 @@ public interface CategoryMapper {
     Category update(CategoryPutRequestDTO categoryPutRequestDTO, @MappingTarget Category category);
 
     default Category toggleArchived(@MappingTarget Category category) {
-        category.setArchived(!category.isArchived());
+        category.setArchived(!category.getArchived());
         return category;
     }
 }

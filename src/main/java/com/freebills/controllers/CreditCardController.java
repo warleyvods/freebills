@@ -4,6 +4,7 @@ import com.freebills.controllers.dtos.requests.CreditCardPostRequestDTO;
 import com.freebills.controllers.dtos.requests.CreditCardPutRequestDTO;
 import com.freebills.controllers.dtos.responses.CreditCardResponseDTO;
 import com.freebills.controllers.mappers.CreditCardMapper;
+import com.freebills.domain.CreditCard;
 import com.freebills.usecases.CreateCreditCard;
 import com.freebills.usecases.DeleteCreditCard;
 import com.freebills.usecases.FindCreditCard;
@@ -13,11 +14,13 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -49,8 +52,15 @@ public class CreditCardController {
 
     @ResponseStatus(OK)
     @GetMapping
-    public List<CreditCardResponseDTO> findAll(final Principal principal) {
-        return creditCardMapper.fromDomainList(findCreditCard.findAll(principal.getName()));
+    public List<CreditCardResponseDTO> findAll(final Principal principal, final @RequestParam boolean archived) {
+        return creditCardMapper.fromDomainList(findCreditCard.findAll(archived, principal.getName()));
+    }
+
+    @ResponseStatus(OK)
+    @PatchMapping("{id}")
+    public void archiveCard(@PathVariable final Long id, Principal principal) {
+        final CreditCard creditCard = findCreditCard.byId(id, principal.getName());
+        updateCreditCard.execute(creditCardMapper.toggleArchived(creditCard), principal.getName());
     }
 
     @ResponseStatus(OK)

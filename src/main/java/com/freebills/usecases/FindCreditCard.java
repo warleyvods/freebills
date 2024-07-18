@@ -13,11 +13,15 @@ public class FindCreditCard {
 
     private final CreditCardGateway creditCardGateway;
 
-    public List<CreditCard> findAll(final String username) {
-        return creditCardGateway.findAllByUsers(username);
+    public List<CreditCard> findAll(final boolean archived, final String username) {
+        return creditCardGateway.findAllByUsers(archived, username);
     }
 
     public CreditCard byId(final Long id, final String username) {
         return creditCardGateway.findById(id, username);
+    }
+
+    public CreditCard byId(final Long id) {
+        return creditCardGateway.findById(id);
     }
 }
