@@ -20,8 +20,8 @@ public class CreditCardGateway {
         return mapper.toDomain(creditCardRepository.save(mapper.toEntity(creditCard)));
     }
 
-    public List<CreditCard> findAllByUsers(final String login) {
-        return creditCardRepository.findByAccount_User_Login(login).stream().map(mapper::toDomain).toList();
+    public List<CreditCard> findAllByUsers(final boolean archived,final String login) {
+        return creditCardRepository.findAllCcByLoginAndStatus(archived, login).stream().map(mapper::toDomain).toList();
     }
 
     public CreditCard findById(final Long id, final String username) {

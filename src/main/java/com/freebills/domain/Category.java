@@ -35,6 +35,9 @@ public class Category implements Serializable {
     @NonNull
     private TransactionType categoryType;
 
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+
     @NonNull
     private Boolean archived;
 
@@ -42,7 +45,6 @@ public class Category implements Serializable {
     @JsonIgnore
     private User user;
 
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-
 }
+
+

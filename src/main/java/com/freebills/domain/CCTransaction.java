@@ -1,6 +1,5 @@
 package com.freebills.domain;
 
-import com.freebills.gateways.entities.enums.TransactionType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,9 +16,9 @@ public class CCTransaction implements Serializable {
     private BigDecimal amount;
     private LocalDate date;
     private String description;
-    private TransactionType transactionType;
     private Category category;
     private CreditCard creditCard;
+    private LocalDate expirationDate;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 

@@ -18,6 +18,7 @@ import java.util.List;
 public interface CreditCardMapper {
 
     @Mapping(source = "accountId", target = "account")
+    @Mapping(target = "archived", constant = "false")
     CreditCard toDomain(CreditCardPostRequestDTO creditCardPostRequestDTO);
 
     CreditCardResponseDTO fromDomain(CreditCard creditCard);
@@ -27,4 +28,8 @@ public interface CreditCardMapper {
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     CreditCard toDomain(CreditCardPutRequestDTO creditCardPutRequestDTO, @MappingTarget CreditCard creditCard);
 
+    default CreditCard toggleArchived(@MappingTarget CreditCard creditCard) {
+        creditCard.setArchived(!creditCard.getArchived());
+        return creditCard;
+    }
 }

@@ -1,18 +1,17 @@
 package com.freebills.controllers.dtos.requests;
 
-import com.freebills.gateways.entities.enums.TransactionType;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 public record CCTransactionPostRequestDTO(
         BigDecimal amount,
+        @JsonFormat(pattern="dd-MM-yyyy")
         LocalDate date,
         String description,
-        TransactionType transactionType,
         Long categoryId,
         Long creditCardId,
-        LocalDateTime createdAt,
-        LocalDateTime updatedAt
+        @JsonFormat(pattern="dd-MM-yyyy")
+        LocalDate expirationDate
 ) { }

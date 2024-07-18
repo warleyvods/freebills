@@ -45,8 +45,8 @@ public class CCTransactionEntity {
     @Size(max = 255)
     private String description;
 
-    @Enumerated(STRING)
-    private TransactionType transactionType;
+    @NotNull
+    private LocalDate expirationDate;
 
     @ManyToOne
     private CreditCardEntity creditCard;

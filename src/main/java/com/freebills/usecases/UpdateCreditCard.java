@@ -15,7 +15,7 @@ public class UpdateCreditCard {
 
     @Transactional
     public CreditCard execute(final CreditCard creditCard, final String username) {
-        verifyPrincipal.execute(creditCard.getAccount().getId(), username);
+        verifyPrincipal.execute(creditCard.getAccount().getUser().getId(), username);
 
         return creditCardGateway.update(creditCard);
     }
