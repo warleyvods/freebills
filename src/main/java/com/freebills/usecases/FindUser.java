@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.regex.Pattern;
 
 @Component
@@ -41,6 +42,10 @@ public class FindUser {
 
     public Page<User> all(Pageable pageable) {
         return userGateway.getAll(pageable);
+    }
+
+    public List<User> all() {
+        return userGateway.findAll();
     }
 
     private Boolean isEmail(String username) {

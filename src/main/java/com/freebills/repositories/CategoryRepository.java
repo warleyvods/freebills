@@ -1,6 +1,7 @@
 package com.freebills.repositories;
 
 import com.freebills.gateways.entities.CategoryEntity;
+import com.freebills.gateways.entities.enums.TransactionType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -35,6 +36,24 @@ public interface CategoryRepository extends JpaRepository<CategoryEntity, Long> 
                 AND c.id = :id
             """, nativeQuery = true)
     Optional<CategoryEntity> findByIdWithUser(Long id, String username);
+
+    @Query(value = """
+                SELECT c.* FROM categories c
+                INNER JOIN users u
+                ON c.user_id = u.id
+                WHERE u.login = :username
+                AND c.category_type = :categoryType
+            """, nativeQuery = true)
+    Optional<CategoryEntity> findByCategoryTypeWithUser(String categoryType, String username);
+
+    @Query(value = """
+                SELECT c.* FROM categories c
+                INNER JOIN users u
+                ON c.user_id = u.id
+                WHERE u.login = :username
+                AND c.category_type = :categoryType
+            """, nativeQuery = true)
+    boolean existsByCategoryType(String categoryType, String username);
 
     void deleteCategoryEntityByIdAndUser_Login(Long id, String username);
 

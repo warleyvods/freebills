@@ -2,6 +2,7 @@ package com.freebills.gateways;
 
 import com.freebills.domain.Category;
 import com.freebills.exceptions.CategoryNotFoundException;
+import com.freebills.gateways.entities.enums.TransactionType;
 import com.freebills.gateways.mapper.CategoryGatewayMapper;
 import com.freebills.repositories.CategoryRepository;
 import lombok.RequiredArgsConstructor;
@@ -45,5 +46,14 @@ public class CategoryGateway {
 
     public void deleteById(final Long id, final String username) {
         categoryRepository.deleteCategoryEntityByIdAndUser_Login(id, username);
+    }
+
+    public Category findByCategoryType(final TransactionType type, final String username) {
+        return categoryGatewayMapper.toDomain(categoryRepository.findByCategoryTypeWithUser(type.name(), username)
+                .orElseThrow(() -> new CategoryNotFoundException("Category with type: " + type.name() + " not found!")));
+    }
+
+    public boolean existsByCategoryType(final TransactionType type, final String username) {
+        return categoryRepository.existsByCategoryType(type.name(), username);
     }
 }

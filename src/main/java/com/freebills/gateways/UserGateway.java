@@ -29,6 +29,10 @@ public class UserGateway {
         return userRepository.findAll(pageable).map(userGatewayMapper::toDomain);
     }
 
+    public List<User> findAll() {
+        return userRepository.findAll().stream().map(userGatewayMapper::toDomain).toList();
+    }
+
     public User findById(final Long id) {
         return userGatewayMapper.toDomain(userRepository.findById(id).orElseThrow(UserNotFoundException::new));
     }

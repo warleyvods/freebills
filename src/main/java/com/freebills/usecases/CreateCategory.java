@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import static com.freebills.gateways.entities.enums.TransactionType.ADJUST;
 import static com.freebills.gateways.entities.enums.TransactionType.EXPENSE;
 import static com.freebills.gateways.entities.enums.TransactionType.REVENUE;
 
@@ -56,6 +57,7 @@ public class CreateCategory {
                 false,
                 user
         ));
+
         categories.add(new Category("Educação",
                 "data:image/svg+xml;utf8,<svg fill='%23222222' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 576 512'><path d='M249.6 471.5c10.8 3.8 22.4-4.1 22.4-15.5V78.6c0-4.2-1.6-8.4-5-11C247.4 52 202.4 32 144 32C93.5 32 46.3 45.3 18.1 56.1C6.8 60.5 0 71.7 0 83.8V454.1c0 11.9 12.8 20.2 24.1 16.5C55.6 460.1 105.5 448 144 448c33.9 0 79 14 105.6 23.5zm76.8 0C353 462 398.1 448 432 448c38.5 0 88.4 12.1 119.9 22.6c11.3 3.8 24.1-4.6 24.1-16.5V83.8c0-12.1-6.8-23.3-18.1-27.6C529.7 45.3 482.5 32 432 32c-58.4 0-103.4 20-123 35.6c-3.3 2.6-5 6.8-5 11V456c0 11.4 11.7 19.3 22.4 15.5z'/></svg>",
                 generateRandomColor(),
@@ -153,6 +155,14 @@ public class CreateCategory {
                 "data:image/svg+xml;utf8,<svg fill='%23222222' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 576 512'><path d='M0 112.5V422.3c0 18 10.1 35 27 41.3c87 32.5 174 10.3 261-11.9c79.8-20.3 159.6-40.7 239.3-18.9c23 6.3 48.7-9.5 48.7-33.4V89.7c0-18-10.1-35-27-41.3C462 15.9 375 38.1 288 60.3C208.2 80.6 128.4 100.9 48.7 79.1C25.6 72.8 0 88.6 0 112.5zM288 352c-44.2 0-80-43-80-96s35.8-96 80-96s80 43 80 96s-35.8 96-80 96zM64 352c35.3 0 64 28.7 64 64H64V352zm64-208c0 35.3-28.7 64-64 64V144h64zM512 304v64H448c0-35.3 28.7-64 64-64zM448 96h64v64c-35.3 0-64-28.7-64-64z'/></svg>",
                 generateRandomColor(),
                 REVENUE,
+                false,
+                user
+        ));
+
+        categories.add(new Category("Ajuste",
+                "data:image/svg+xml;utf8,<svg fill='%23222222' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 576 512'><path d='M0 112.5V422.3c0 18 10.1 35 27 41.3c87 32.5 174 10.3 261-11.9c79.8-20.3 159.6-40.7 239.3-18.9c23 6.3 48.7-9.5 48.7-33.4V89.7c0-18-10.1-35-27-41.3C462 15.9 375 38.1 288 60.3C208.2 80.6 128.4 100.9 48.7 79.1C25.6 72.8 0 88.6 0 112.5zM288 352c-44.2 0-80-43-80-96s35.8-96 80-96s80 43 80 96s-35.8 96-80 96zM64 352c35.3 0 64 28.7 64 64H64V352zm64-208c0 35.3-28.7 64-64 64V144h64zM512 304v64H448c0-35.3 28.7-64 64-64zM448 96h64v64c-35.3 0-64-28.7-64-64z'/></svg>",
+                generateRandomColor(),
+                ADJUST,
                 false,
                 user
         ));

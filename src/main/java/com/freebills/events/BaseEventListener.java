@@ -3,7 +3,7 @@ package com.freebills.events;
 import com.freebills.domain.Event;
 import com.freebills.events.account.AccountCreatedEvent;
 import com.freebills.events.account.AccountDeletedEvent;
-import com.freebills.events.account.AccountrReajustEvent;
+import com.freebills.events.account.AccountUpdateEvent;
 import com.freebills.events.transaction.TransactionCreatedEvent;
 import com.freebills.events.transaction.TransactionDeletedEvent;
 import com.freebills.events.transaction.TransactionUpdatedEvent;
@@ -21,7 +21,6 @@ import static com.freebills.gateways.entities.enums.EventType.TRANSACTION_CREATE
 import static com.freebills.gateways.entities.enums.EventType.TRANSACTION_DELETED;
 import static com.freebills.gateways.entities.enums.EventType.TRANSACTION_TRANSFER;
 import static com.freebills.gateways.entities.enums.EventType.TRANSACTION_UPDATED;
-import static com.freebills.gateways.entities.enums.EventType.TRANSFER_CREATED;
 
 @Slf4j
 @Component
@@ -119,21 +118,6 @@ public class BaseEventListener {
             eventGateway.save(newEvent);
         } catch (Exception e) {
             log.error("Error handling AccountDeletedEvent: {}", e.getMessage());
-            throw e;
-        }
-    }
-
-    @EventListener
-    public void handleAccountReajustEvent(final AccountrReajustEvent accountrReajustEvent) {
-        log.info("Handling AccountrReajustEvent for account id: {}", accountrReajustEvent.getAccountId());
-        try {
-            final var newEvent = new Event();
-            newEvent.setAggregateId(accountrReajustEvent.getAccountId());
-            newEvent.setEventType(ACCOUNT_DELETED);
-            newEvent.setTransactionData(accountrReajustEvent.getTransaction());
-            eventGateway.save(newEvent);
-        } catch (Exception e) {
-            log.error("Error handling AccountrReajustEvent: {}", e.getMessage());
             throw e;
         }
     }

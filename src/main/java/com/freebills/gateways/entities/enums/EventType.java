@@ -9,6 +9,7 @@ public enum EventType {
 
     ACCOUNT_CREATED,
     ACCOUNT_DELETED,
+    ACCOUNT_UPDATED,
 
     TRANSFER_CREATED,
     TRANSFER_DELETED,

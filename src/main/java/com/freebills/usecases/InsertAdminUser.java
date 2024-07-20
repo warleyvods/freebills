@@ -1,13 +1,13 @@
 package com.freebills.usecases;
 
-import com.freebills.domain.Category;
 import com.freebills.domain.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
+
+import static java.lang.Boolean.FALSE;
 
 @Slf4j
 @Component
@@ -19,13 +19,12 @@ public class InsertAdminUser {
 
     private final FindUser findUser;
     private final CreateUser createUser;
-    private final FindCategory findCategory;
     private final CreateCategory createCategory;
 
     private static final String ADMIN = "admin";
 
     public void insertAdminUser() {
-        if (Boolean.FALSE.equals(findUser.existsByLogin(ADMIN))) {
+        if (FALSE.equals(findUser.existsByLogin(ADMIN))) {
             log.debug("Administrator user not found, creating...");
 
             final var user = new User();

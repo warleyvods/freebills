@@ -31,4 +31,12 @@ public class FindCategory {
     public Category findById(final Long id) {
         return categoryGateway.findById(id);
     }
+
+    public Category findByCategoryType(final TransactionType type, final String username) {
+        return categoryGateway.findByCategoryType(type, username);
+    }
+
+    public boolean existByCategoryType(TransactionType transactionType, String login) {
+        return categoryGateway.existsByCategoryType(transactionType, login);
+    }
 }

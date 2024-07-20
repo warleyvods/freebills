@@ -89,6 +89,7 @@ public abstract class EventGatewayMapper {
                 log.error(e.getMessage());
             }
         }
+
         if (eventEntity.getOldTransactionData() != null) {
             try {
                 event.setOldTransactionData(objectMapper.readValue(eventEntity.getOldTransactionData(), Transaction.class));
