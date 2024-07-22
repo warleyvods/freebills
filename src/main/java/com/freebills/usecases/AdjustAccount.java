@@ -61,6 +61,7 @@ public class AdjustAccount {
                     true,
                     account,
                     category,
+                    null,
                     difference));
 
             //Não mudar a ordem dessa chamada.
