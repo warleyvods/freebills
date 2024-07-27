@@ -113,6 +113,7 @@ public abstract class EventGatewayMapper {
                     event.getTransactionData().getPaid(),
                     event.getTransactionData().getAccount(),
                     event.getTransactionData().getCategory(),
+                    event.getTransactionData().getCreatedAt(),
                     event.getTransactionData().getAmount()
             ));
         }
@@ -130,6 +131,7 @@ public abstract class EventGatewayMapper {
                             event.getOldTransactionData().getPaid(),
                             event.getOldTransactionData().getAccount(),
                             event.getOldTransactionData().getCategory(),
+                            event.getOldTransactionData().getCreatedAt(),
                             event.getOldTransactionData().getAmount()
                     )
             );
