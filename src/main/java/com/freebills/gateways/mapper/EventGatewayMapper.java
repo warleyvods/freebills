@@ -1,6 +1,5 @@
 package com.freebills.gateways.mapper;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.freebills.domain.Account;
 import com.freebills.domain.Event;
 import com.freebills.domain.Transaction;
@@ -12,14 +11,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @Slf4j
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public abstract class EventGatewayMapper {
-
-    @Autowired
-    private ObjectMapper objectMapper;
 
     @Mapping(target = "transactionData", ignore = true)
     @Mapping(target = "oldTransactionData", ignore = true)
@@ -45,6 +40,7 @@ public abstract class EventGatewayMapper {
                     event.getTransactionData().getPaid(),
                     event.getTransactionData().getAccount(),
                     event.getTransactionData().getCategory(),
+                    event.getTransactionData().getCreatedAt(),
                     event.getTransactionData().getAmount()
             ));
         }
@@ -62,6 +58,7 @@ public abstract class EventGatewayMapper {
                             event.getOldTransactionData().getPaid(),
                             event.getOldTransactionData().getAccount(),
                             event.getOldTransactionData().getCategory(),
+                            event.getOldTransactionData().getCreatedAt(),
                             event.getOldTransactionData().getAmount()
                     )
             );
@@ -102,39 +99,75 @@ public abstract class EventGatewayMapper {
         Event event = toDomain(eventEntity);
 
         if (eventEntity.getTransactionData() != null) {
-            event.setTransactionData(new Transaction(
-                    event.getTransactionData().getId(),
-                    event.getTransactionData().getDate(),
-                    event.getTransactionData().getDescription(),
-                    event.getTransactionData().getBarCode(),
-                    event.getTransactionData().getBankSlip(),
-                    event.getTransactionData().getTransactionType(),
-                    event.getTransactionData().getTransactionCategory(),
-                    event.getTransactionData().getPaid(),
-                    event.getTransactionData().getAccount(),
-                    event.getTransactionData().getCategory(),
-                    event.getTransactionData().getCreatedAt(),
-                    event.getTransactionData().getAmount()
-            ));
+            if (eventEntity.getTransactionData().id() != null) {
+                event.setTransactionData(
+                        new Transaction(
+                                eventEntity.getTransactionData().id(),
+                                eventEntity.getTransactionData().date(),
+                                eventEntity.getTransactionData().description(),
+                                eventEntity.getTransactionData().barCode(),
+                                eventEntity.getTransactionData().bankSlip(),
+                                eventEntity.getTransactionData().transactionType(),
+                                eventEntity.getTransactionData().transactionCategory(),
+                                eventEntity.getTransactionData().paid(),
+                                eventEntity.getTransactionData().account(),
+                                eventEntity.getTransactionData().category(),
+                                eventEntity.getTransactionData().createdAt(),
+                                eventEntity.getTransactionData().amount()
+                        )
+                );
+            } else {
+                event.setTransactionData(new Transaction(
+                        null,
+                        eventEntity.getTransactionData().date(),
+                        eventEntity.getTransactionData().description(),
+                        eventEntity.getTransactionData().barCode(),
+                        eventEntity.getTransactionData().bankSlip(),
+                        eventEntity.getTransactionData().transactionType(),
+                        eventEntity.getTransactionData().transactionCategory(),
+                        eventEntity.getTransactionData().paid(),
+                        eventEntity.getTransactionData().account(),
+                        eventEntity.getTransactionData().category(),
+                        eventEntity.getTransactionData().createdAt(),
+                        eventEntity.getTransactionData().amount()
+                ));
+            }
         }
 
         if (eventEntity.getOldTransactionData() != null) {
-            event.setOldTransactionData(
-                    new Transaction(
-                            event.getOldTransactionData().getId(),
-                            event.getOldTransactionData().getDate(),
-                            event.getOldTransactionData().getDescription(),
-                            event.getOldTransactionData().getBarCode(),
-                            event.getOldTransactionData().getBankSlip(),
-                            event.getOldTransactionData().getTransactionType(),
-                            event.getOldTransactionData().getTransactionCategory(),
-                            event.getOldTransactionData().getPaid(),
-                            event.getOldTransactionData().getAccount(),
-                            event.getOldTransactionData().getCategory(),
-                            event.getOldTransactionData().getCreatedAt(),
-                            event.getOldTransactionData().getAmount()
-                    )
-            );
+            if (eventEntity.getOldTransactionData().id() != null) {
+                event.setOldTransactionData(
+                        new Transaction(
+                                eventEntity.getOldTransactionData().id(),
+                                eventEntity.getOldTransactionData().date(),
+                                eventEntity.getOldTransactionData().description(),
+                                eventEntity.getOldTransactionData().barCode(),
+                                eventEntity.getOldTransactionData().bankSlip(),
+                                eventEntity.getOldTransactionData().transactionType(),
+                                eventEntity.getOldTransactionData().transactionCategory(),
+                                eventEntity.getOldTransactionData().paid(),
+                                eventEntity.getOldTransactionData().account(),
+                                eventEntity.getOldTransactionData().category(),
+                                eventEntity.getOldTransactionData().createdAt(),
+                                eventEntity.getOldTransactionData().amount()
+                        )
+                );
+            } else {
+                event.setOldTransactionData(new Transaction(
+                        null,
+                        eventEntity.getOldTransactionData().date(),
+                        eventEntity.getOldTransactionData().description(),
+                        eventEntity.getOldTransactionData().barCode(),
+                        eventEntity.getOldTransactionData().bankSlip(),
+                        eventEntity.getOldTransactionData().transactionType(),
+                        eventEntity.getOldTransactionData().transactionCategory(),
+                        eventEntity.getOldTransactionData().paid(),
+                        eventEntity.getOldTransactionData().account(),
+                        eventEntity.getOldTransactionData().category(),
+                        eventEntity.getOldTransactionData().createdAt(),
+                        eventEntity.getOldTransactionData().amount()
+                ));
+            }
         }
 
         if (eventEntity.getTransferJsonData() != null) {

@@ -10,6 +10,7 @@ import com.freebills.gateways.entities.enums.TransactionCategory;
 import com.freebills.gateways.entities.enums.TransactionType;
 import com.freebills.gateways.entities.enums.TransferType;
 import com.freebills.repositories.EventRepository;
+import com.freebills.repositories.TransactionRepository;
 import com.freebills.utils.TestContainerBase;
 import com.freebills.utils.TestRedisConfig;
 import org.junit.jupiter.api.BeforeEach;
@@ -47,9 +48,16 @@ class AccountBalanceCalculatorTest extends TestContainerBase {
     @Autowired
     private EventRepository eventRepository;
 
+    @Autowired
+    private CreateTransaction createTransaction;
+
+    @Autowired
+    private TransactionRepository transactionRepository;
+
     @BeforeEach
     void setUp() {
         eventRepository.deleteAll();
+        transactionRepository.deleteAll();
     }
 
     private Transaction createTransaction(BigDecimal value, TransactionType transactionType) {
