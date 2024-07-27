@@ -8,6 +8,7 @@ import com.freebills.domain.Event;
 import com.freebills.domain.Transaction;
 import com.freebills.gateways.EventGateway;
 import com.freebills.gateways.UserGateway;
+import com.freebills.gateways.entities.enums.EventType;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -18,17 +19,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
-import java.util.AbstractMap;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import static com.fasterxml.jackson.databind.type.LogicalType.Collection;
 import static org.springframework.http.HttpStatus.OK;
 
 @Tag(name = "Me Controller")
@@ -49,7 +44,6 @@ public class MeController {
         return userMapper.fromDomain(userGateway.findByLogin(principal.getName()));
     }
 
-
     @GetMapping("{id}")
     public List<TransactionResponseDTO>  get(@PathVariable Long id) {
         final List<Event> eventsByAggregateId = eventGateway.getEventsByAggregateId(id);
@@ -67,6 +61,10 @@ public class MeController {
                     if (existingEvent == null || event.getCreatedAt().isAfter(existingEvent.getCreatedAt())) {
                         // Adicionar ou substituir o evento no mapa
                         latestEventsMap.put(transactionId, event);
+                    }
+
+                    if (event.getEventType().equals(EventType.TRANSACTION_DELETED)) {
+                        latestEventsMap.remove(transactionId);
                     }
                 }
             }

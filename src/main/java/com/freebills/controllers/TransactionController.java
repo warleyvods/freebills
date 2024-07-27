@@ -15,6 +15,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
+import java.util.List;
 
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
@@ -49,6 +51,14 @@ public class TransactionController {
     public TransactionResponseDTO save(@RequestBody @Valid final TransactionPostRequestDTO transactionPostRequestDto) {
         final var transaction = transactionMapper.toDomain(transactionPostRequestDto);
         return transactionMapper.fromDomain(createTransaction.execute(transaction));
+    }
+
+    @ResponseStatus(OK)
+    @PostMapping("/restore")
+    @PreAuthorize("hasRole('ADMIN')")
+    public void saveAll(@RequestBody final List<TransactionPostRequestDTO> requestDTOList) {
+        final var list = requestDTOList.stream().map(transactionMapper::toDomain).toList();
+        list.forEach(createTransaction::execute);
     }
 
     @ResponseStatus(OK)

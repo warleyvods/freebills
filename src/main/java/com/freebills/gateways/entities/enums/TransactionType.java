@@ -5,6 +5,7 @@ public enum TransactionType {
 
     REVENUE,
     EXPENSE,
-    ADJUST
+    ADJUST,
+    UNKNOW
 
 }
