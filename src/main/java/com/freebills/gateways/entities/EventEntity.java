@@ -1,6 +1,7 @@
 package com.freebills.gateways.entities;
 
 import com.freebills.gateways.entities.enums.EventType;
+import com.freebills.gateways.entities.json.TransactionJsonData;
 import com.freebills.gateways.entities.json.TransferJsonData;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -38,11 +39,11 @@ public class EventEntity {
     @Enumerated(STRING)
     private EventType eventType;
 
-    @Column(columnDefinition = "TEXT")
-    private String transactionData;
+    @JdbcTypeCode(JSON)
+    private TransactionJsonData transactionData;
 
-    @Column(columnDefinition = "TEXT")
-    private String oldTransactionData;
+    @JdbcTypeCode(JSON)
+    private TransactionJsonData oldTransactionData;
 
     @JdbcTypeCode(JSON)
     private TransferJsonData transferJsonData;

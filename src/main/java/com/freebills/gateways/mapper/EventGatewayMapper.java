@@ -1,20 +1,18 @@
 package com.freebills.gateways.mapper;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.freebills.domain.Account;
 import com.freebills.domain.Event;
 import com.freebills.domain.Transaction;
 import com.freebills.domain.Transfer;
 import com.freebills.gateways.entities.EventEntity;
+import com.freebills.gateways.entities.json.TransactionJsonData;
 import com.freebills.gateways.entities.json.TransferJsonData;
 import lombok.extern.slf4j.Slf4j;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.io.IOException;
 
 @Slf4j
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
@@ -34,19 +32,39 @@ public abstract class EventGatewayMapper {
 
     public EventEntity toEntityWithJson(Event event) {
         EventEntity entity = toEntity(event);
+
         if (event.getTransactionData() != null) {
-            try {
-                entity.setTransactionData(objectMapper.writeValueAsString(event.getTransactionData()));
-            } catch (JsonProcessingException e) {
-                log.error(e.getMessage());
-            }
+            entity.setTransactionData(new TransactionJsonData(
+                    event.getTransactionData().getId(),
+                    event.getTransactionData().getDate(),
+                    event.getTransactionData().getDescription(),
+                    event.getTransactionData().getBarCode(),
+                    event.getTransactionData().getBankSlip(),
+                    event.getTransactionData().getTransactionType(),
+                    event.getTransactionData().getTransactionCategory(),
+                    event.getTransactionData().getPaid(),
+                    event.getTransactionData().getAccount(),
+                    event.getTransactionData().getCategory(),
+                    event.getTransactionData().getAmount()
+            ));
         }
+
         if (event.getOldTransactionData() != null) {
-            try {
-                entity.setOldTransactionData(objectMapper.writeValueAsString(event.getOldTransactionData()));
-            } catch (JsonProcessingException e) {
-                log.error(e.getMessage());
-            }
+            entity.setOldTransactionData(
+                    new TransactionJsonData(
+                            event.getOldTransactionData().getId(),
+                            event.getOldTransactionData().getDate(),
+                            event.getOldTransactionData().getDescription(),
+                            event.getOldTransactionData().getBarCode(),
+                            event.getOldTransactionData().getBankSlip(),
+                            event.getOldTransactionData().getTransactionType(),
+                            event.getOldTransactionData().getTransactionCategory(),
+                            event.getOldTransactionData().getPaid(),
+                            event.getOldTransactionData().getAccount(),
+                            event.getOldTransactionData().getCategory(),
+                            event.getOldTransactionData().getAmount()
+                    )
+            );
         }
 
         if (event.getTransferData() != null) {
@@ -82,20 +100,41 @@ public abstract class EventGatewayMapper {
 
     public Event toDomainWithJson(EventEntity eventEntity) {
         Event event = toDomain(eventEntity);
+
         if (eventEntity.getTransactionData() != null) {
-            try {
-                event.setTransactionData(objectMapper.readValue(eventEntity.getTransactionData(), Transaction.class));
-            } catch (IOException e) {
-                log.error(e.getMessage());
-            }
+            event.setTransactionData(new Transaction(
+                    event.getTransactionData().getId(),
+                    event.getTransactionData().getDate(),
+                    event.getTransactionData().getDescription(),
+                    event.getTransactionData().getBarCode(),
+                    event.getTransactionData().getBankSlip(),
+                    event.getTransactionData().getTransactionType(),
+                    event.getTransactionData().getTransactionCategory(),
+                    event.getTransactionData().getPaid(),
+                    event.getTransactionData().getAccount(),
+                    event.getTransactionData().getCategory(),
+                    event.getTransactionData().getCreatedAt(),
+                    event.getTransactionData().getAmount()
+            ));
         }
 
         if (eventEntity.getOldTransactionData() != null) {
-            try {
-                event.setOldTransactionData(objectMapper.readValue(eventEntity.getOldTransactionData(), Transaction.class));
-            } catch (IOException e) {
-                log.error(e.getMessage());
-            }
+            event.setOldTransactionData(
+                    new Transaction(
+                            event.getOldTransactionData().getId(),
+                            event.getOldTransactionData().getDate(),
+                            event.getOldTransactionData().getDescription(),
+                            event.getOldTransactionData().getBarCode(),
+                            event.getOldTransactionData().getBankSlip(),
+                            event.getOldTransactionData().getTransactionType(),
+                            event.getOldTransactionData().getTransactionCategory(),
+                            event.getOldTransactionData().getPaid(),
+                            event.getOldTransactionData().getAccount(),
+                            event.getOldTransactionData().getCategory(),
+                            event.getOldTransactionData().getCreatedAt(),
+                            event.getOldTransactionData().getAmount()
+                    )
+            );
         }
 
         if (eventEntity.getTransferJsonData() != null) {

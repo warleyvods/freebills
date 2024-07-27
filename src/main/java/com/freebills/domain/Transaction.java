@@ -13,6 +13,7 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -32,6 +33,7 @@ public class Transaction implements Serializable {
     private Boolean paid;
     private Account account;
     private Category category;
+    private LocalDateTime createdAt;
 
     @NonNull
     private BigDecimal amount;

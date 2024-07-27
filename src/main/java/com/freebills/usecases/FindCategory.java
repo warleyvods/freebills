@@ -6,9 +6,11 @@ import com.freebills.gateways.entities.enums.TransactionType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import static com.freebills.gateways.entities.enums.TransactionType.UNKNOW;
 
 @Component
 @RequiredArgsConstructor
@@ -29,6 +31,12 @@ public class FindCategory {
     }
 
     public Category findById(final Long id) {
+        final String loggedInUsername = getLoggedInUsername();
+
+        if (id == null) {
+            return categoryGateway.findByCategoryType(UNKNOW, loggedInUsername);
+        }
+
         return categoryGateway.findById(id);
     }
 
@@ -38,5 +46,15 @@ public class FindCategory {
 
     public boolean existByCategoryType(TransactionType transactionType, String login) {
         return categoryGateway.existsByCategoryType(transactionType, login);
+    }
+
+    public String getLoggedInUsername() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal instanceof UserDetails) {
+            return ((UserDetails)principal).getUsername();
+        } else {
+            return principal.toString();
+        }
     }
 }

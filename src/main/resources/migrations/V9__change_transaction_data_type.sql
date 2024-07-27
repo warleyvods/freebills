@@ -1,0 +1,2 @@
+ALTER TABLE events ALTER COLUMN transaction_data TYPE jsonb USING transaction_data::text::jsonb;
+ALTER TABLE events ALTER COLUMN old_transaction_data TYPE jsonb USING old_transaction_data::text::jsonb;

@@ -21,5 +21,6 @@ public class Event {
     private Transfer oldTransferData;
 
     private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
 }
