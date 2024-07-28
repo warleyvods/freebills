@@ -10,6 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class CategoryGateway {
@@ -55,5 +57,10 @@ public class CategoryGateway {
 
     public boolean existsByCategoryType(final TransactionType type, final String username) {
         return categoryRepository.existsByCategoryType(type.name(), username);
+    }
+
+    public Optional<Category> findByCategoryName(final String name, final String categoryType, final String username) {
+        return categoryRepository.findByCategoryNameAndUser(name, categoryType, username)
+                .map(categoryGatewayMapper::toDomain);
     }
 }

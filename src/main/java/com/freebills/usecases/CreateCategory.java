@@ -2,6 +2,7 @@ package com.freebills.usecases;
 
 import com.freebills.domain.Category;
 import com.freebills.domain.User;
+import com.freebills.events.category.CreateCategoryEvent;
 import com.freebills.gateways.CategoryGateway;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +41,15 @@ public class CreateCategory {
             defaultCategories(user).forEach(this::execute);
             log.info("all categories created for user: {}", user.getLogin());
         }
+    }
+
+    @EventListener
+    @Transactional
+    public void handleCreateCategory(final CreateCategoryEvent event) {
+        Category category = event.getCategory();
+        categoryGateway.save(category);
+        log.info("category created: {}", category.getName());
+        event.getFuture().complete(category);
     }
 
     private String generateRandomColor() {

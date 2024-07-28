@@ -1,7 +1,6 @@
 package com.freebills.gateways;
 
 import com.freebills.domain.Event;
-import com.freebills.gateways.entities.EventEntity;
 import com.freebills.gateways.mapper.EventGatewayMapper;
 import com.freebills.repositories.EventRepository;
 import lombok.RequiredArgsConstructor;

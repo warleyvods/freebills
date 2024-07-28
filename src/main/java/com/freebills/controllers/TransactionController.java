@@ -3,7 +3,9 @@ package com.freebills.controllers;
 
 import com.freebills.controllers.dtos.requests.TransactionPostRequestDTO;
 import com.freebills.controllers.dtos.requests.TransactionPutRequestDTO;
+import com.freebills.controllers.dtos.requests.TransactionRestorePostRequestDTO;
 import com.freebills.controllers.dtos.responses.TransactionResponseDTO;
+import com.freebills.controllers.dtos.responses.TransactionRestoreResponseDTO;
 import com.freebills.controllers.mappers.TransactionMapper;
 import com.freebills.gateways.entities.enums.TransactionType;
 import com.freebills.usecases.CreateTransaction;
@@ -54,10 +56,27 @@ public class TransactionController {
     }
 
     @ResponseStatus(OK)
-    @PostMapping("/restore")
+    @PostMapping("/restore/events")
     @PreAuthorize("hasRole('ADMIN')")
-    public void saveAll(@RequestBody final List<TransactionPostRequestDTO> requestDTOList) {
+    public void restoreEvents(@RequestBody final List<TransactionPostRequestDTO> requestDTOList) {
         final var list = requestDTOList.stream().map(transactionMapper::toDomain).toList();
+        list.forEach(createTransaction::execute);
+    }
+
+    @ResponseStatus(OK)
+    @PostMapping("/restore/transactions")
+    @PreAuthorize("hasRole('ADMIN')")
+    public void restoreTransactions(@RequestBody final List<TransactionRestorePostRequestDTO> requestDTOList) {
+        final var list = requestDTOList.stream().map(transactionMapper::toDomainWithCategoryName).toList();
+
+        // Hack fix: As vezes acontece do completable future não terminar esperar a thread de execução terminar
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new IllegalStateException("Thread was interrupted", e);
+        }
+
         list.forEach(createTransaction::execute);
     }
 
@@ -100,5 +119,11 @@ public class TransactionController {
     @DeleteMapping("{id}")
     public void deleteById(@PathVariable final Long id) {
         deleteTransaction.delete(id);
+    }
+
+    @GetMapping("/export-transactions")
+    public List<TransactionRestoreResponseDTO> exportTransaction(Principal principal) {
+        final var allWithFilters = findTransaction.findAllWithFilters(principal.getName(), null, null,  Pageable.unpaged() , null, null);
+        return allWithFilters.map(transactionMapper::fromDomainWithCategoryName).toList();
     }
 }

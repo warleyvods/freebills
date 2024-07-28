@@ -16,11 +16,22 @@ import org.springframework.stereotype.Component;
 public class CreateTransaction {
 
     private final TransactionGateway transactionGateway;
+    private final FindTransaction findTransaction;
     private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
     public Transaction execute(final Transaction transaction) {
-        log.info("Transaction created with id: {}", transaction.getId());
+        log.info("Transaction created with id: {}", transaction);
+        final var savedTransaction = transactionGateway.save(transaction);
+
+        eventPublisher.publishEvent(new TransactionCreatedEvent(this, savedTransaction.getAccount().getId(), savedTransaction));
+        return savedTransaction;
+    }
+
+    @Transactional
+    public Transaction restore(final Transaction transaction) {
+        log.info("Transaction created with id: {}", transaction);
+
         final var savedTransaction = transactionGateway.save(transaction);
 
         eventPublisher.publishEvent(new TransactionCreatedEvent(this, savedTransaction.getAccount().getId(), savedTransaction));

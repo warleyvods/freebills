@@ -1,12 +1,11 @@
 package com.freebills.controllers.dtos.requests;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 
-public record TransactionPostRequestDTO(
+public record TransactionRestorePostRequestDTO(
         @NotNull
         Long accountId,
 
@@ -18,7 +17,6 @@ public record TransactionPostRequestDTO(
         @NotBlank
         String description,
 
-        @JsonFormat(pattern="dd-MM-yyyy")
         @NotNull
         LocalDate date,
 
@@ -28,7 +26,7 @@ public record TransactionPostRequestDTO(
         String transactionCategory,
 
         @NotNull
-        Long categoryId,
+        String categoryName,
 
         String barCode,
 

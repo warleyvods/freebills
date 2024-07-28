@@ -57,4 +57,13 @@ public interface CategoryRepository extends JpaRepository<CategoryEntity, Long> 
 
     void deleteCategoryEntityByIdAndUser_Login(Long id, String username);
 
+    @Query(value = """
+                SELECT c.* FROM categories c
+                INNER JOIN users u
+                ON c.user_id = u.id
+                WHERE u.login = :username
+                AND c.name = :name
+                AND c.category_type = :categoryType
+            """, nativeQuery = true)
+    Optional<CategoryEntity> findByCategoryNameAndUser(String name, String categoryType, String username);
 }
