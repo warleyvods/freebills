@@ -69,7 +69,7 @@ public class TransactionController {
     public void restoreTransactions(@RequestBody final List<TransactionRestorePostRequestDTO> requestDTOList) {
         final var list = requestDTOList.stream().map(transactionMapper::toDomainWithCategoryName).toList();
 
-        // Hack fix: As vezes acontece do completable future não terminar esperar a thread de execução terminar
+        // ‘Hack’ fix: As vezes acontece do completable future não terminar esperar a thread de execução terminar
         try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
