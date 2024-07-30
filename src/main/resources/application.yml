@@ -59,7 +59,6 @@ spring:
     consumer:
       key-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
-      proper
     listener:
       concurrency: 3
       poll-timeout: 5000

@@ -10,6 +10,8 @@ services:
   postgres:
     image: postgres:latest
     container_name: postgres
+    networks:
+      redpanda_network:
     environment:
       POSTGRES_USER: freebills
       POSTGRES_PASSWORD: freebills
@@ -17,6 +19,10 @@ services:
     ports:
       - "5432:5432"
     restart: always
+    command:
+      - "postgres"
+      - "-c"
+      - "wal_level=logical"
 
   redis:
     image: redis:latest
@@ -82,3 +88,17 @@ services:
       - "8081:8080"
     depends_on:
       - redpanda-0
+  connect:
+    image: debezium/connect
+    depends_on:
+      - redpanda-0
+    networks:
+      redpanda_network:
+    ports:
+      - "8083:8083"
+    environment:
+      BOOTSTRAP_SERVERS: "redpanda-0:9092"
+      GROUP_ID: "1"
+      CONFIG_STORAGE_TOPIC: "freebills.configs"
+      OFFSET_STORAGE_TOPIC: "freebills.offset"
+      STATUS_STORAGE_TOPIC: "freebills.status"
