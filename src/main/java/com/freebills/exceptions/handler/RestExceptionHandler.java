@@ -2,9 +2,11 @@ package com.freebills.exceptions.handler;
 
 import com.freebills.exceptions.AccountNotFoundException;
 import com.freebills.exceptions.CategoryNotFoundException;
+import com.freebills.exceptions.CreditCardNotFoundException;
 import com.freebills.exceptions.InvalidCredentialsException;
 import com.freebills.exceptions.PermissionDeniedException;
 import com.freebills.exceptions.TransactionNotFoundException;
+import com.freebills.exceptions.TransferNotFoundException;
 import com.freebills.exceptions.UserNotFoundException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
@@ -54,6 +56,30 @@ public class RestExceptionHandler {
                 .devMsg(ex.getClass().getName())
                 .status(NOT_FOUND.value())
                 .title("User not found!")
+                .build();
+    }
+
+    @ResponseStatus(NOT_FOUND)
+    @ExceptionHandler(CreditCardNotFoundException.class)
+    public ExceptionFilters handleCreditCardNotFound(final CreditCardNotFoundException ex) {
+        return ExceptionFilters.builder()
+                .timestamp(LocalDateTime.now())
+                .details(ex.getMessage())
+                .devMsg(ex.getClass().getName())
+                .status(NOT_FOUND.value())
+                .title("credit card not found!")
+                .build();
+    }
+
+    @ResponseStatus(NOT_FOUND)
+    @ExceptionHandler(TransferNotFoundException.class)
+    public ExceptionFilters handleTransferNotFound(final TransferNotFoundException ex) {
+        return ExceptionFilters.builder()
+                .timestamp(LocalDateTime.now())
+                .details(ex.getMessage())
+                .devMsg(ex.getClass().getName())
+                .status(NOT_FOUND.value())
+                .title("Transfer not found!")
                 .build();
     }
 
@@ -114,6 +140,18 @@ public class RestExceptionHandler {
                 .devMsg(ex.getClass().getName())
                 .status(NOT_ACCEPTABLE.value())
                 .title("File size exception")
+                .build();
+    }
+
+    @ResponseStatus(INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(NullPointerException.class)
+    public ExceptionFilters nullPointer(final NullPointerException ex) {
+        return ExceptionFilters.builder()
+                .timestamp(LocalDateTime.now())
+                .details(ex.getMessage())
+                .devMsg(ex.getClass().getName())
+                .status(INTERNAL_SERVER_ERROR.value())
+                .title("Nullpointer")
                 .build();
     }
 

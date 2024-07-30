@@ -2,10 +2,10 @@ package com.freebills.gateways;
 
 import com.freebills.domain.User;
 import com.freebills.exceptions.InvalidCredentialsException;
-import com.freebills.gateways.entities.UserEntity;
 import com.freebills.exceptions.UserNotFoundException;
 import com.freebills.gateways.mapper.UserGatewayMapper;
 import com.freebills.repositories.UserRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,7 +15,11 @@ import java.util.List;
 
 @Slf4j
 @Service
-public record UserGateway(UserRepository userRepository, UserGatewayMapper userGatewayMapper) {
+@RequiredArgsConstructor
+public class UserGateway {
+
+    private final UserRepository userRepository;
+    private final UserGatewayMapper userGatewayMapper;
 
     public User save(final User user) {
         return userGatewayMapper.toDomain(userRepository.save(userGatewayMapper.toEntity(user)));
@@ -23,6 +27,10 @@ public record UserGateway(UserRepository userRepository, UserGatewayMapper userG
 
     public Page<User> getAll(final Pageable pageable) {
         return userRepository.findAll(pageable).map(userGatewayMapper::toDomain);
+    }
+
+    public List<User> findAll() {
+        return userRepository.findAll().stream().map(userGatewayMapper::toDomain).toList();
     }
 
     public User findById(final Long id) {

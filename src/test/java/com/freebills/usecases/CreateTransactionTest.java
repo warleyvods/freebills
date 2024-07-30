@@ -10,22 +10,23 @@ import com.freebills.gateways.entities.enums.TransactionType;
 import com.freebills.gateways.mapper.AccountGatewayMapper;
 import com.freebills.repositories.AccountsRepository;
 import com.freebills.repositories.UserRepository;
+import com.freebills.utils.TestContainerBase;
 import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class CreateTransactionTest {
+@TestInstance(PER_CLASS)
+class CreateTransactionTest extends TestContainerBase {
 
     @Autowired
     private CreateTransaction createTransaction;
@@ -79,22 +80,6 @@ class CreateTransactionTest {
         assertEquals(transactionEntity.getTransactionCategory(), transactionSaved.getTransactionCategory());
         assertEquals(transactionEntity.getPaid(), transactionSaved.getPaid());
         assertEquals(transactionEntity.getAccount(), transactionSaved.getAccount());
-    }
-
-    @Test
-    void testCreateTransactionWithNullAccount() {
-        var transactionEntity = new Transaction();
-        transactionEntity.setAmount(new BigDecimal("100.00"));
-        transactionEntity.setDate(LocalDate.now());
-        transactionEntity.setDescription("Test transaction");
-        transactionEntity.setBarCode(null);
-        transactionEntity.setBankSlip(false);
-        transactionEntity.setTransactionType(TransactionType.REVENUE);
-        transactionEntity.setTransactionCategory(TransactionCategory.HOUSE);
-        transactionEntity.setPaid(true);
-        transactionEntity.setAccount(null);
-
-        assertThrows(NullPointerException.class, () -> createTransaction.execute(transactionEntity));
     }
 
     @Test

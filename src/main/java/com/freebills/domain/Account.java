@@ -5,14 +5,19 @@ import com.freebills.gateways.entities.enums.AccountType;
 import com.freebills.gateways.entities.enums.BankType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Getter
 @Setter
 @EqualsAndHashCode
-public class Account {
+@NoArgsConstructor
+@ToString
+public class Account implements Serializable {
 
     private Long id;
     private BigDecimal amount;
@@ -24,6 +29,10 @@ public class Account {
 
     @JsonIgnore
     private User user;
+
+    public Account(Long id) {
+        this.id = id;
+    }
 
     public Boolean isArchived() {
         return archived;

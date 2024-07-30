@@ -52,10 +52,10 @@ public class TransactionEntity {
 
     private Boolean bankSlip;
 
-    @Enumerated(value = STRING)
+    @Enumerated(STRING)
     private TransactionType transactionType;
 
-    @Enumerated(value = STRING)
+    @Enumerated(STRING)
     private TransactionCategory transactionCategory;
 
     private Boolean paid;

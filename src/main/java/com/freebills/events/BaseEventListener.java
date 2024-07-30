@@ -3,7 +3,7 @@ package com.freebills.events;
 import com.freebills.domain.Event;
 import com.freebills.events.account.AccountCreatedEvent;
 import com.freebills.events.account.AccountDeletedEvent;
-import com.freebills.events.account.AccountrReajustEvent;
+import com.freebills.events.account.AccountUpdateEvent;
 import com.freebills.events.transaction.TransactionCreatedEvent;
 import com.freebills.events.transaction.TransactionDeletedEvent;
 import com.freebills.events.transaction.TransactionUpdatedEvent;
@@ -13,10 +13,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 import static com.freebills.gateways.entities.enums.EventType.ACCOUNT_CREATED;
 import static com.freebills.gateways.entities.enums.EventType.ACCOUNT_DELETED;
 import static com.freebills.gateways.entities.enums.EventType.TRANSACTION_CREATED;
 import static com.freebills.gateways.entities.enums.EventType.TRANSACTION_DELETED;
+import static com.freebills.gateways.entities.enums.EventType.TRANSACTION_TRANSFER;
 import static com.freebills.gateways.entities.enums.EventType.TRANSACTION_UPDATED;
 
 @Slf4j
@@ -45,11 +48,28 @@ public class BaseEventListener {
     public void handleTransactionUpdatedEvent(final TransactionUpdatedEvent transactionUpdatedEvent) {
         log.info("Handling TransactionUpdatedEvent for account id: {}", transactionUpdatedEvent.getAccountId());
         try {
+            if (!transactionUpdatedEvent.getTransaction().getAccount().getId().equals(transactionUpdatedEvent.getOldTransaction().getAccount().getId())) {
+                final var eventTransfer = new Event();
+                eventTransfer.setAggregateId(transactionUpdatedEvent.getOldTransaction().getAccount().getId());
+                eventTransfer.setEventType(TRANSACTION_TRANSFER);
+                eventTransfer.setTransactionData(transactionUpdatedEvent.getTransaction());
+                eventTransfer.setOldTransactionData(transactionUpdatedEvent.getOldTransaction());
+
+                final var createEvent = new Event();
+                createEvent.setAggregateId(transactionUpdatedEvent.getTransaction().getAccount().getId());
+                createEvent.setEventType(TRANSACTION_CREATED);
+                createEvent.setTransactionData(transactionUpdatedEvent.getTransaction());
+
+                eventGateway.saveAll(List.of(eventTransfer, createEvent));
+                return;
+            }
+
             final var newEvent = new Event();
             newEvent.setAggregateId(transactionUpdatedEvent.getAccountId());
             newEvent.setEventType(TRANSACTION_UPDATED);
             newEvent.setTransactionData(transactionUpdatedEvent.getTransaction());
             newEvent.setOldTransactionData(transactionUpdatedEvent.getOldTransaction());
+
             eventGateway.save(newEvent);
         } catch (Exception e) {
             log.error("Error handling TransactionUpdatedEvent: {}", e.getMessage());
@@ -98,21 +118,6 @@ public class BaseEventListener {
             eventGateway.save(newEvent);
         } catch (Exception e) {
             log.error("Error handling AccountDeletedEvent: {}", e.getMessage());
-            throw e;
-        }
-    }
-
-    @EventListener
-    public void handleAccountReajustEvent(final AccountrReajustEvent accountrReajustEvent) {
-        log.info("Handling AccountrReajustEvent for account id: {}", accountrReajustEvent.getAccountId());
-        try {
-            final var newEvent = new Event();
-            newEvent.setAggregateId(accountrReajustEvent.getAccountId());
-            newEvent.setEventType(ACCOUNT_DELETED);
-            newEvent.setTransactionData(accountrReajustEvent.getTransaction());
-            eventGateway.save(newEvent);
-        } catch (Exception e) {
-            log.error("Error handling AccountrReajustEvent: {}", e.getMessage());
             throw e;
         }
     }

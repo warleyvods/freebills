@@ -4,13 +4,14 @@ package com.freebills.controllers;
 import com.freebills.controllers.dtos.requests.AccountPatchArchivedRequestDTO;
 import com.freebills.controllers.dtos.requests.AccountPostRequestDTO;
 import com.freebills.controllers.dtos.requests.AccountPutRequestDTO;
-import com.freebills.controllers.dtos.requests.AccountReajustDTO;
+import com.freebills.controllers.dtos.requests.AdjustAccountRequestDTO;
 import com.freebills.controllers.dtos.responses.AccountResponseDTO;
 import com.freebills.controllers.mappers.AccountMapper;
+import com.freebills.gateways.entities.enums.AccountChangeType;
+import com.freebills.usecases.AdjustAccount;
 import com.freebills.usecases.CreateAccount;
 import com.freebills.usecases.DeleteAccount;
 import com.freebills.usecases.FindAccount;
-import com.freebills.usecases.ReajustAccount;
 import com.freebills.usecases.UpdateAccount;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -46,14 +47,13 @@ public class AccountController {
     private final UpdateAccount updateAccount;
     private final CreateAccount createAccount;
     private final DeleteAccount deleteAccount;
-    private final ReajustAccount reajustAccount;
-
+    private final AdjustAccount adjustAccount;
 
     @ResponseStatus(CREATED)
     @PostMapping
     public AccountResponseDTO save(@RequestBody @Valid final AccountPostRequestDTO accountPostRequestDTO, Principal principal) {
         final var account = mapper.toDomain(accountPostRequestDTO);
-        return mapper.toDTO(createAccount.create(account, principal));
+        return mapper.toDTO(createAccount.create(account, principal.getName()));
     }
 
     @ResponseStatus(OK)
@@ -92,15 +92,15 @@ public class AccountController {
         return mapper.toDTO(toJson);
     }
 
+    @ResponseStatus(OK)
+    @PatchMapping("/readjustment")
+    public void adjustAccount(@RequestBody @Valid final AdjustAccountRequestDTO request, final Principal principal) {
+        adjustAccount.execute(request.accountId(), request.amount(), AccountChangeType.valueOf(request.type()), principal.getName());
+    }
+
     @ResponseStatus(NO_CONTENT)
     @DeleteMapping("{accountId}")
     public void deleteAccount(@PathVariable final Long accountId) {
         deleteAccount.deleteAccount(accountId);
-    }
-
-    @ResponseStatus(OK)
-    @PatchMapping("/readjustment")
-    public void reajustAmount(@RequestBody @Valid final AccountReajustDTO accountReajustDTO) {
-        reajustAccount.execute(accountReajustDTO.accountId(), accountReajustDTO.amount(), accountReajustDTO.type());
     }
 }

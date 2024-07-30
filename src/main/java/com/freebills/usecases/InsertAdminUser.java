@@ -1,28 +1,42 @@
 package com.freebills.usecases;
 
-import com.freebills.gateways.entities.UserEntity;
-import com.freebills.repositories.UserRepository;
+import com.freebills.domain.User;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import static java.lang.Boolean.FALSE;
+
 @Slf4j
 @Component
-public record InsertAdminUser(UserRepository userRepository) {
+@RequiredArgsConstructor
+public class InsertAdminUser {
+
+    @Value("${admin.password}")
+    private String password;
+
+    private final FindUser findUser;
+    private final CreateUser createUser;
+    private final CreateCategory createCategory;
 
     private static final String ADMIN = "admin";
 
     public void insertAdminUser() {
-        if (userRepository.findByLoginIgnoreCase(ADMIN).isEmpty()) {
+        if (FALSE.equals(findUser.existsByLogin(ADMIN))) {
             log.debug("Administrator user not found, creating...");
-            final var user = new UserEntity();
+
+            final var user = new User();
             user.setName("Administrator");
             user.setLogin(ADMIN);
             user.setAdmin(true);
             user.setActive(true);
-            user.setPassword(new BCryptPasswordEncoder().encode("baguvix"));
+            user.setPassword(new BCryptPasswordEncoder().encode(password));
             user.setEmail("email@email.com");
-            userRepository.save(user);
+            final User savedUser = createUser.execute(user);
+
+            createCategory.handleCreateCategoriesDefault(savedUser);
         } else {
             log.info("insertAdminUser: admin user already exists");
         }

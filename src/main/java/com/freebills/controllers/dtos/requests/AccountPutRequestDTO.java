@@ -25,5 +25,4 @@ public record AccountPutRequestDTO(
         @NotBlank
         String bankType
 ) {
-
 }

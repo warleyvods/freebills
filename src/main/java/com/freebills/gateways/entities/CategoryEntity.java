@@ -39,6 +39,8 @@ public class CategoryEntity {
 
     private String color;
 
+    private String icon;
+
     @Enumerated(STRING)
     private TransactionType categoryType;
 
@@ -46,6 +48,9 @@ public class CategoryEntity {
 
     @OneToMany(mappedBy = "category", cascade = ALL, orphanRemoval = true)
     private List<TransactionEntity> transactions = new ArrayList<>();
+
+    @OneToMany(mappedBy = "category", cascade = ALL, orphanRemoval = true)
+    private List<CCTransactionEntity> ccTransactionEntities = new ArrayList<>();
 
     @ManyToOne
     private UserEntity user;

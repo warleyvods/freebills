@@ -29,7 +29,7 @@ public class FreebillsApplication {
     }
 
     @Bean
-    InitializingBean sendDataBase() {
+    InitializingBean initializeData() {
         return insert::insertAdminUser;
     }
 }

@@ -13,8 +13,14 @@ public class Event {
     private Long id;
     private Long aggregateId;
     private EventType eventType;
+
     private Transaction transactionData;
     private Transaction oldTransactionData;
+
+    private Transfer transferData;
+    private Transfer oldTransferData;
+
     private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
 }

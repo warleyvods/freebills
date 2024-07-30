@@ -38,6 +38,7 @@ public class FindAccount {
                 .toList();
     }
 
+
     private Account calculateBalanceForSingleAccount(final Account account) {
         BigDecimal balance = accountBalanceCalculator.calculateBalanceForAccount(account);
         account.setAmount(balance);

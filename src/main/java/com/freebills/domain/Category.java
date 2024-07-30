@@ -10,6 +10,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Getter
@@ -18,7 +19,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
-public class Category {
+public class Category implements Serializable {
 
     private Long id;
 
@@ -26,19 +27,24 @@ public class Category {
     private String name;
 
     @NonNull
+    private String icon;
+
+    @NonNull
     private String color;
 
     @NonNull
     private TransactionType categoryType;
+
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    @NonNull
     private Boolean archived;
 
     @NonNull
     @JsonIgnore
     private User user;
 
-    public Boolean isArchived() {
-        return archived;
-    }
 }
+
+

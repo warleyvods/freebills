@@ -48,6 +48,10 @@ spring:
             token-uri: https://oauth2.googleapis.com/token
             user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
             user-name-attribute: sub
+  data:
+    redis:
+      host: ${REDIS_URL:localhost}
+      port: 6379
   kafka:
     producer:
       key-serializer: org.springframework.kafka.support.serializer.JsonSerializer
@@ -65,3 +69,6 @@ api:
   app:
     jwtSecret: ${SECRET:45da2ed9f455817623087c49390b2ab9e4d38421c20f5a282a877f8e6662c67b361a0f7bd810cbca8e471e183c41d9a648b057aed0369b67078c6d73e38d}
     jwtExpirationMs: 86400000
+
+admin:
+  password: ${ADMIN_PASSWORD:anypass}

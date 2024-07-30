@@ -21,7 +21,9 @@ public abstract class BaseEvent extends ApplicationEvent {
         this.oldTransaction = oldTransaction;
     }
 
-    protected BaseEvent(Object source, Long accountId, Transaction transaction) {
+    protected BaseEvent(final Object source,
+                        final Long accountId,
+                        final Transaction transaction) {
         this(source, accountId, transaction, null);
     }
 }

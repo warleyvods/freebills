@@ -5,15 +5,15 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.List;
 
 import static java.time.LocalDateTime.now;
 
 @Getter
 @Setter
 @EqualsAndHashCode
-public class User {
+public class User implements Serializable {
 
     private Long id;
     private String name;

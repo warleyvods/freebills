@@ -1,4 +1,4 @@
-CREATE TABLE users
+CREATE TABLE IF NOT EXISTS users
 (
     id          BIGSERIAL PRIMARY KEY,
     active      BOOLEAN      NOT NULL,
@@ -12,7 +12,7 @@ CREATE TABLE users
     updated_at  TIMESTAMP(6) NOT NULL
 );
 
-CREATE TABLE accounts
+CREATE TABLE IF NOT EXISTS accounts
 (
     id           BIGSERIAL PRIMARY KEY,
     account_type VARCHAR(255),
@@ -24,7 +24,7 @@ CREATE TABLE accounts
     user_id      BIGINT CONSTRAINT fk_user_id REFERENCES users (id)
 );
 
-CREATE TABLE transactions
+CREATE TABLE IF NOT EXISTS transactions
 (
     id                   BIGSERIAL PRIMARY KEY,
     amount               NUMERIC(38, 2),
@@ -39,7 +39,7 @@ CREATE TABLE transactions
     account_id           BIGINT CONSTRAINT fk_account_id REFERENCES accounts(id)
 );
 
-create table events
+CREATE TABLE IF NOT EXISTS events
 (
     id                   BIGSERIAL PRIMARY KEY,
     aggregate_id         BIGINT,

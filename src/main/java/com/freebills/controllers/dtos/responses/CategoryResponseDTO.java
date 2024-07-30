@@ -4,6 +4,7 @@ public record CategoryResponseDTO(
         Long id,
         String name,
         String color,
+        String icon,
         String categoryType,
         Boolean archived,
         String createdAt,
