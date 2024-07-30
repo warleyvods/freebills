@@ -3,7 +3,6 @@ package com.freebills.events;
 import com.freebills.domain.Event;
 import com.freebills.events.account.AccountCreatedEvent;
 import com.freebills.events.account.AccountDeletedEvent;
-import com.freebills.events.account.AccountUpdateEvent;
 import com.freebills.events.transaction.TransactionCreatedEvent;
 import com.freebills.events.transaction.TransactionDeletedEvent;
 import com.freebills.events.transaction.TransactionUpdatedEvent;
@@ -12,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 import java.util.List;
 

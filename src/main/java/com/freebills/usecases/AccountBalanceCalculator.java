@@ -25,7 +25,7 @@ public class AccountBalanceCalculator {
 
         var balance = ZERO;
         for (final Event event : events) {
-            BalanceUpdateStrategy strategy = strategyFactory.getStrategy(event.getEventType());
+            var strategy = strategyFactory.getStrategy(event.getEventType());
             balance = strategy.updateBalance(balance, event);
         }
 

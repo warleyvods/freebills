@@ -27,14 +27,4 @@ public class CreateTransaction {
         eventPublisher.publishEvent(new TransactionCreatedEvent(this, savedTransaction.getAccount().getId(), savedTransaction));
         return savedTransaction;
     }
-
-    @Transactional
-    public Transaction restore(final Transaction transaction) {
-        log.info("Transaction created with id: {}", transaction);
-
-        final var savedTransaction = transactionGateway.save(transaction);
-
-        eventPublisher.publishEvent(new TransactionCreatedEvent(this, savedTransaction.getAccount().getId(), savedTransaction));
-        return savedTransaction;
-    }
 }
