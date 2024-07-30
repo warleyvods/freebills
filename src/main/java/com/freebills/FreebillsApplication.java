@@ -11,12 +11,13 @@ import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerF
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.scheduling.annotation.EnableAsync;
-
 
 @EnableAsync
 @EnableFeignClients
 @EnableJpaAuditing
+@EnableKafka
 @SpringBootApplication
 @RequiredArgsConstructor
 public class FreebillsApplication {
@@ -32,3 +33,4 @@ public class FreebillsApplication {
         return insert::insertAdminUser;
     }
 }
+
