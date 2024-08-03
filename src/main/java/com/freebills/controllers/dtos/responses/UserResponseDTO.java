@@ -12,6 +12,7 @@ public record UserResponseDTO(
         String email,
         boolean admin,
         boolean active,
+        String imgUrl,
         LocalDate createdAt,
         LocalDateTime lastAccess
 ) {

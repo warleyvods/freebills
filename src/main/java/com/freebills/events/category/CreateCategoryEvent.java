@@ -5,14 +5,11 @@ import lombok.Getter;
 
 import java.util.concurrent.CompletableFuture;
 
+@Getter
 public class CreateCategoryEvent {
 
     private final Object source;
-
-    @Getter
     private final Category category;
-
-    @Getter
     private final CompletableFuture<Category> future;
 
     public CreateCategoryEvent(Object source, Category category, CompletableFuture<Category> future) {

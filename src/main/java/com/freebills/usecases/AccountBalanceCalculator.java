@@ -19,7 +19,7 @@ public class AccountBalanceCalculator {
     private final EventGateway eventGateway;
     private final BalanceUpdateFactory strategyFactory;
 
-//    @Cacheable(value = "account", key = "#account.id")
+    @Cacheable(value = "account", key = "#account.id")
     public BigDecimal calculateBalanceForAccount(final Account account) {
         var events = eventGateway.getEventsByAggregateId(account.getId());
 

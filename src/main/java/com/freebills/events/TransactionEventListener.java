@@ -1,8 +1,6 @@
 package com.freebills.events;
 
 import com.freebills.domain.Event;
-import com.freebills.events.account.AccountCreatedEvent;
-import com.freebills.events.account.AccountDeletedEvent;
 import com.freebills.events.transaction.TransactionCreatedEvent;
 import com.freebills.events.transaction.TransactionDeletedEvent;
 import com.freebills.events.transaction.TransactionUpdatedEvent;
@@ -11,12 +9,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.event.TransactionalEventListener;
 
 import java.util.List;
 
-import static com.freebills.gateways.entities.enums.EventType.ACCOUNT_CREATED;
-import static com.freebills.gateways.entities.enums.EventType.ACCOUNT_DELETED;
 import static com.freebills.gateways.entities.enums.EventType.TRANSACTION_CREATED;
 import static com.freebills.gateways.entities.enums.EventType.TRANSACTION_DELETED;
 import static com.freebills.gateways.entities.enums.EventType.TRANSACTION_TRANSFER;
@@ -25,7 +20,7 @@ import static com.freebills.gateways.entities.enums.EventType.TRANSACTION_UPDATE
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class BaseEventListener {
+public class TransactionEventListener {
 
     private final EventGateway eventGateway;
 
@@ -88,36 +83,6 @@ public class BaseEventListener {
             eventGateway.save(newEvent);
         } catch (Exception e) {
             log.error("Error handling TransactionDeletedEvent: {}", e.getMessage());
-            throw e;
-        }
-    }
-
-    @EventListener
-    public void handleAccountCreatedEvent(final AccountCreatedEvent accountCreatedEvent) {
-        log.info("Handling AccountCreatedEvent for account id: {}", accountCreatedEvent.getAccountId());
-        try {
-            final var newEvent = new Event();
-            newEvent.setAggregateId(accountCreatedEvent.getAccountId());
-            newEvent.setEventType(ACCOUNT_CREATED);
-            newEvent.setTransactionData(accountCreatedEvent.getTransaction());
-            eventGateway.save(newEvent);
-        } catch (Exception e) {
-            log.error("Error handling AccountCreatedEvent: {}", e.getMessage());
-            throw e;
-        }
-    }
-
-    @EventListener
-    public void handleAccountDeletedEvent(final AccountDeletedEvent accountDeletedEvent) {
-        log.info("Handling AccountDeletedEvent for account id: {}", accountDeletedEvent.getAccountId());
-        try {
-            final var newEvent = new Event();
-            newEvent.setAggregateId(accountDeletedEvent.getAccountId());
-            newEvent.setEventType(ACCOUNT_DELETED);
-            newEvent.setTransactionData(accountDeletedEvent.getTransaction());
-            eventGateway.save(newEvent);
-        } catch (Exception e) {
-            log.error("Error handling AccountDeletedEvent: {}", e.getMessage());
             throw e;
         }
     }
