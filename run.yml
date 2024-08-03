@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+
+  freebills-api:
+    container_name: freebills-api
+    environment:
+      DATABASE_CONNECTION_URL: jdbc:postgresql://db:5432/freebills
+      SCOPE: stage
+      PASSWORD: freebills
+      USER: freebills
+    ports:
+      - '9000:9000'
+    networks:
+      - freebills-net
+    depends_on:
+      - db
+    links:
+      - db
+    restart: on-failure
+
+  db:
+    image: postgres:16.3
+    container_name: db
+    hostname: db
+    environment:
+      POSTGRES_USER: freebills
+      POSTGRES_PASSWORD: freebills
+      POSTGRES_DB: freebills
+    networks:
+      - freebills-net
+    ports:
+      - "5432:5432"
+    restart: always
+    volumes:
+      - './pg_db:/var/lib/postgresql'
+      - './pg_data:/var/lib/postgresql/data'
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+    restart: always
+
+networks:
+  freebills-net:
+    driver: bridge

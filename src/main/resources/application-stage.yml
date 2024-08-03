@@ -1,12 +1,12 @@
 server:
-  port: 9000
+  port: 9005
   error:
     whitelabel:
       enabled: true
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/freebills
+    url: ${DATABASE_CONNECTION_URL:jdbc:postgresql://localhost:5432/freebills}
     username: ${USERNAME}
     password: ${PASSWORD}
     driver-class-name: org.postgresql.Driver
@@ -18,27 +18,27 @@ spring:
     properties:
       hibernate:
         format_sql: false
-    show-sql: true
+    show-sql: false
 
-  h2:
-    console:
-      enabled: false
+#  h2:
+#    console:
+#      enabled: false
 
 springdoc:
   api-docs:
     enabled: true
   swagger-ui:
     path: /swagger-ui.html
-
-logging:
-  level:
-    org:
-      hibernate:
-        type:
-          descriptor:
-            sql:
-              BasicBinder: TRACE
-      SQL: debug
+#
+#logging:
+#  level:
+#    org:
+#      hibernate:
+#        type:
+#          descriptor:
+#            sql:
+#              BasicBinder: TRACE
+#      SQL: debug
 
 front:
   url: http://localhost:3000/dashboard
