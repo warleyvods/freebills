@@ -52,6 +52,17 @@ spring:
     redis:
       host: ${REDIS_URL:localhost}
       port: 6379
+  kafka:
+    producer:
+      key-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      key-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+    listener:
+      concurrency: 3
+      poll-timeout: 5000
+    bootstrap-servers: "localhost:19092"
 
 api:
   app:
