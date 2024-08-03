@@ -17,7 +17,7 @@ public class UpdateUser {
 
     private static final String ADMIN = "admin";
 
-    public User update(final User user) {
+    public User execute(final User user) {
         if (user.getId() != null && lastLogin(user.getId()).equals(ADMIN)) {
             validationLoginChange(user);
         }
@@ -33,14 +33,14 @@ public class UpdateUser {
         if (user.getLogin().equalsIgnoreCase(ADMIN)) {
             throw new PermissionDeniedException("You cannot change a developer password");
         }
-        update(user);
+        execute(user);
     }
 
     public void updatePassword(final User user) {
         if (user.getLogin().equalsIgnoreCase(ADMIN)) {
             throw new PermissionDeniedException("You cannot change a developer password");
         }
-        update(user);
+        execute(user);
     }
 
     private void validationLoginChange(final User user) {

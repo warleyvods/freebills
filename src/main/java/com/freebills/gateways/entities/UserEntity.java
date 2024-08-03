@@ -60,6 +60,8 @@ public class UserEntity {
     @Enumerated(STRING)
     private Source source;
 
+    private String imgUrl;
+
     @OneToMany(mappedBy = "user", cascade = ALL, fetch = LAZY)
     private List<AccountEntity> accounts;
 
