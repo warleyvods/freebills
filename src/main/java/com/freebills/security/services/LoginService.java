@@ -40,6 +40,6 @@ public class LoginService {
         final String username = authentication.getUsername();
         final var user = findUser.byLoginOrEmail(username);
         user.setLastAccess();
-        updateUser.update(user);
+        updateUser.execute(user);
     }
 }

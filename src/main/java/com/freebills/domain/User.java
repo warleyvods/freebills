@@ -1,8 +1,10 @@
 package com.freebills.domain;
 
 import com.freebills.gateways.entities.Source;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
@@ -23,6 +25,7 @@ public class User implements Serializable {
     private Boolean admin;
     private Boolean active;
     private Source source;
+    private String imgUrl;
     private LocalDateTime createdAt;
     private LocalDateTime lastAccess;
     private LocalDateTime updatedAt;

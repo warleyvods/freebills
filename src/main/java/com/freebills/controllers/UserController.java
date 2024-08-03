@@ -1,11 +1,16 @@
 package com.freebills.controllers;
 
 import com.freebills.controllers.dtos.requests.SignupUserRequestDTO;
+import com.freebills.controllers.dtos.requests.UploadImageRequestDTO;
 import com.freebills.controllers.dtos.requests.UserPostRequestDTO;
 import com.freebills.controllers.dtos.requests.UserPutPasswordRequestDTO;
 import com.freebills.controllers.dtos.requests.UserPutRequestDTO;
+import com.freebills.controllers.dtos.responses.UploadResponseDTO;
 import com.freebills.controllers.dtos.responses.UserResponseDTO;
+import com.freebills.controllers.mappers.FileReferenceMapper;
 import com.freebills.controllers.mappers.UserMapper;
+import com.freebills.domain.FileReference;
+import com.freebills.usecases.CreateImageProfile;
 import com.freebills.usecases.CreateUser;
 import com.freebills.usecases.DeleteUser;
 import com.freebills.usecases.FindUser;
@@ -48,6 +53,8 @@ public class UserController {
     private final DeleteUser deleteUser;
     private final UserMapper userMapper;
     private final UpdateUser updateUser;
+    private final CreateImageProfile createImageProfile;
+    private final FileReferenceMapper fileReferenceMapper;
 
     @ResponseStatus(CREATED)
     @PostMapping
@@ -69,7 +76,7 @@ public class UserController {
     @PreAuthorize("hasRole('USER')")
     public UserResponseDTO update(@RequestBody @Valid final UserPutRequestDTO userPutRequestDTO, Principal principal) {
         final var userFinded = findUser.byLoginOrEmail(principal.getName());
-        final var toJson = updateUser.update(userMapper.updateUserFromDTO(userPutRequestDTO, userFinded));
+        final var toJson = updateUser.execute(userMapper.updateUserFromDTO(userPutRequestDTO, userFinded));
         return userMapper.fromDomain(toJson);
     }
 
@@ -79,6 +86,15 @@ public class UserController {
     public void updatePassword(@RequestBody @Valid final UserPutPasswordRequestDTO userPassword) {
         final var userFinded = findUser.byId(userPassword.id());
         updateUser.updatePassword(userMapper.updatePasswordFromDTO(userPassword, userFinded));
+    }
+
+    @ResponseStatus(OK)
+    @PatchMapping("/add-image")
+    @PreAuthorize("hasRole('USER')")
+    public UploadResponseDTO addImage(@RequestBody UploadImageRequestDTO image, Principal principal) {
+        final var user = findUser.byLoginOrEmail(principal.getName());
+        final var fileReference = fileReferenceMapper.toDomain(image);
+        return fileReferenceMapper.fromDomain(createImageProfile.execute(user, fileReference));
     }
 
     @ResponseStatus(OK)
