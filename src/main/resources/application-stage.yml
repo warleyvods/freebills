@@ -1,5 +1,5 @@
 server:
-  port: 9005
+  port: 9000
   error:
     whitelabel:
       enabled: true
@@ -20,25 +20,21 @@ spring:
         format_sql: false
     show-sql: false
 
-#  h2:
-#    console:
-#      enabled: false
-
 springdoc:
   api-docs:
     enabled: true
   swagger-ui:
     path: /swagger-ui.html
-#
-#logging:
-#  level:
-#    org:
-#      hibernate:
-#        type:
-#          descriptor:
-#            sql:
-#              BasicBinder: TRACE
-#      SQL: debug
+
+logging:
+  level:
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
+      SQL: debug
 
 front:
   url: http://localhost:3000/dashboard
