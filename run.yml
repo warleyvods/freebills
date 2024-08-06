@@ -3,14 +3,17 @@ version: '3.8'
 services:
 
   freebills-api:
+    image: warleyvods/freebills-api:1.2.53
     container_name: freebills-api
     environment:
       DATABASE_CONNECTION_URL: jdbc:postgresql://db:5432/freebills
       SCOPE: stage
       PASSWORD: freebills
-      USER: freebills
+      USERNAME: freebills
+      ADMIN_PASSWORD: 123456
+      REDIS_URL: redis
     ports:
-      - '9000:9000'
+      - '9005:9000'
     networks:
       - freebills-net
     depends_on:
@@ -39,6 +42,8 @@ services:
   redis:
     image: redis:latest
     container_name: redis
+    networks:
+      - freebills-net
     ports:
       - "6379:6379"
     restart: always
