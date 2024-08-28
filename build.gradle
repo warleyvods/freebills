@@ -8,12 +8,21 @@ plugins {
 }
 
 group = 'com.freebills'
-sourceCompatibility = '21'
 
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+bootJar {
+    archiveFileName = 'freebills.jar'
 }
 
 repositories {
@@ -83,7 +92,7 @@ jacocoTestReport {
     afterEvaluate {
         classDirectories.setFrom(files(classDirectories.files.collect {
             fileTree(dir: it, exclude: [
-                    "**/Application**",
+                    "/Application**",
             ])
         }))
     }
