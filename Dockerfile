@@ -36,8 +36,7 @@
 FROM eclipse-temurin:21-jdk-alpine AS builder
 WORKDIR /app
 COPY . .
-RUN apk add --no-cache gradle
-RUN /usr/bin/gradle build -x test
+RUN ./gradlew build -x test
 
 FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
