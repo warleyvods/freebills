@@ -7,7 +7,6 @@ import com.freebills.controllers.dtos.requests.AccountPutRequestDTO;
 import com.freebills.controllers.dtos.requests.AdjustAccountRequestDTO;
 import com.freebills.controllers.dtos.responses.AccountResponseDTO;
 import com.freebills.controllers.mappers.AccountMapper;
-import com.freebills.gateways.entities.enums.AccountChangeType;
 import com.freebills.usecases.AdjustAccount;
 import com.freebills.usecases.CreateAccount;
 import com.freebills.usecases.DeleteAccount;
@@ -95,7 +94,7 @@ public class AccountController {
     @ResponseStatus(OK)
     @PatchMapping("/readjustment")
     public void adjustAccount(@RequestBody @Valid final AdjustAccountRequestDTO request, final Principal principal) {
-        adjustAccount.execute(request.accountId(), request.amount(), AccountChangeType.valueOf(request.type()), principal.getName());
+        adjustAccount.execute(request.accountId(), request.amount(), principal.getName());
     }
 
     @ResponseStatus(NO_CONTENT)
