@@ -10,8 +10,5 @@ import java.util.List;
 @Repository
 public interface EventRepository extends JpaRepository<EventEntity, Long> {
 
-    @Query(value = """
-        select e.* from events e order by e.created_at
-    """, nativeQuery = true)
-    List<EventEntity> findByAggregateId(Long aggregateId);
+    List<EventEntity> findByAggregateIdOrderByCreatedAtAsc(Long aggregateId);
 }

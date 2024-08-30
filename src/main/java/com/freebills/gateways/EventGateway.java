@@ -22,7 +22,7 @@ public class EventGateway {
     }
 
     public List<Event> getEventsByAggregateId(final Long aggregateId) {
-        return eventRepository.findByAggregateId(aggregateId).stream()
+        return eventRepository.findByAggregateIdOrderByCreatedAtAsc(aggregateId).stream()
                 .map(eventGatewayMapper::toDomainWithJson)
                 .toList();
     }
