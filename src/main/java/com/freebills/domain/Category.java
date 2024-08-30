@@ -36,6 +36,7 @@ public class Category implements Serializable {
     private TransactionType categoryType;
 
     private LocalDateTime createdAt;
+
     private LocalDateTime updatedAt;
 
     @NonNull

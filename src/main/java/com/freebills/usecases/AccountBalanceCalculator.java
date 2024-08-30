@@ -3,9 +3,7 @@ package com.freebills.usecases;
 import com.freebills.domain.Account;
 import com.freebills.domain.Event;
 import com.freebills.gateways.EventGateway;
-import com.freebills.usecases.strategy.BalanceUpdateStrategy;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
