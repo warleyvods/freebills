@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static jakarta.persistence.CascadeType.ALL;
+import static jakarta.persistence.CascadeType.REMOVE;
 import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -46,10 +46,10 @@ public class CategoryEntity {
 
     private Boolean archived;
 
-    @OneToMany(mappedBy = "category", cascade = ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "category", cascade = REMOVE)
     private List<TransactionEntity> transactions = new ArrayList<>();
 
-    @OneToMany(mappedBy = "category", cascade = ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "category", cascade = REMOVE)
     private List<CCTransactionEntity> ccTransactionEntities = new ArrayList<>();
 
     @ManyToOne

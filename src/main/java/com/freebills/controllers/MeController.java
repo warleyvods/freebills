@@ -37,7 +37,6 @@ public class MeController {
     private final UserGateway userGateway;
     private final UserMapper userMapper;
     private final EventGateway eventGateway;
-    private final FindTransaction findTransaction;
     private final TransactionMapper transactionMapper;
 
     @ResponseStatus(OK)
@@ -46,34 +45,34 @@ public class MeController {
         return userMapper.fromDomain(userGateway.findByLogin(principal.getName()));
     }
 
-//    @GetMapping("{id}")
-//    public List<TransactionRestoreResponseDTO>  get(@PathVariable Long id) {
-//        final List<Event> eventsByAggregateId = eventGateway.getEventsByAggregateId(id);
-//
-//        final Map<Long, Event> latestEventsMap = new HashMap<>();
-//
-//        for (Event event : eventsByAggregateId) {
-//            Transaction transactionData = event.getTransactionData();
-//            if (transactionData != null) {
-//                Long transactionId = transactionData.getId();
-//                if (transactionId != null) {
-//                    Event existingEvent = latestEventsMap.get(transactionId);
-//                    if (existingEvent == null || event.getCreatedAt().isAfter(existingEvent.getCreatedAt())) {
-//                        latestEventsMap.put(transactionId, event);
-//                    }
-//
-//                    if (event.getEventType().equals(EventType.TRANSACTION_DELETED)) {
-//                        latestEventsMap.remove(transactionId);
-//                    }
-//                }
-//            }
-//        }
-//
-//        List<Event> latestEvents = new ArrayList<>(latestEventsMap.values());
-//
-//        return latestEvents.stream().map(Event::getTransactionData)
-//                .toList()
-//                .stream().map(transactionMapper::fromDomainWithCategoryName)
-//                .toList();
-//    }
+    @GetMapping("{id}")
+    public List<TransactionRestoreResponseDTO>  get(@PathVariable Long id) {
+        final List<Event> eventsByAggregateId = eventGateway.getEventsByAggregateId(id);
+
+        final Map<Long, Event> latestEventsMap = new HashMap<>();
+
+        for (Event event : eventsByAggregateId) {
+            Transaction transactionData = event.getTransactionData();
+            if (transactionData != null) {
+                Long transactionId = transactionData.getId();
+                if (transactionId != null) {
+                    Event existingEvent = latestEventsMap.get(transactionId);
+                    if (existingEvent == null || event.getCreatedAt().isAfter(existingEvent.getCreatedAt())) {
+                        latestEventsMap.put(transactionId, event);
+                    }
+
+                    if (event.getEventType().equals(EventType.TRANSACTION_DELETED)) {
+                        latestEventsMap.remove(transactionId);
+                    }
+                }
+            }
+        }
+
+        List<Event> latestEvents = new ArrayList<>(latestEventsMap.values());
+
+        return latestEvents.stream().map(Event::getTransactionData)
+                .toList()
+                .stream().map(transactionMapper::fromDomainWithCategoryName)
+                .toList();
+    }
 }
