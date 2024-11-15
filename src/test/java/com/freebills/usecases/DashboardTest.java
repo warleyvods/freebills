@@ -122,6 +122,54 @@ class DashboardTest extends TestContainerBase {
         return List.of(t1, t2, t3, t4);
     }
 
+    private List<Transaction> transactionMockList2() {
+        var t1 = new Transaction();
+        t1.setAmount(new BigDecimal("100"));
+        t1.setDate(LocalDate.of(2022, 1, 1));
+        t1.setDescription("Arroz");
+        t1.setBarCode(null);
+        t1.setBankSlip(false);
+        t1.setTransactionType(TransactionType.REVENUE);
+        t1.setTransactionCategory(TransactionCategory.HOUSE);
+        t1.setPaid(true);
+        t1.setAccount(account);
+
+        var t2 = new Transaction();
+        t2.setAmount(new BigDecimal("100"));
+        t2.setDate(LocalDate.of(2022, 1, 1));
+        t2.setDescription("Arroz");
+        t2.setBarCode(null);
+        t2.setBankSlip(false);
+        t2.setTransactionType(TransactionType.REVENUE);
+        t2.setTransactionCategory(TransactionCategory.HOUSE);
+        t2.setPaid(false);
+        t2.setAccount(account);
+
+        var t3 = new Transaction();
+        t3.setAmount(new BigDecimal("100"));
+        t3.setDate(LocalDate.of(2023, 1, 1));
+        t3.setDescription("Arroz");
+        t3.setBarCode(null);
+        t3.setBankSlip(false);
+        t3.setTransactionType(TransactionType.EXPENSE);
+        t3.setTransactionCategory(TransactionCategory.HOUSE);
+        t3.setPaid(true);
+        t3.setAccount(account);
+
+        var t4 = new Transaction();
+        t4.setAmount(new BigDecimal("100"));
+        t4.setDate(LocalDate.of(2023, 1, 1));
+        t4.setDescription("Arroz");
+        t4.setBarCode(null);
+        t4.setBankSlip(false);
+        t4.setTransactionType(TransactionType.EXPENSE);
+        t4.setTransactionCategory(TransactionCategory.HOUSE);
+        t4.setPaid(false);
+        t4.setAccount(account);
+
+        return List.of(t1, t2, t3, t4);
+    }
+
     @Test
     void testGetTotalDashboard() {
         transactionMockList().forEach(data -> createTransaction.execute(data));
@@ -131,6 +179,18 @@ class DashboardTest extends TestContainerBase {
         assertEquals(0, new BigDecimal(0).compareTo(result.totalBalance()));
         assertEquals(0, new BigDecimal(200).compareTo(result.totalRevenue()));
         assertEquals(0, new BigDecimal(200).compareTo(result.totalExpensive()));
+        assertEquals(0, new BigDecimal(0).compareTo(result.totalExpensiveCards()));
+    }
+
+    @Test
+    void testGetTotalDashboardByYear() {
+        transactionMockList2().forEach(data -> createTransaction.execute(data));
+
+        DashboardResponseDTO result = dashboard.getTotalDashboardByYear("admin",  2022);
+
+        assertEquals(0, new BigDecimal(0).compareTo(result.totalBalance()));
+        assertEquals(0, new BigDecimal(200).compareTo(result.totalRevenue()));
+        assertEquals(0, new BigDecimal(0).compareTo(result.totalExpensive()));
         assertEquals(0, new BigDecimal(0).compareTo(result.totalExpensiveCards()));
     }
 

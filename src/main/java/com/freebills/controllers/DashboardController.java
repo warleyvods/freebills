@@ -34,10 +34,14 @@ public class DashboardController {
             @RequestParam(required = false) final Integer year,
             final Principal principal) {
         final var date = LocalDate.now();
-        validateDate(month);
+
+        if (month != null) {
+            validateDate(month);
+        }
+
         return dashboard.getDonutsGraph(
                 principal.getName(),
-                month == null ? date.getMonthValue() : month,
+                month,
                 year == null ? date.getYear() : year,
                 TransactionType.EXPENSE);
     }
@@ -49,10 +53,14 @@ public class DashboardController {
             @RequestParam(required = false) final Integer year,
             final Principal principal) {
         final var date = LocalDate.now();
-        validateDate(month);
+
+        if (month != null) {
+            validateDate(month);
+        }
+
         return dashboard.getDonutsGraph(
                 principal.getName(),
-                month == null ? date.getMonthValue() : month,
+                month,
                 year == null ? date.getYear() : year,
                 TransactionType.REVENUE);
     }
@@ -64,10 +72,13 @@ public class DashboardController {
             @RequestParam(required = false) final Integer year,
             final Principal principal) {
         final var date = LocalDate.now();
-        validateDate(month);
-        return dashboard.getTotalDashboard(
-                principal.getName(),
-                month == null ? date.getMonthValue() : month,
+
+        if (month != null) {
+            validateDate(month);
+        }
+
+        return dashboard.getTotalDashboard(principal.getName(),
+                month,
                 year == null ? date.getYear() : year
         );
     }
@@ -79,10 +90,14 @@ public class DashboardController {
             @RequestParam(required = false) final Integer year,
             final Principal principal) {
         final var date = LocalDate.now();
-        validateDate(month);
+
+        if (month != null) {
+            validateDate(month);
+        }
+
         return dashboard.getDashboardRevenue(
                 principal.getName(),
-                month == null ? date.getMonthValue() : month,
+                month,
                 year == null ? date.getYear() : year
         );
     }
@@ -94,10 +109,14 @@ public class DashboardController {
             @RequestParam(required = false) final Integer year,
             final Principal principal) {
         final var date = LocalDate.now();
-        validateDate(month);
+
+        if (month != null) {
+            validateDate(month);
+        }
+
         return dashboard.getDashboardExpense(
                 principal.getName(),
-                month == null ? date.getMonthValue() : month,
+                month,
                 year == null ? date.getYear() : year
         );
     }
