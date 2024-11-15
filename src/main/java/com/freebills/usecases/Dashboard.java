@@ -55,7 +55,15 @@ public class Dashboard {
                 .map(Map.Entry::getValue)
                 .toList();
 
-        return new DashboardGraphResponseDTO(transactionTypesLabels, values);
+        var colors = transactionTypesLabels.stream()
+                .map(label -> transactions.stream()
+                        .filter(transaction -> transaction.getCategory().getName().equals(label))
+                        .map(transaction -> transaction.getCategory().getColor())
+                        .findFirst()
+                        .orElse("#000000")) // Cor padrão caso não encontre
+                .toList();
+
+        return new DashboardGraphResponseDTO(transactionTypesLabels, values, colors);
     }
 
     public DashboardResponseDTO getTotalDashboard(String login, Integer month, Integer year) {

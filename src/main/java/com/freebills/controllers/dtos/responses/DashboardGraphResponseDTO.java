@@ -5,6 +5,7 @@ import java.util.List;
 
 public record DashboardGraphResponseDTO(
         List<String> labels,
-        List<BigDecimal> series
+        List<BigDecimal> series,
+        List<String> colors
 ) {
 }
