@@ -6,7 +6,7 @@ server:
 
 spring:
   datasource:
-    url: ${DATABASE_CONNECTION_URL:jdbc:postgresql://localhost:5432/freebills}
+    url: ${DATABASE_CONNECTION_URL:jdbc:postgresql://localhost:5433/freebills}
     username: ${USERNAME}
     password: ${PASSWORD}
     driver-class-name: org.postgresql.Driver
