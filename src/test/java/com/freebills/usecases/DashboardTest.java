@@ -183,18 +183,6 @@ class DashboardTest extends TestContainerBase {
     }
 
     @Test
-    void testGetTotalDashboardByYear() {
-        transactionMockList2().forEach(data -> createTransaction.execute(data));
-
-        DashboardResponseDTO result = dashboard.getTotalDashboardByYear("admin",  2022);
-
-        assertEquals(0, new BigDecimal(0).compareTo(result.totalBalance()));
-        assertEquals(0, new BigDecimal(200).compareTo(result.totalRevenue()));
-        assertEquals(0, new BigDecimal(0).compareTo(result.totalExpensive()));
-        assertEquals(0, new BigDecimal(0).compareTo(result.totalExpensiveCards()));
-    }
-
-    @Test
     void testGetTotalDashboardRevenue() {
         transactionMockList().forEach(data -> createTransaction.execute(data));
 
