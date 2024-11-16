@@ -47,5 +47,3 @@ public class Category implements Serializable {
     private User user;
 
 }
-
-
