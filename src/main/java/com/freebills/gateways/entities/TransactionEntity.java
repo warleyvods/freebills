@@ -66,6 +66,8 @@ public class TransactionEntity {
     @ManyToOne
     private CategoryEntity category;
 
+    private String observation;
+
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;

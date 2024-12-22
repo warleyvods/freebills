@@ -22,5 +22,4 @@ public record TransactionJsonData(
         Account account,
         Category category,
         LocalDateTime createdAt,
-        BigDecimal amount
-) implements Serializable { }
+        BigDecimal amount) implements Serializable { }

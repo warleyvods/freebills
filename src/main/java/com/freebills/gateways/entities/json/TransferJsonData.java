@@ -15,6 +15,4 @@ public record TransferJsonData(
         Long fromAccountId,
         Long toAccountId,
         LocalDateTime updatedAt,
-        LocalDateTime createdAt) implements Serializable {
-
-}
+        LocalDateTime createdAt) implements Serializable { }

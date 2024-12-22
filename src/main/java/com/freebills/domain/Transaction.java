@@ -40,4 +40,6 @@ public class Transaction implements Serializable {
     @NonNull
     private BigDecimal amount;
 
+    private String observation;
+
 }

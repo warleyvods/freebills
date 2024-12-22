@@ -25,5 +25,6 @@ public record TransactionPutRequestDTO(
         @NotNull
         Long categoryId,
         boolean bankSlip,
-        String barCode
+        String barCode,
+        String observation
 ) { }

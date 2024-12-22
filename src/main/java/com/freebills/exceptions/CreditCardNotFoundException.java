@@ -1,7 +1,7 @@
 package com.freebills.exceptions;
 
 public class CreditCardNotFoundException extends RuntimeException {
-    public CreditCardNotFoundException(final String s) {
-        super(s);
+    public CreditCardNotFoundException(final String msg) {
+        super(msg);
     }
 }

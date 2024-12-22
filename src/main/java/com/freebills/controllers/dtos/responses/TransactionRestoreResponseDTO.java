@@ -13,5 +13,6 @@ public record TransactionRestoreResponseDTO(
         String barCode,
         boolean bankSlip,
         Long accountId,
-        String categoryName
+        String categoryName,
+        String observation
 ) { }

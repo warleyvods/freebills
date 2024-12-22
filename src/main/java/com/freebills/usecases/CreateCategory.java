@@ -46,10 +46,10 @@ public class CreateCategory {
     @EventListener
     @Transactional
     public void handleCreateCategory(final CreateCategoryEvent event) {
-        Category category = event.getCategory();
+        Category category = event.category();
         categoryGateway.save(category);
         log.info("category created: {}", category.getName());
-        event.getFuture().complete(category);
+        event.future().complete(category);
     }
 
     private String generateRandomColor() {

@@ -8,28 +8,20 @@ import java.time.LocalDate;
 public record TransactionRestorePostRequestDTO(
         @NotNull
         Long accountId,
-
         @NotNull
         Double amount,
-
         boolean paid,
-
         @NotBlank
         String description,
-
         @NotNull
         LocalDate date,
-
         @NotBlank
         String transactionType,
-
         String transactionCategory,
-
         @NotNull
         String categoryName,
-
         String barCode,
-
-        boolean bankSlip
+        boolean bankSlip,
+        String observation
 ) {
 }
