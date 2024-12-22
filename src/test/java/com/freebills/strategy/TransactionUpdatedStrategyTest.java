@@ -269,7 +269,6 @@ class TransactionUpdatedStrategyTest {
     private Event createEventWithDate(TransactionType oldType, boolean oldPaid, BigDecimal oldAmount,
                                       TransactionType newType, boolean newPaid, BigDecimal newAmount, Long oldAccountId, Long newAccountId, LocalDate date) {
         Event event = createEvent(oldType, oldPaid, oldAmount, newType, newPaid, newAmount, oldAccountId, newAccountId);
-        // Adicione lógica para configurar a data da transação, se necessário
         return event;
     }
 }

@@ -18,19 +18,19 @@ public class EventGateway {
 
     @CacheEvict(value = "account", key = "#event.aggregateId")
     public Event save(final Event event) {
-        return eventGatewayMapper.toDomainWithJson(eventRepository.save(eventGatewayMapper.toEntityWithJson(event)));
+        return eventGatewayMapper.toDomain(eventRepository.save(eventGatewayMapper.toEntity(event)));
     }
 
     public List<Event> getEventsByAggregateId(final Long aggregateId) {
         return eventRepository.findByAggregateId(aggregateId).stream()
-                .map(eventGatewayMapper::toDomainWithJson)
+                .map(eventGatewayMapper::toDomain)
                 .toList();
     }
 
     @CacheEvict(value = "account", allEntries = true)
     public void saveAll(final List<Event> events) {
         eventRepository.saveAll(events.stream()
-                .map(eventGatewayMapper::toEntityWithJson)
+                .map(eventGatewayMapper::toEntity)
                 .toList());
     }
 }
