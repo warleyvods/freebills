@@ -24,6 +24,7 @@ public record TransactionPostRequestDTO(
         Long categoryId,
         String barCode,
         boolean bankSlip,
+        boolean hasObservation,
         String observation
 ) {
 }

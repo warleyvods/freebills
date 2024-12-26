@@ -16,7 +16,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -67,6 +66,9 @@ public class TransactionEntity {
     private CategoryEntity category;
 
     private String observation;
+
+//    @JdbcTypeCode(JSON)
+//    private TransactionMetadata metadata;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
