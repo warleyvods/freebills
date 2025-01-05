@@ -48,10 +48,11 @@ public class TransactionController {
     private final DeleteTransaction deleteTransaction;
     private final DuplicateTransaction duplicateTransaction;
 
+    //FIX - não deixar usuário gravar se a conta não for dele.
     @ResponseStatus(CREATED)
     @PostMapping
-    public TransactionResponseDTO save(@RequestBody @Valid final TransactionPostRequestDTO transactionPostRequestDto) {
-        final var transaction = transactionMapper.toDomain(transactionPostRequestDto);
+    public TransactionResponseDTO save(@RequestBody @Valid final TransactionPostRequestDTO transactionPostRequestDTO) {
+        final var transaction = transactionMapper.toDomain(transactionPostRequestDTO);
         return transactionMapper.fromDomain(createTransaction.execute(transaction));
     }
 
