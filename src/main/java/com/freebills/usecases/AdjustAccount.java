@@ -45,19 +45,6 @@ public class AdjustAccount {
             difference = difference.abs();
         }
 
-        createTransaction.execute(new Transaction(
-                null,
-                now(),
-                "Ajuste de Conta",
-                null,
-                null,
-                transactionType,
-                TransactionCategory.OTHERS,
-                true,
-                account,
-                category,
-                null,
-                difference,
-                null));
+        //REMOVE THIS METHOD
     }
 }

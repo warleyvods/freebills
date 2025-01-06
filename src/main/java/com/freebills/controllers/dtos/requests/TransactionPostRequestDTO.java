@@ -14,7 +14,7 @@ public record TransactionPostRequestDTO(
         boolean paid,
         @NotBlank
         String description,
-        @JsonFormat(pattern="dd-MM-yyyy")
+        @JsonFormat(pattern = "dd-MM-yyyy")
         @NotNull
         LocalDate date,
         @NotBlank
@@ -23,8 +23,7 @@ public record TransactionPostRequestDTO(
         @NotNull
         Long categoryId,
         String barCode,
-        boolean bankSlip,
-        boolean hasObservation,
-        String observation
+        String observation,
+        TransactionMetadataRequestDTO transactionMetadata
 ) {
 }

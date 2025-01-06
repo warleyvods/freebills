@@ -1,7 +1,10 @@
 package com.freebills.gateways.entities.json;
 
 public record TransactionMetadata(
-        boolean hasBankSlip,
-        boolean hasObservation,
-        String receipt
-) { }
+        boolean bankSlip,
+        boolean observation
+) {
+    public TransactionMetadata() {
+        this(false, false);
+    }
+}

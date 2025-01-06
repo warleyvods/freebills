@@ -2,6 +2,7 @@ package com.freebills.domain;
 
 import com.freebills.gateways.entities.enums.TransactionCategory;
 import com.freebills.gateways.entities.enums.TransactionType;
+import com.freebills.gateways.entities.json.TransactionMetadata;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -29,17 +30,16 @@ public class Transaction implements Serializable {
     private LocalDate date;
     private String description;
     private String barCode;
-    private Boolean bankSlip;
     private TransactionType transactionType;
     private TransactionCategory transactionCategory;
     private Boolean paid;
     private Account account;
     private Category category;
     private LocalDateTime createdAt;
+    private String observation;
+    private TransactionMetadata transactionMetadata;
 
     @NonNull
     private BigDecimal amount;
-
-    private String observation;
 
 }
