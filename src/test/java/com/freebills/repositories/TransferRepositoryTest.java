@@ -6,7 +6,6 @@ import com.freebills.gateways.entities.TransferEntity;
 import com.freebills.gateways.entities.UserEntity;
 import com.freebills.gateways.entities.enums.BankType;
 import com.freebills.utils.TestContainerBase;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -20,6 +19,8 @@ import java.util.List;
 import static com.freebills.gateways.entities.enums.AccountType.CHECKING_ACCOUNT;
 import static com.freebills.gateways.entities.enums.BankType.CAIXA;
 import static com.freebills.gateways.entities.enums.BankType.INTER;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 
 @TestInstance(PER_CLASS)
@@ -55,7 +56,7 @@ class TransferRepositoryTest extends TestContainerBase {
 
         final var found = transferRepository.findByTransferIdAndUser(savedTranfer.getId(), "test0001");
 
-        Assertions.assertEquals(transferEntity.getDescription(), found.get().getDescription());
+        assertEquals(transferEntity.getDescription(), found.get().getDescription());
     }
 
     @Test
@@ -72,7 +73,7 @@ class TransferRepositoryTest extends TestContainerBase {
 
         final var found = transferRepository.findAllByUsername("test0001", null, null, null);
 
-        Assertions.assertEquals(transferEntity.getDescription(), found.getContent().getFirst().getDescription());
+        assertEquals(transferEntity.getDescription(), found.getContent().getFirst().getDescription());
     }
 
     @Test
@@ -93,10 +94,10 @@ class TransferRepositoryTest extends TestContainerBase {
         final var found3 = transferRepository.findAllByUsername("test0001", 2026, 1, null);
         final var found4 = transferRepository.findAllByUsername("test0002", null, null, null);
 
-        Assertions.assertEquals(transferEntity1.getDescription(), found1.getContent().getFirst().getDescription());
-        Assertions.assertEquals(transferEntity2.getDescription(), found2.getContent().getFirst().getDescription());
-        Assertions.assertTrue(found3.getContent().isEmpty());
-        Assertions.assertTrue(found4.getContent().isEmpty());
+        assertEquals(transferEntity1.getDescription(), found1.getContent().getFirst().getDescription());
+        assertEquals(transferEntity2.getDescription(), found2.getContent().getFirst().getDescription());
+        assertTrue(found3.getContent().isEmpty());
+        assertTrue(found4.getContent().isEmpty());
     }
 
     private UserEntity createUserEntity() {

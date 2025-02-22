@@ -116,6 +116,20 @@ public class TransactionController {
         return transactionMapper.fromDomain(execute);
     }
 
+    @ResponseStatus(OK)
+    @GetMapping("/category")
+    public Page<TransactionResponseDTO> findAllByCategory(final Principal principal,
+                                                          @RequestParam(required = false) final Integer month,
+                                                          @RequestParam(required = false) final Integer year,
+                                                          @RequestParam(required = false) final String category,
+                                                          @RequestParam(required = false) final String transactionType,
+                                                          final Pageable pageable) {
+
+        return findTransaction.findAllByCategory(
+                principal.getName(), month, year, category, pageable,
+                transactionType != null ? TransactionType.valueOf(transactionType.toUpperCase()) : null).map(transactionMapper::fromDomain);
+    }
+
     @ResponseStatus(NO_CONTENT)
     @DeleteMapping("{id}")
     public void deleteById(@PathVariable final Long id) {
@@ -124,7 +138,8 @@ public class TransactionController {
 
     @GetMapping("/export-transactions")
     public List<TransactionRestoreResponseDTO> exportTransaction(Principal principal) {
-        final var allWithFilters = findTransaction.findAllWithFilters(principal.getName(), null, null,  Pageable.unpaged() , null, null);
+        final var allWithFilters = findTransaction
+                .findAllWithFilters(principal.getName(), null, null, Pageable.unpaged(), null, null);
         return allWithFilters.map(transactionMapper::fromDomainWithCategoryName).toList();
     }
 }

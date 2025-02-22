@@ -42,6 +42,16 @@ public class TransactionGateway {
         return transactionGatewayMapper.toDomain(transactionRepository.findById(id).orElseThrow(() -> new TransactionNotFoundException("Transaction not found!")));
     }
 
+    public Page<Transaction> findAllByCategory(final String login,
+                                               final Integer month,
+                                               final Integer year,
+                                               final String category,
+                                               final TransactionType transactionType,
+                                               final Pageable pageable) {
+        var transactionsPage = transactionRepository.findAllFilteredTransactionsByCategory(login, month, year, category, transactionType, pageable);
+        return transactionsPage.map(transactionGatewayMapper::toDomain);
+    }
+
     @CacheEvict(value = {"transaction", "account"}, key = "#transaction.account.id")
     public Transaction update(final Transaction transaction) {
         final TransactionEntity entity = transactionGatewayMapper.toEntity(transaction);

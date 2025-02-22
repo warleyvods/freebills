@@ -31,4 +31,13 @@ public class FindTransaction {
 
         return transactionGateway.findTransactionsWithFilters(login, month, year, pageable, keyword, transactionType);
     }
+
+    public Page<Transaction> findAllByCategory(final String login,
+                                               final Integer month,
+                                               final Integer year,
+                                               final String category,
+                                               final Pageable pageable,
+                                               final TransactionType transactionType) {
+        return transactionGateway.findAllByCategory(login, month, year, category, transactionType, pageable);
+    }
 }

@@ -33,10 +33,4 @@ public class UploadController {
         final FileReference domain = fileReferenceMapper.toDomain(request);
         return fileReferenceMapper.fromDomain(storageGateway.generateUploadUrl(domain));
     }
-
-    @GetMapping("downloads/{fileReferenceId}/{fileName}")
-    public void downloadRequest(@PathVariable final UUID fileReferenceId) {
-
-    }
-
 }

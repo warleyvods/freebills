@@ -41,7 +41,7 @@ import static org.springframework.http.HttpStatus.OK;
 public class CategoryController {
 
     private final CategoryMapper mapper;
-    private final FindCategory findCategory;
+    private final FindCategory   findCategory;
     private final UpdateCategory updateCategory;
     private final CreateCategory createCategory;
     private final DeleteCategory deleteCategory;

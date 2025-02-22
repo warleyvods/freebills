@@ -12,7 +12,7 @@ import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 public class S3Config {
 
     @Bean
-    public S3Presigner presigner(StorageProperties storageProperties) {
+    protected S3Presigner presigner(StorageProperties storageProperties) {
         StorageProperties.S3 s3 = storageProperties.getS3();
 
         AwsBasicCredentials credentials = AwsBasicCredentials.create(s3.getKeyId(), s3.getKeySecret());
@@ -25,7 +25,7 @@ public class S3Config {
     }
 
     @Bean
-    public S3Client s3Client(StorageProperties storageProperties) {
+    protected S3Client s3Client(StorageProperties storageProperties) {
         StorageProperties.S3 s3 = storageProperties.getS3();
 
         AwsBasicCredentials credentials = AwsBasicCredentials.create(s3.getKeyId(), s3.getKeySecret());
