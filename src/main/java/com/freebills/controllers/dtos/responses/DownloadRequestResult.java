@@ -8,4 +8,6 @@ import lombok.Data;
 public class DownloadRequestResult {
 
     private String downloadSignedUrl;
+    private String publicUrl;
+    private String fileType;
 }

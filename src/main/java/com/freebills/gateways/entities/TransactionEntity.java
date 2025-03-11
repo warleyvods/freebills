@@ -66,6 +66,9 @@ public class TransactionEntity {
     private CategoryEntity category;
 
     private String observation;
+    
+    @ManyToOne
+    private FileReferenceEntity receipt;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)

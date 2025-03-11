@@ -32,6 +32,7 @@ public interface TransactionMapper {
 
     @Mapping(source = "account.id", target = "accountId")
     @Mapping(source = "category.id", target = "categoryId")
+    @Mapping(source = "receipt.id", target = "receiptId")
     TransactionResponseDTO fromDomain(Transaction transaction);
 
     @Mapping(source = "account.id", target = "accountId")

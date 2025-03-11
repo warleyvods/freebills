@@ -4,10 +4,15 @@ package com.freebills.controllers;
 import com.freebills.controllers.dtos.requests.TransactionPostRequestDTO;
 import com.freebills.controllers.dtos.requests.TransactionPutRequestDTO;
 import com.freebills.controllers.dtos.requests.TransactionRestorePostRequestDTO;
+import com.freebills.controllers.dtos.requests.UploadImageRequestDTO;
 import com.freebills.controllers.dtos.responses.TransactionResponseDTO;
 import com.freebills.controllers.dtos.responses.TransactionRestoreResponseDTO;
+import com.freebills.controllers.dtos.responses.UploadResponseDTO;
+import com.freebills.controllers.dtos.responses.DownloadRequestResult;
 import com.freebills.controllers.mappers.TransactionMapper;
+import com.freebills.controllers.mappers.FileReferenceMapper;
 import com.freebills.gateways.entities.enums.TransactionType;
+import com.freebills.gateways.StorageGateway;
 import com.freebills.usecases.CreateTransaction;
 import com.freebills.usecases.DeleteTransaction;
 import com.freebills.usecases.DuplicateTransaction;
@@ -47,6 +52,8 @@ public class TransactionController {
     private final FindTransaction findTransaction;
     private final DeleteTransaction deleteTransaction;
     private final DuplicateTransaction duplicateTransaction;
+    private final StorageGateway storageGateway;
+    private final FileReferenceMapper fileReferenceMapper;
 
     //FIX - não deixar usuário gravar se a conta não for dele.
     @ResponseStatus(CREATED)
@@ -70,7 +77,7 @@ public class TransactionController {
     public void restoreTransactions(@RequestBody final List<TransactionRestorePostRequestDTO> requestDTOList) {
         final var list = requestDTOList.stream().map(transactionMapper::toDomainWithCategoryName).toList();
 
-        // ‘Hack’ fix: As vezes acontece do completable future não terminar esperar a thread de execução terminar
+        // 'Hack' fix: As vezes acontece do completable future não terminar esperar a thread de execução terminar
         try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
@@ -141,5 +148,30 @@ public class TransactionController {
         final var allWithFilters = findTransaction
                 .findAllWithFilters(principal.getName(), null, null, Pageable.unpaged(), null, null);
         return allWithFilters.map(transactionMapper::fromDomainWithCategoryName).toList();
+    }
+
+    @ResponseStatus(OK)
+    @PostMapping("/{id}/receipt")
+    public UploadResponseDTO addReceipt(@PathVariable final Long id, @RequestBody @Valid final UploadImageRequestDTO request) {
+        final var transaction = findTransaction.findById(id);
+        final var fileReference = fileReferenceMapper.toDomain(request);
+        final var uploadResponse = storageGateway.generateUploadUrl(fileReference);
+        
+        transaction.setReceipt(uploadResponse);
+        updateTransaction.execute(transaction);
+        
+        return fileReferenceMapper.fromDomain(uploadResponse);
+    }
+
+    @ResponseStatus(OK)
+    @GetMapping("/{id}/receipt/download")
+    public DownloadRequestResult getReceiptDownloadUrl(@PathVariable final Long id) {
+        final var transaction = findTransaction.findById(id);
+        
+        if (transaction.getReceipt() == null) {
+            throw new IllegalArgumentException("Transaction has no receipt");
+        }
+        
+        return storageGateway.generateDownloadUrl(transaction.getReceipt());
     }
 }

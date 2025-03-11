@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 public record TransactionPutRequestDTO(
         @NotNull
@@ -26,5 +27,6 @@ public record TransactionPutRequestDTO(
         Long categoryId,
         boolean bankSlip,
         String barCode,
-        String observation
+        String observation,
+        UUID receiptId
 ) { }

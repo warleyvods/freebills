@@ -32,7 +32,11 @@ public class StorageGateway {
         Objects.requireNonNull(fileReference);
 
         URL url = cloudStorageProvider.generatePresignedDownloadUrl(fileReference);
-        return new DownloadRequestResult(url.toString());
+        return new DownloadRequestResult(
+                url.toString(),
+                fileReference.getPublicUrl(),
+                fileReference.getContentType()
+        );
     }
 
     public boolean fileExists(FileReference fileReference) {

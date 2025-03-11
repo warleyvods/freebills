@@ -42,4 +42,6 @@ public class Transaction implements Serializable {
 
     private String observation;
 
+    private FileReference receipt;
+
 }

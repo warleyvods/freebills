@@ -1,6 +1,7 @@
 package com.freebills.controllers.dtos.responses;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 public record TransactionResponseDTO(
         Long id,
@@ -14,5 +15,6 @@ public record TransactionResponseDTO(
         boolean bankSlip,
         Long accountId,
         Long categoryId,
-        String observation
+        String observation,
+        UUID receiptId
 ) { }
