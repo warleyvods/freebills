@@ -78,7 +78,7 @@ class CreateTransactionTest extends TestContainerBase {
         assertEquals(transactionEntity.getDescription(), transactionSaved.getDescription());
         assertEquals(transactionEntity.getTransactionType(), transactionSaved.getTransactionType());
         assertEquals(transactionEntity.getTransactionCategory(), transactionSaved.getTransactionCategory());
-        assertEquals(transactionEntity.getPaid(), transactionSaved.getPaid());
+        assertEquals(transactionEntity.isPaid(), transactionSaved.isPaid());
         assertEquals(transactionEntity.getAccount(), transactionSaved.getAccount());
     }
 

@@ -16,7 +16,7 @@ public class TransactionCreated implements BalanceUpdateStrategy {
 
     @Override
     public BigDecimal updateBalance(final BigDecimal currentBalance, final Event event) {
-        if (event.getEventType() == TRANSACTION_CREATED && TRUE.equals(event.getTransactionData().getPaid())) {
+        if (event.getEventType() == TRANSACTION_CREATED && TRUE.equals(event.getTransactionData().isPaid())) {
             if (event.getTransactionData().getTransactionType() == EXPENSE) {
                 return currentBalance.subtract(event.getTransactionData().getAmount());
             } else if (event.getTransactionData().getTransactionType() == REVENUE) {

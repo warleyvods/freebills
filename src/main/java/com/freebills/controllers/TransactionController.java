@@ -5,6 +5,7 @@ import com.freebills.controllers.dtos.requests.TransactionPostRequestDTO;
 import com.freebills.controllers.dtos.requests.TransactionPutRequestDTO;
 import com.freebills.controllers.dtos.requests.TransactionRestorePostRequestDTO;
 import com.freebills.controllers.dtos.requests.UploadImageRequestDTO;
+import com.freebills.controllers.dtos.requests.TransactionMetadataRequestDTO;
 import com.freebills.controllers.dtos.responses.TransactionResponseDTO;
 import com.freebills.controllers.dtos.responses.TransactionRestoreResponseDTO;
 import com.freebills.controllers.dtos.responses.UploadResponseDTO;
@@ -25,6 +26,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -173,5 +175,25 @@ public class TransactionController {
         }
         
         return storageGateway.generateDownloadUrl(transaction.getReceipt());
+    }
+
+    @ResponseStatus(OK)
+    @PatchMapping("/{id}/metadata")
+    public TransactionResponseDTO updateMetadata(@PathVariable final Long id, @RequestBody @Valid final TransactionMetadataRequestDTO request) {
+        final var transaction = findTransaction.findById(id);
+        
+        if (transaction.getMetadata() == null) {
+            throw new IllegalArgumentException("Transaction has no metadata");
+        }
+        
+        transaction.getMetadata().setIsRecurring(request.isRecurring());
+        transaction.getMetadata().setIsFixed(request.isFixed());
+        transaction.getMetadata().setIsCreditCardPayment(request.isCreditCardPayment());
+        transaction.getMetadata().setIsBankSlip(request.isBankSlip());
+        transaction.getMetadata().setHasPaidConfirmation(request.hasPaidConfirmation());
+        transaction.getMetadata().setTags(request.tags());
+        transaction.getMetadata().setIsFavorite(request.isFavorite());
+        
+        return transactionMapper.fromDomain(updateTransaction.execute(transaction));
     }
 }

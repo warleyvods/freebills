@@ -6,15 +6,14 @@ import java.util.UUID;
 public record TransactionResponseDTO(
         Long id,
         Double amount,
-        boolean paid,
         LocalDate date,
         String description,
         String transactionType,
         String transactionCategory,
         String barCode,
-        boolean bankSlip,
         Long accountId,
         Long categoryId,
         String observation,
-        UUID receiptId
+        UUID receiptId,
+        TransactionMetadataResponseDTO metadata
 ) { }

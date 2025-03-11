@@ -14,19 +14,18 @@ public record TransactionPutRequestDTO(
         Long id,
         @NotNull
         Double amount,
-        boolean paid,
-        @NotBlank
-        String description,
         @JsonFormat(pattern="dd-MM-yyyy")
         @NotNull
         LocalDate date,
+        @NotBlank
+        String description,
         @NotBlank
         String transactionType,
         String transactionCategory,
         @NotNull
         Long categoryId,
-        boolean bankSlip,
         String barCode,
         String observation,
-        UUID receiptId
+        UUID receiptId,
+        TransactionMetadataRequestDTO metadata
 ) { }

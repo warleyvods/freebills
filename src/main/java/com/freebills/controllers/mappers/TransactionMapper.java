@@ -19,7 +19,7 @@ import org.mapstruct.ReportingPolicy;
 
 import static org.mapstruct.NullValuePropertyMappingStrategy.IGNORE;
 
-@Mapper(componentModel = "spring", uses = {AccountGateway.class, FindCategory.class}, unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = "spring", uses = {AccountGateway.class, FindCategory.class, TransactionMetadataMapper.class}, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface TransactionMapper {
 
     @Mapping(source = "categoryId", target = "category")

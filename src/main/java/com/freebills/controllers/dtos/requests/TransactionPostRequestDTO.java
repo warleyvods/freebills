@@ -8,22 +8,20 @@ import java.time.LocalDate;
 
 public record TransactionPostRequestDTO(
         @NotNull
-        Long accountId,
-        @NotNull
         Double amount,
-        boolean paid,
-        @NotBlank
-        String description,
         @JsonFormat(pattern="dd-MM-yyyy")
         @NotNull
         LocalDate date,
         @NotBlank
+        String description,
+        @NotBlank
         String transactionType,
-        String transactionCategory,
         @NotNull
         Long categoryId,
         String barCode,
-        boolean bankSlip,
-        String observation
+        @NotNull
+        Long accountId,
+        String observation,
+        TransactionMetadataRequestDTO metadata
 ) {
 }

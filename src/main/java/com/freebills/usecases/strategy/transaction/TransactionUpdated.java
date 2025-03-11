@@ -28,7 +28,7 @@ public class TransactionUpdated implements BalanceUpdateStrategy {
     private BigDecimal adjustBalance(BigDecimal currentBalance, Transaction transactionData, boolean isAddition) {
         BigDecimal transactionAmount = transactionData.getAmount();
 
-        if (TRUE.equals(transactionData.getPaid())) {
+        if (TRUE.equals(transactionData.isPaid())) {
             if (transactionData.getTransactionType() == REVENUE) {
                 currentBalance = isAddition ? currentBalance.add(transactionAmount) : currentBalance.subtract(transactionAmount);
             } else if (transactionData.getTransactionType() == EXPENSE) {

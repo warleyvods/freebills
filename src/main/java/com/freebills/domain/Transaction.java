@@ -29,10 +29,8 @@ public class Transaction implements Serializable {
     private LocalDate date;
     private String description;
     private String barCode;
-    private Boolean bankSlip;
     private TransactionType transactionType;
     private TransactionCategory transactionCategory;
-    private Boolean paid;
     private Account account;
     private Category category;
     private LocalDateTime createdAt;
@@ -41,7 +39,31 @@ public class Transaction implements Serializable {
     private BigDecimal amount;
 
     private String observation;
-
+    
     private FileReference receipt;
-
+    
+    private TransactionMetadata metadata;
+    
+    // Métodos de conveniência para acessar metadados
+    public boolean isPaid() {
+        return metadata != null && Boolean.TRUE.equals(metadata.getHasPaidConfirmation());
+    }
+    
+    public boolean isBankSlip() {
+        return metadata != null && Boolean.TRUE.equals(metadata.getIsBankSlip());
+    }
+    
+    public void setPaid(boolean paid) {
+        if (metadata == null) {
+            metadata = new TransactionMetadata();
+        }
+        metadata.setHasPaidConfirmation(paid);
+    }
+    
+    public void setBankSlip(boolean bankSlip) {
+        if (metadata == null) {
+            metadata = new TransactionMetadata();
+        }
+        metadata.setIsBankSlip(bankSlip);
+    }
 }

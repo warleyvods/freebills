@@ -35,7 +35,7 @@ public class Dashboard {
         var transactions = getTransactionsByUserDateFilter(login, month, year)
                 .stream()
                 .filter(transaction -> transaction.getTransactionType() == transactionType)
-                .filter(Transaction::getPaid)
+                .filter(Transaction::isPaid)
                 .toList();
 
         var transactionTypesLabels = transactions.stream()
@@ -114,7 +114,7 @@ public class Dashboard {
     private Map<Boolean, BigDecimal> getAmountsByTypeAndPaidStatus(List<Transaction> transactionEntities, TransactionType type) {
         return transactionEntities.stream()
                 .filter(transaction -> transaction.getTransactionType() == type)
-                .collect(groupingBy(Transaction::getPaid, reducing(ZERO, Transaction::getAmount, BigDecimal::add)));
+                .collect(groupingBy(Transaction::isPaid, reducing(ZERO, Transaction::getAmount, BigDecimal::add)));
     }
 
     private BigDecimal calculateBalanceForSingleAccount(Account account) {

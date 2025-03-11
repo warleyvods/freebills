@@ -11,6 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -49,15 +50,11 @@ public class TransactionEntity {
     @Size(max = 50)
     private String barCode;
 
-    private Boolean bankSlip;
-
     @Enumerated(STRING)
     private TransactionType transactionType;
 
     @Enumerated(STRING)
     private TransactionCategory transactionCategory;
-
-    private Boolean paid;
 
     @ManyToOne
     private AccountEntity account;
@@ -69,6 +66,9 @@ public class TransactionEntity {
     
     @ManyToOne
     private FileReferenceEntity receipt;
+
+    @OneToOne
+    private TransactionMetadataEntity metadata;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)

@@ -247,7 +247,7 @@ class TransactionUpdatedStrategyTest {
 
         Transaction oldTransaction = mock(Transaction.class);
         when(oldTransaction.getTransactionType()).thenReturn(oldType);
-        when(oldTransaction.getPaid()).thenReturn(oldPaid);
+        when(oldTransaction.isPaid()).thenReturn(oldPaid);
         when(oldTransaction.getAmount()).thenReturn(oldAmount);
         Account oldAccount = mock(Account.class);
         when(oldAccount.getId()).thenReturn(oldAccountId);
@@ -255,7 +255,7 @@ class TransactionUpdatedStrategyTest {
 
         Transaction newTransaction = mock(Transaction.class);
         when(newTransaction.getTransactionType()).thenReturn(newType);
-        when(newTransaction.getPaid()).thenReturn(newPaid);
+        when(newTransaction.isPaid()).thenReturn(newPaid);
         when(newTransaction.getAmount()).thenReturn(newAmount);
         Account newAccount = mock(Account.class);
         when(newAccount.getId()).thenReturn(newAccountId);

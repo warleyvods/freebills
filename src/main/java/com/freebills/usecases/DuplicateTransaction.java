@@ -20,8 +20,9 @@ public class DuplicateTransaction {
                 .id(null)
                 .date(transaction.getDate().plusMonths(1))
                 .amount(new BigDecimal(0))
-                .paid(false)
                 .build();
+
+        copy.setPaid(false);
 
         return createTransaction.execute(copy);
     }
