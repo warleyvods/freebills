@@ -7,11 +7,9 @@ import jakarta.validation.constraints.NotNull;
 
 
 public record AccountPostRequestDTO(
-        Long userId,
-
         @Schema(description = "Amount ")
 //        @NotNull
-        Double amount,
+        double amount,
 
         @Schema(description = "Description of the account")
         @NotBlank

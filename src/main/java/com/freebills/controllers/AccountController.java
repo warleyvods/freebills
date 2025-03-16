@@ -51,7 +51,7 @@ public class AccountController {
     @ResponseStatus(CREATED)
     @PostMapping
     public AccountResponseDTO save(@RequestBody @Valid final AccountPostRequestDTO accountPostRequestDTO, Principal principal) {
-        final var account = mapper.toDomain(accountPostRequestDTO);
+        final var account = mapper.toDomain(accountPostRequestDTO, principal.getName());
         return mapper.toDTO(createAccount.create(account, principal.getName()));
     }
 

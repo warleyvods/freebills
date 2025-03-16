@@ -15,6 +15,7 @@ import com.freebills.usecases.FindTransaction;
 import com.freebills.usecases.UpdateTransaction;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -36,6 +37,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.HttpStatus.OK;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/v1/transactions")
@@ -53,7 +55,9 @@ public class TransactionController {
     @PostMapping
     public TransactionResponseDTO save(@RequestBody @Valid final TransactionPostRequestDTO transactionPostRequestDTO) {
         final var transaction = transactionMapper.toDomain(transactionPostRequestDTO);
-        return transactionMapper.fromDomain(createTransaction.execute(transaction));
+        TransactionResponseDTO transactionResponseDTO = transactionMapper.fromDomain(createTransaction.execute(transaction));
+        log.info("transação salva: {}", transactionResponseDTO.toString());
+        return transactionResponseDTO;
     }
 
     @ResponseStatus(OK)
